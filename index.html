@@ -13,21 +13,23 @@
   <style>
     *{ margin:0; padding:0; box-sizing:border-box; }
 
-    /* ===== FIX: prevent any sideways panning from overflow ===== */
+    /* ===== FIX: prevent any panning/scrolling (esp. iOS) ===== */
     html, body{
       width:100%;
       height:100%;
       overflow:hidden;
-      overflow-x:hidden;                 /* FIX */
+      overflow-x:hidden;
       overscroll-behavior:none;
       -webkit-overflow-scrolling: auto;
-      touch-action: pan-y;               /* FIX: stops sideways “grab & drag” on iOS */
+      touch-action: none; /* lock all panning */
     }
 
     body{
       font-family:"Playfair Display", serif;
       background:#000;
       color:#fff;
+      position:fixed;   /* extra iOS guardrail */
+      inset:0;
     }
 
     /* ===== FIX: guardrail so nothing can be wider than viewport ===== */
@@ -51,8 +53,7 @@
       font-size:10px;
       z-index:20;
       color:#fff;
-
-      overflow:hidden;                  /* FIX */
+      overflow:hidden;
     }
     .topnav.show{ display:flex; }
 
@@ -69,10 +70,9 @@
     .topnav .left{
       display:flex;
       gap:52px;
-
-      flex-wrap:wrap;                   /* FIX: allows wrapping instead of forcing overflow */
-      justify-content:center;           /* FIX: nicer if it wraps */
-      max-width:78%;                    /* FIX: keeps room for RSVP */
+      flex-wrap:wrap;
+      justify-content:center;
+      max-width:78%;
     }
 
     .topnav a{
@@ -80,7 +80,7 @@
       text-decoration:none;
       opacity:0.60;
       transition:opacity .35s ease;
-      white-space:nowrap;               /* FIX: keeps each item intact when wrapping */
+      white-space:nowrap;
     }
     .topnav a:hover{ opacity:0.88; }
     .topnav .active{ opacity:1; }
@@ -94,14 +94,14 @@
       flex:0 0 auto;
     }
 
-    /* ===== HERO (FULL VIEWPORT, NO INTERNAL SCROLL) ===== */
+    /* ===== HERO (LOCKED, NO SCROLL EVER) ===== */
     .hero{
-      height:100vh;
-      height:100dvh;               /* iOS-safe viewport */
+      position:fixed;
+      inset:0;
       width:100%;
-      overflow:hidden;             /* no internal scroll */
+      height:100%;
+      overflow:hidden;
       background:url("hero.jpg") center center / cover no-repeat;
-      position:relative;
       display:flex;
       align-items:center;
       justify-content:center;
@@ -122,8 +122,8 @@
       display:flex;
       flex-direction:column;
       align-items:center;
-      transform:translateY(-8px);  /* optical centering desktop */
-      padding:0 16px;              /* FIX: prevents edge overflow on tiny widths */
+      transform:translateY(-8px);
+      padding:0 16px;
     }
 
     /* ===== MONOGRAM ===== */
@@ -140,7 +140,7 @@
       display:flex;
       gap:18px;
       align-items:center;
-      justify-content:center;      /* FIX */
+      justify-content:center;
     }
 
     .pw-input{
@@ -202,12 +202,11 @@
     @media (max-width:1280px){
       .monogram{ width:190px; }
       .pw-input{ width:420px; }
-      .topnav .left{ gap:36px; }        /* FIX: helps prevent overflow earlier */
+      .topnav .left{ gap:36px; }
     }
 
-    /* ===== MOBILE (SAFE AREA + SHOW EVERYTHING AFTER UNLOCK) ===== */
+    /* ===== MOBILE ===== */
     @media (max-width:768px){
-      /* NAV respects safe area */
       .topnav{
         top:calc(14px + env(safe-area-inset-top));
         width:100%;
@@ -222,7 +221,7 @@
 
       .topnav .left{
         max-width:100%;
-        gap:18px;                        /* FIX: keeps it neat on phone */
+        gap:18px;
       }
 
       .hero-inner{
@@ -277,7 +276,7 @@
   </nav>
 
   <!-- HERO -->
-  <section class="hero">
+  <section class="hero" aria-label="Hero">
     <div class="hero-inner">
       <img src="monogram1.png" alt="Shannen & Samarth monogram" class="monogram">
 
@@ -289,7 +288,7 @@
           placeholder="Type password"
           autocomplete="off"
         />
-        <button class="pw-btn" onclick="unlockSite()">ENTER</button>
+        <button class="pw-btn" type="button" onclick="unlockSite()">ENTER</button>
       </div>
 
       <div class="pw-hint" id="pwHint">Incorrect password</div>
@@ -300,13 +299,16 @@
     const PASSWORD = "ss2027";
 
     function lockScroll(){
+      // lock overflow
       document.documentElement.style.overflow = "hidden";
       document.body.style.overflow = "hidden";
-      document.documentElement.style.overflowX = "hidden"; // FIX
-      document.body.style.overflowX = "hidden";            // FIX
+      document.documentElement.style.overflowX = "hidden";
+      document.body.style.overflowX = "hidden";
       document.documentElement.style.height = "100%";
       document.body.style.height = "100%";
-      window.scrollTo(0,0);
+
+      // extra iOS: ensure no scroll position
+      window.scrollTo(0, 0);
     }
 
     function unlockSite(){
@@ -318,7 +320,8 @@
         document.getElementById("nav").classList.add("show");
         document.getElementById("passwordWrap").style.display = "none";
         hint.classList.remove("show");
-        lockScroll();
+
+        lockScroll(); // keep scroll fully locked after unlock
       } else {
         hint.classList.add("show");
       }
