@@ -17,12 +17,29 @@
     }
 
     body {
-      background: 
-        url("hero.jpg") center / cover no-repeat;
+      background: url("hero.png") center / cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .monogram {
+      width: clamp(90px, 12vw, 150px);
+    }
+
+    .monogram img {
+      width: 100%;
+      height: auto;
+      display: block;
     }
   </style>
 </head>
 
 <body>
+
+  <div class="monogram">
+    <img src="monogram.png" alt="S S Monogram">
+  </div>
+
 </body>
 </html>
