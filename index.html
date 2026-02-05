@@ -5,41 +5,308 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Shannen & Samarth</title>
 
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Alex+Brush&family=Montserrat:wght@500;600&display=swap" rel="stylesheet">
+
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    *{ margin:0; padding:0; box-sizing:border-box; }
+
+    html, body{
+      height:100%;
+      background:#000;
     }
 
-    html, body {
-      height: 100%;
+    body{
+      font-family:"Playfair Display", serif;
+      overflow:hidden;
     }
 
-    body {
-      background: url("hero.jpg") center / cover no-repeat;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    /* ===== SINGLE STAGE (HOME/HERO) ===== */
+    .scene{
+      position:fixed;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
     }
 
-    .monogram {
-      width: clamp(90px, 12vw, 150px);
+    .scene-home{
+      z-index:1;
+      opacity:1;
+      color:#fff;
+      background:
+        linear-gradient(rgba(0,0,0,.25),rgba(0,0,0,.25)),
+        url("hero.jpg") center/cover no-repeat;
     }
 
-    .monogram img {
-      width: 100%;
-      height: auto;
-      display: block;
+    /* ===== NAV (DESKTOP UNCHANGED) ===== */
+    .topnav{
+      position:absolute;
+      top:28px;
+      left:50%;
+      transform:translateX(-50%);
+      width:calc(100% - 80px);
+      display:flex;
+      justify-content:space-between;
+      font-family:"Montserrat", sans-serif;
+      font-weight:500;
+      text-transform:uppercase;
+      letter-spacing:0.32em;
+      font-size:12px;
+      z-index:5;
+    }
+
+    .topnav .left{
+      display:flex;
+      gap:44px;
+    }
+
+    .topnav a{
+      color:#fff;
+      text-decoration:none;
+      opacity:.85;
+    }
+
+    .topnav .rsvp{
+      padding:10px 18px;
+      border:1px solid rgba(255,255,255,.65);
+    }
+
+    .locked-link{
+      pointer-events:none;
+      opacity:.35 !important;
+    }
+
+    /* ===== HERO CENTER ===== */
+    .hero-wrap{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .home-center{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+    }
+
+    .monogram{
+      width: clamp(80px, 12vw, 140px);
+      margin-bottom: 24px;
+    }
+
+    .monogram img{ width:100%; }
+
+    .names{
+      width: clamp(300px, 60vw, 520px);
+      margin-bottom: 14px;
+      display:block;
+    }
+
+    .date{
+      font-size:20px;
+      letter-spacing:3px;
+      opacity:.9;
+      margin-bottom:26px;
+    }
+
+    /* ===== PASSWORD ===== */
+    .pw-wrap{ margin-top:28px; }
+
+    .pw-row{
+      display:flex;
+      gap:12px;
+    }
+
+    .pw-input,
+    .pw-btn{
+      -webkit-backdrop-filter: blur(18px) saturate(160%);
+      backdrop-filter: blur(18px) saturate(160%);
+      background: rgba(255,255,255,0.10);
+      border:1px solid rgba(255,255,255,0.28);
+      border-radius:999px;
+      height:46px;
+      color:#fff;
+    }
+
+    .pw-input{
+      padding:0 18px;
+      width:min(300px,72vw);
+      outline:none;
+      caret-color:#fff;
+    }
+
+    .pw-input::placeholder{
+      color:#fff;
+      opacity:1;
+    }
+
+    .pw-btn{
+      font-family:"Montserrat", sans-serif;
+      font-weight:500;
+      font-size:11px;
+      letter-spacing:0.32em;
+      text-transform:uppercase;
+      padding:0 22px;
+      cursor:pointer;
+    }
+
+    .pw-error{
+      margin-top:10px;
+      min-height:14px;
+      font-size:12px;
+      text-align:center;
+    }
+
+    .is-hidden{ display:none !important; }
+
+    /* ===== MOBILE (NAV + PASSWORD) ===== */
+    @media (max-width:768px){
+
+      /* Nav (matches your welcome.html mobile style) */
+      .topnav{
+        top: calc(45px + env(safe-area-inset-top));
+        width:100%;
+        padding:0 20px;
+        flex-direction:column;
+        align-items:center;
+        gap:16px;
+        font-size:10px;
+        letter-spacing:0.28em;
+      }
+
+      .topnav .left{
+        gap:24px;
+        justify-content:center;
+        flex-wrap:wrap;
+      }
+
+      .topnav .rsvp{
+        margin-top:6px;
+        padding:8px 16px;
+      }
+
+      .pw-row{
+        flex-direction:column;
+        align-items:center;
+      }
+
+      .pw-input{
+        width:min(78vw,340px);
+        font-size:16px;
+        text-align:center;
+      }
+
+      .pw-btn{ width:160px; }
+
+      /* Hide nav until unlock (mobile only) */
+      #siteContent{ display:none; }
+      #siteContent.is-visible{ display:block; }
     }
   </style>
 </head>
 
 <body>
 
-  <div class="monogram">
-    <img src="monogram.png" alt="S S Monogram">
+<!-- HOME / HERO ONLY -->
+<section class="scene scene-home" id="sceneHome">
+
+  <div class="hero-wrap">
+    <div class="home-center">
+      <div class="monogram">
+        <img src="monogram1.png" alt="Monogram">
+      </div>
+
+      <img class="names" src="signature1.png" alt="Shannen & Samarth">
+
+      <div class="date is-hidden" id="weddingDate">27 · 02 · 27</div>
+
+      <div class="pw-wrap" id="pwWrap">
+        <div class="pw-row">
+          <input id="pwInput" class="pw-input" type="password" placeholder="Enter password" autocomplete="off">
+          <button id="pwBtn" class="pw-btn">Enter</button>
+        </div>
+        <div class="pw-error" id="pwError"></div>
+      </div>
+    </div>
   </div>
+
+  <div id="siteContent">
+    <nav class="topnav">
+      <div class="left">
+        <a href="index.html">Home</a>
+        <a data-protected href="welcome.html">Welcome</a>
+        <a data-protected href="schedule.html">Schedule</a>
+        <a data-protected href="faqs.html">FAQs</a>
+      </div>
+      <a data-protected class="rsvp" href="rsvp.html">RSVP</a>
+    </nav>
+  </div>
+
+</section>
+
+<script>
+  const UNLOCK_KEY = "siteUnlocked";
+  const SITE_PASSWORD = "ss2027";
+
+  const pwInput = document.getElementById("pwInput");
+  const pwBtn = document.getElementById("pwBtn");
+  const pwWrap = document.getElementById("pwWrap");
+  const weddingDate = document.getElementById("weddingDate");
+  const protectedLinks = document.querySelectorAll("[data-protected]");
+  const pwError = document.getElementById("pwError");
+  const siteContent = document.getElementById("siteContent");
+
+  function isMobile(){
+    return window.matchMedia("(max-width: 768px)").matches;
+  }
+
+  function lockUI(){
+    protectedLinks.forEach(l => l.classList.add("locked-link"));
+    pwWrap.classList.remove("is-hidden");
+    weddingDate.classList.add("is-hidden");
+    if (isMobile()) siteContent.classList.remove("is-visible");
+  }
+
+  function unlockUI(){
+    protectedLinks.forEach(l => l.classList.remove("locked-link"));
+    pwWrap.classList.add("is-hidden");
+    weddingDate.classList.remove("is-hidden");
+    if (isMobile()) siteContent.classList.add("is-visible");
+  }
+
+  // Initial state
+  if (sessionStorage.getItem(UNLOCK_KEY) === "1") unlockUI();
+  else lockUI();
+
+  function tryUnlock(){
+    if (pwInput.value.trim() === SITE_PASSWORD) {
+      sessionStorage.setItem(UNLOCK_KEY, "1");
+      pwError.textContent = "";
+      unlockUI();
+    } else {
+      pwError.textContent = "Incorrect password.";
+      pwInput.value = "";
+      pwInput.focus();
+    }
+  }
+
+  pwBtn.addEventListener("click", tryUnlock);
+  pwInput.addEventListener("keydown", e => {
+    if (e.key === "Enter") tryUnlock();
+  });
+
+  // If user rotates / resizes across the breakpoint, keep mobile nav logic correct
+  window.addEventListener("resize", () => {
+    const unlocked = sessionStorage.getItem(UNLOCK_KEY) === "1";
+    if (unlocked) unlockUI();
+    else lockUI();
+  });
+</script>
 
 </body>
 </html>
