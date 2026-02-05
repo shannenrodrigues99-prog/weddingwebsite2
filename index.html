@@ -141,7 +141,6 @@
       margin-bottom: 28px;
       filter: drop-shadow(0 12px 34px rgba(0,0,0,.45));
     }
-
     .monogram img{ width:100%; display:block; }
 
     /* Wedding text (unlocked) */
@@ -206,7 +205,6 @@
       outline:none;
       caret-color:#fff;
     }
-
     .pw-input::placeholder{ color:#fff; opacity:.85; }
 
     .pw-btn{
@@ -229,24 +227,22 @@
 
     .is-hidden{ display:none !important; }
 
-    /* ===== MOBILE (IMPROVED) ===== */
+    /* ===== MOBILE (LOCKED vs UNLOCKED) ===== */
     @media (max-width:768px){
 
-      /* Fill the *visible* iOS viewport (prevents black gap) */
+      /* Fix iOS “black gap” / odd centering */
       .scene{ min-height:100svh; }
       .hero-wrap{
         min-height:100svh;
         padding:0;
       }
 
-      /* Better vertical balance (less “too high”) */
       .home-center{
-        transform: translateY(-6px);
         width:100%;
         padding:0 18px;
       }
 
-      /* NAV: keep it out of status bar */
+      /* NAV: safe + consistent */
       .topnav{
         top: calc(16px + env(safe-area-inset-top));
         width:100%;
@@ -271,49 +267,63 @@
         padding:0 16px;
       }
 
-      /* Unlocked rhythm */
-      .wedding-overline{
-        font-size:11px;
-        letter-spacing:0.44em;
-        margin-bottom:16px;
+      /* -----------------------------
+         LOCKED (monogram + password)
+         ----------------------------- */
+      body.is-locked .home-center{
+        transform: translateY(-10px);
       }
 
-      .wedding-names-img{
-        width:min(86vw,520px);
-        margin:0 auto 18px;
-      }
-
-      .date{
-        font-size:11px;
-        letter-spacing:0.40em;
-        opacity:.82;
-      }
-
-      /* Locked rhythm */
-      .monogram{
+      body.is-locked .monogram{
         width:min(34vw,170px);
         margin-bottom:20px;
       }
 
-      .pw-wrap{ margin-top:16px; }
+      body.is-locked .pw-wrap{ margin-top:16px; }
 
-      .pw-row{
+      body.is-locked .pw-row{
         flex-direction:column;
         align-items:center;
         gap:12px;
       }
 
-      .pw-input{
+      body.is-locked .pw-input{
         width:min(86vw,360px);
         font-size:16px;
         text-align:center;
         height:48px;
       }
 
-      .pw-btn{
+      body.is-locked .pw-btn{
         width:170px;
         height:44px;
         letter-spacing:0.36em;
+      }
+
+      /* -----------------------------
+         UNLOCKED (wedding text)
+         THIS is what fixes “proportion”
+         ----------------------------- */
+      body.is-unlocked .home-center{
+        transform: translateY(22px); /* pushes content down = better balance */
+      }
+
+      body.is-unlocked .wedding-overline{
+        font-size:11px;
+        letter-spacing:0.42em;
+        margin-bottom:14px;
+        opacity:.86;
+      }
+
+      body.is-unlocked .wedding-names-img{
+        width:min(78vw,460px);       /* slightly smaller = more editorial */
+        margin:0 auto 14px;
+      }
+
+      body.is-unlocked .date{
+        font-size:11px;
+        letter-spacing:0.38em;
+        opacity:.70;                 /* softer like your inspo */
       }
 
       /* keep nav hidden until unlocked on mobile */
@@ -323,7 +333,7 @@
   </style>
 </head>
 
-<body>
+<body class="is-locked">
 
 <section class="scene scene-home">
 
@@ -387,7 +397,13 @@
     return window.matchMedia("(max-width: 768px)").matches;
   }
 
+  function setBodyState(state){
+    document.body.classList.remove("is-locked","is-unlocked");
+    document.body.classList.add(state);
+  }
+
   function lockUI(){
+    setBodyState("is-locked");
     protectedLinks.forEach(l => l.classList.add("locked-link"));
     pwWrap.classList.remove("is-hidden");
     weddingDate.classList.add("is-hidden");
@@ -397,6 +413,7 @@
   }
 
   function unlockUI(){
+    setBodyState("is-unlocked");
     protectedLinks.forEach(l => l.classList.remove("locked-link"));
     pwWrap.classList.add("is-hidden");
     weddingDate.classList.remove("is-hidden");
