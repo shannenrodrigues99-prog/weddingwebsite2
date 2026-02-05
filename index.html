@@ -229,55 +229,73 @@
 
     .is-hidden{ display:none !important; }
 
-    /* ===== MOBILE ===== */
+    /* ===== MOBILE (IMPROVED) ===== */
     @media (max-width:768px){
 
-      /* use safe viewport height on iOS (prevents odd vertical centering) */
+      /* Fill the *visible* iOS viewport (prevents black gap) */
+      .scene{ min-height:100svh; }
       .hero-wrap{
-        min-height: 100svh;
-        padding-top: calc(16px + env(safe-area-inset-top));
-        padding-bottom: calc(18px + env(safe-area-inset-bottom));
+        min-height:100svh;
+        padding:0;
       }
 
-      /* lift the whole stack slightly (more like your inspo) */
+      /* Better vertical balance (less “too high”) */
       .home-center{
-        transform: translateY(-28px);
-        width: 100%;
-        padding: 0 18px;
+        transform: translateY(-6px);
+        width:100%;
+        padding:0 18px;
       }
 
-      /* NAV should match the welcome mobile treatment */
+      /* NAV: keep it out of status bar */
       .topnav{
-        top: calc(44px + env(safe-area-inset-top));
+        top: calc(16px + env(safe-area-inset-top));
         width:100%;
-        padding:0 20px;
+        padding:0 18px;
         flex-direction:column;
         align-items:center;
-        gap:14px;
+        gap:12px;
         font-size:10px;
-        letter-spacing:0.34em;
+        letter-spacing:0.32em;
         opacity:.78;
       }
 
       .topnav .left{
-        gap:22px;
+        gap:18px;
         justify-content:center;
         flex-wrap:wrap;
       }
 
       .topnav .rsvp{
-        margin-top:6px;
+        margin-top:4px;
         height:32px;
         padding:0 16px;
       }
 
-      /* Locked state: monogram + password look cleaner */
-      .monogram{
-        width: min(34vw, 170px);
-        margin-bottom: 22px;
+      /* Unlocked rhythm */
+      .wedding-overline{
+        font-size:11px;
+        letter-spacing:0.44em;
+        margin-bottom:16px;
       }
 
-      .pw-wrap{ margin-top: 18px; }
+      .wedding-names-img{
+        width:min(86vw,520px);
+        margin:0 auto 18px;
+      }
+
+      .date{
+        font-size:11px;
+        letter-spacing:0.40em;
+        opacity:.82;
+      }
+
+      /* Locked rhythm */
+      .monogram{
+        width:min(34vw,170px);
+        margin-bottom:20px;
+      }
+
+      .pw-wrap{ margin-top:16px; }
 
       .pw-row{
         flex-direction:column;
@@ -286,35 +304,16 @@
       }
 
       .pw-input{
-        width: min(86vw, 360px);
+        width:min(86vw,360px);
         font-size:16px;
         text-align:center;
         height:48px;
       }
 
-      /* make ENTER a bit smaller + more refined */
       .pw-btn{
-        width: 170px;
-        height: 44px;
-        letter-spacing: 0.36em;
-      }
-
-      /* Unlocked state sizing */
-      .wedding-overline{
-        font-size:11px;
-        letter-spacing:0.44em;
-        margin-bottom:18px;
-      }
-
-      .wedding-names-img{
-        width: min(84vw, 520px);
-        margin-bottom:20px;
-      }
-
-      .date{
-        font-size:11px;
-        letter-spacing:0.40em;
-        opacity:.82;
+        width:170px;
+        height:44px;
+        letter-spacing:0.36em;
       }
 
       /* keep nav hidden until unlocked on mobile */
