@@ -103,7 +103,7 @@
 
     /* ===== PASSWORD ===== */
     .password-wrap{
-      margin-top:36px; /* increased for hierarchy */
+      margin-top:36px;
       display:flex;
       gap:18px;
       align-items:center;
@@ -176,23 +176,89 @@
       .pw-btn{ width:108px; }
     }
 
-    /* ===== MOBILE ===== */
+    /* ===== PHONE (NO SCROLL + BETTER PROPORTIONS) ===== */
     @media (max-width:768px){
-      .monogram{ width:160px; }
+      html, body{
+        height:100%;
+        overflow:hidden;               /* ✅ no scroll */
+        overscroll-behavior:none;
+      }
+
+      .hero{
+        height:100dvh;                 /* ✅ iOS-safe viewport */
+        min-height:100dvh;
+      }
+
+      /* keep stack visually centred without pushing below fold */
+      .hero-inner{
+        transform:translateY(-12px);
+        padding:0 16px;
+      }
+
+      .monogram{
+        width:150px;                   /* slightly smaller */
+        opacity:0.9;
+      }
 
       .password-wrap{
+        margin-top:18px;               /* tighter */
         flex-direction:column;
-        gap:14px;
+        gap:12px;
       }
 
       .pw-input{
-        width:82vw;
-        max-width:420px;
+        width:min(86vw, 420px);
+        height:46px;                   /* slimmer */
+        font-size:14px;
       }
 
       .pw-btn{
-        width:160px;
+        width:150px;                   /* editorial, not full-width */
+        height:46px;
+        font-size:10px;
+        letter-spacing:0.34em;
       }
+
+      /* if nav shows on mobile after unlock, keep it compact */
+      .topnav{
+        top:44px;
+        width:100%;
+        padding:0 18px;
+        flex-direction:column;
+        gap:12px;
+        font-size:9px;
+        letter-spacing:0.34em;
+      }
+      .topnav::after{ bottom:-12px; }
+
+      .topnav .left{
+        justify-content:center;
+        flex-wrap:nowrap;
+        gap:0;
+      }
+      .topnav .left a{ padding:0 10px; opacity:0.62; }
+      .topnav .left a + a{ position:relative; }
+      .topnav .left a + a::before{
+        content:"·";
+        position:absolute;
+        left:-2px;
+        top:-1px;
+        opacity:0.35;
+      }
+
+      .topnav .rsvp{
+        margin-top:2px;
+        border-bottom:1px solid rgba(255,255,255,0.30);
+        opacity:0.76;
+        letter-spacing:0.30em;
+      }
+    }
+
+    /* extra-small phones: keep it tight */
+    @media (max-width:380px){
+      .monogram{ width:140px; }
+      .hero-inner{ transform:translateY(-8px); }
+      .pw-input{ width:88vw; }
     }
   </style>
 </head>
