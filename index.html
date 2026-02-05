@@ -91,7 +91,7 @@
       text-align:center;
     }
 
-    /* Monogram (before unlock) */
+    /* Monogram (locked) */
     .monogram{
       width: clamp(120px, 18vw, 220px);
       margin-bottom: 28px;
@@ -102,24 +102,24 @@
       display:block;
     }
 
-    /* Wedding text (after unlock) */
+    /* Wedding text (unlocked) */
     .wedding-text{
       display:none;
-      margin-bottom:22px;
+      margin-bottom:30px;
     }
 
     .wedding-overline{
       font-family:"Montserrat", sans-serif;
-      font-size:11px;
-      letter-spacing:0.36em;
+      font-size:14px;               /* ⬆ bigger */
+      letter-spacing:0.38em;
       text-transform:uppercase;
-      opacity:.8;
-      margin-bottom:14px;
+      opacity:.85;
+      margin-bottom:26px;           /* ⬆ more space */
     }
 
     .wedding-names-img{
-      width: clamp(260px, 50vw, 520px);
-      margin: 0 auto;
+      width: clamp(260px, 52vw, 540px);
+      margin-bottom:30px;           /* ⬆ more space */
     }
 
     .wedding-names-img img{
@@ -128,15 +128,18 @@
       display:block;
     }
 
+    /* Date — SAME style as overline */
     .date{
-      font-size:20px;
-      letter-spacing:3px;
-      opacity:.9;
-      margin-bottom:26px;
+      font-family:"Montserrat", sans-serif;
+      font-size:14px;               /* ⬆ bigger */
+      letter-spacing:0.38em;
+      text-transform:uppercase;
+      opacity:.85;
+      margin-bottom:0;
     }
 
     /* ===== PASSWORD ===== */
-    .pw-wrap{ margin-top:28px; }
+    .pw-wrap{ margin-top:32px; }
 
     .pw-row{
       display:flex;
@@ -246,9 +249,8 @@
         <div class="wedding-names-img">
           <img src="names.png" alt="Shannen & Samarth">
         </div>
+        <div class="date is-hidden" id="weddingDate">27 · 02 · 27</div>
       </div>
-
-      <div class="date is-hidden" id="weddingDate">27 · 02 · 27</div>
 
       <div class="pw-wrap" id="pwWrap">
         <div class="pw-row">
