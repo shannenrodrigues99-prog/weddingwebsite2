@@ -13,7 +13,7 @@
   <style>
     *{ margin:0; padding:0; box-sizing:border-box; }
 
-    /* Default: LOCKED (no scroll, no sideways pan) */
+    /* ===== GLOBAL: NO SCROLL EVER ===== */
     html, body{
       width:100%;
       height:100%;
@@ -21,7 +21,7 @@
       overflow-x:hidden;
       overscroll-behavior:none;
       -webkit-overflow-scrolling:auto;
-      touch-action:pan-y;
+      touch-action:none;               /* 👈 stops iOS drag completely */
     }
 
     body{
@@ -30,7 +30,9 @@
       color:#fff;
     }
 
-    img, nav, section, div, input, button, a{ max-width:100%; }
+    img, nav, section, div, input, button, a{
+      max-width:100%;
+    }
 
     /* ===== NAV (HIDDEN UNTIL UNLOCKED) ===== */
     .topnav{
@@ -49,7 +51,6 @@
       font-size:11px;
       z-index:20;
       color:#fff;
-      overflow:hidden;
     }
     .topnav.show{ display:flex; }
 
@@ -76,7 +77,6 @@
       color:inherit;
       text-decoration:none;
       opacity:0.60;
-      transition:opacity .35s ease;
       white-space:nowrap;
     }
     .topnav a:hover{ opacity:0.88; }
@@ -88,10 +88,9 @@
       opacity:0.78;
       letter-spacing:0.32em;
       white-space:nowrap;
-      flex:0 0 auto;
     }
 
-    /* ===== HERO ===== */
+    /* ===== HERO (ALWAYS FITS VIEWPORT) ===== */
     .hero{
       height:100vh;
       height:100dvh;
@@ -119,7 +118,6 @@
       display:flex;
       flex-direction:column;
       align-items:center;
-      transform:translateY(-8px);
       padding:0 16px;
     }
 
@@ -127,7 +125,6 @@
       width:220px;
       max-width:60vw;
       opacity:0.85;
-      display:block;
     }
 
     /* ===== PASSWORD ===== */
@@ -158,7 +155,10 @@
       color:#fff;
       outline:none;
     }
-    .pw-input::placeholder{ color:rgba(255,255,255,0.65); }
+
+    .pw-input::placeholder{
+      color:rgba(255,255,255,0.65);
+    }
 
     .pw-btn{
       width:104px;
@@ -179,7 +179,6 @@
       color:#fff;
       cursor:pointer;
     }
-    .pw-btn:hover{ background:rgba(255,255,255,0.12); }
 
     .pw-hint{
       margin-top:12px;
@@ -193,21 +192,8 @@
     }
     .pw-hint.show{ opacity:1; }
 
-    /* ===== UNLOCKED MODE: page starts at top + scroll DOWN ===== */
-    body.unlocked{
-      overflow-y:auto;
-    }
-    body.unlocked, body.unlocked html{
-      height:auto;
-    }
-    body.unlocked .hero{
-      height:auto;
-      min-height:100vh;     /* first section still feels full */
-      overflow:visible;
-    }
-
-    /* ===== MOBILE: MATCH FAQs PROPORTIONS EXACTLY ===== */
-    @media (max-width: 768px){
+    /* ===== MOBILE: MATCH FAQs PROPORTIONS ===== */
+    @media (max-width:768px){
       .topnav{
         top:45px;
         width:100%;
@@ -218,6 +204,7 @@
         font-size:10px;
         letter-spacing:0.28em;
       }
+
       .topnav::after{ bottom:-10px; }
 
       .topnav .left{
@@ -233,14 +220,7 @@
         letter-spacing:0.28em;
       }
 
-      .hero-inner{
-        transform:translateY(18px);
-      }
-
-      .monogram{
-        width:132px;
-        opacity:0.92;
-      }
+      .monogram{ width:132px; }
 
       .password-wrap{
         margin-top:14px;
@@ -249,10 +229,9 @@
       }
 
       .pw-input{
-        width:min(84vw, 420px);
+        width:min(84vw,420px);
         height:44px;
         font-size:13.5px;
-        padding:0 18px;
       }
 
       .pw-btn{
@@ -261,29 +240,6 @@
         font-size:10px;
         letter-spacing:0.32em;
       }
-    }
-
-    @media (max-width:430px) and (min-height:800px){
-      .hero-inner{ transform:translateY(26px); }
-      .monogram{ width:128px; }
-    }
-
-    /* Optional content section so scrolling feels intentional after unlock */
-    .below{
-      background:#000;
-      padding:120px 20px 160px;
-      display:none;
-    }
-    body.unlocked .below{ display:block; }
-    .below .inner{
-      width:min(900px, 92vw);
-      margin:0 auto;
-      font-family:"Montserrat", sans-serif;
-      opacity:0.85;
-      line-height:1.8;
-      letter-spacing:0.02em;
-      font-size:14px;
-      text-align:center;
     }
   </style>
 </head>
@@ -302,7 +258,7 @@
   </nav>
 
   <!-- HERO -->
-  <section class="hero" id="hero">
+  <section class="hero">
     <div class="hero-inner">
       <img src="monogram1.png" alt="Shannen & Samarth monogram" class="monogram">
 
@@ -321,36 +277,8 @@
     </div>
   </section>
 
-  <!-- Optional: something to scroll to after unlock -->
-  <section class="below" id="below">
-    <div class="inner">
-      You’re in — use the menu to explore. <br><br>
-      (This section exists so the page can scroll down naturally after the password.)
-    </div>
-  </section>
-
   <script>
     const PASSWORD = "ss2027";
-
-    function lockScroll(){
-      document.documentElement.style.overflow = "hidden";
-      document.body.style.overflow = "hidden";
-      document.documentElement.style.overflowX = "hidden";
-      document.body.style.overflowX = "hidden";
-      document.documentElement.style.height = "100%";
-      document.body.style.height = "100%";
-      window.scrollTo(0,0);
-    }
-
-    function unlockScroll(){
-      document.documentElement.style.overflowY = "auto";
-      document.body.style.overflowY = "auto";
-      document.documentElement.style.overflowX = "hidden";
-      document.body.style.overflowX = "hidden";
-      document.documentElement.style.height = "auto";
-      document.body.style.height = "auto";
-      window.scrollTo(0,0);
-    }
 
     function unlockSite(){
       const input = document.getElementById("passwordInput").value;
@@ -361,9 +289,7 @@
         document.getElementById("nav").classList.add("show");
         document.getElementById("passwordWrap").style.display = "none";
         hint.classList.remove("show");
-
-        document.body.classList.add("unlocked");
-        unlockScroll();
+        window.scrollTo(0,0);   // always reset to top
       } else {
         hint.classList.add("show");
       }
@@ -373,14 +299,11 @@
       if(e.key === "Enter") unlockSite();
     });
 
-    // On load: locked vs unlocked
+    // Persist unlock
     if(sessionStorage.getItem("siteUnlocked") === "1"){
       document.getElementById("nav").classList.add("show");
       document.getElementById("passwordWrap").style.display = "none";
-      document.body.classList.add("unlocked");
-      unlockScroll();
-    } else {
-      lockScroll();
+      window.scrollTo(0,0);
     }
   </script>
 
