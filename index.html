@@ -8,445 +8,124 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Alex+Brush&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
 
   <style>
     *{ margin:0; padding:0; box-sizing:border-box; }
 
-    html, body{
-      height:100%;
-      background:#000;
-    }
-
     body{
       font-family:"Playfair Display", serif;
-      overflow:hidden;
+      background:#ffffff;
+      color:#111;
+      min-height:100vh;
     }
 
-    /* ===== HERO ===== */
-    .scene{
-      position:fixed;
-      inset:0;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-
-    .scene-home{
-      position:relative;
-      color:#fff;
-      background:
-        linear-gradient(rgba(0,0,0,.16),rgba(0,0,0,.30)),
-        url("hero.jpg") center/cover no-repeat;
-    }
-
-    /* editorial contrast “spot” behind type */
-    .scene-home::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      pointer-events:none;
-      background:
-        radial-gradient(ellipse at 50% 52%,
-          rgba(0,0,0,.48) 0%,
-          rgba(0,0,0,.18) 44%,
-          rgba(0,0,0,.38) 100%);
-    }
-
-    /* subtle film grain overlay */
-    .scene-home::after{
-      content:"";
-      position:absolute;
-      inset:-20%;
-      pointer-events:none;
-      opacity:.10;
-      mix-blend-mode: overlay;
-      background-image:
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
-      background-size:180px 180px;
-    }
-
-    /* ===== NAV (INLINE, CLEAN) ===== */
+    /* ===== NAV (EDITORIAL – SAME AS FAQS) ===== */
     .topnav{
-      position:absolute;
-      top:26px;
+      position:fixed;
+      top:28px;
       left:50%;
       transform:translateX(-50%);
-      width:calc(100% - 90px);
-      display:flex;
-      align-items:center;
+      width:calc(100% - 80px);
+      display:none; /* hidden until unlocked */
       justify-content:space-between;
       font-family:"Montserrat", sans-serif;
-      font-weight:300;
+      font-weight:400;
       text-transform:uppercase;
-      letter-spacing:0.42em;
-      font-size:10px;
-      z-index:5;
-      opacity:.72;
-      white-space:nowrap;
+      letter-spacing:0.36em;
+      font-size:11px;
+      z-index:10;
     }
+
+    .topnav.show{ display:flex; }
 
     .topnav .left{
       display:flex;
-      align-items:center;
-      gap:40px;
+      gap:44px;
     }
 
     .topnav a{
-      color:#fff;
+      color:#111;
       text-decoration:none;
-      opacity:.82;
-      display:inline-flex;
-      align-items:center;
-      line-height:1;
+      opacity:0.75;
+    }
+
+    .topnav a:hover{ opacity:1; }
+
+    .topnav .active{
+      opacity:1;
     }
 
     .topnav .rsvp{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      height:34px;
-      padding:0 16px;
-      border:1px solid rgba(255,255,255,.45);
-      border-radius:999px;
-      opacity:.9;
+      padding:10px 18px;
+      border:1px solid rgba(0,0,0,0.35);
     }
 
-    .locked-link{
-      pointer-events:none;
-      opacity:.35 !important;
-    }
-
-    /* ===== CENTER CONTENT ===== */
-    .hero-wrap{
+    /* ===== PAGE LAYOUT ===== */
+    .wrap{
       min-height:100vh;
+      padding:140px 80px 40px;
       display:flex;
       align-items:center;
       justify-content:center;
-      position:relative;
-      z-index:2;
-    }
-
-    .home-center{
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      text-align:center;
-      transform: translateY(-20px);
-    }
-
-    /* Monogram (locked) */
-    .monogram{
-      width: clamp(120px, 18vw, 220px);
-      margin-bottom: 28px;
-      filter: drop-shadow(0 12px 34px rgba(0,0,0,.45));
-    }
-    .monogram img{ width:100%; display:block; }
-
-    /* Wedding text (unlocked) */
-    .wedding-text{ display:none; }
-
-    .wedding-overline{
-      font-family:"Montserrat", sans-serif;
-      font-size:13px;
-      font-weight:300;
-      letter-spacing:0.48em;
-      text-transform:uppercase;
-      opacity:.88;
-      margin-bottom:34px;
-      text-shadow: 0 12px 34px rgba(0,0,0,.45);
-    }
-
-    .wedding-names-img{
-      width: clamp(320px, 50vw, 660px);
-      margin: 0 auto 36px;
-    }
-
-    .wedding-names-img img{
-      width:100%;
-      height:auto;
-      display:block;
-      filter: drop-shadow(0 14px 38px rgba(0,0,0,.48));
-    }
-
-    .date{
-      font-family:"Montserrat", sans-serif;
-      font-size:13px;
-      font-weight:300;
-      letter-spacing:0.48em;
-      text-transform:uppercase;
-      opacity:.88;
-      text-shadow: 0 12px 34px rgba(0,0,0,.45);
-    }
-
-    /* ===== PASSWORD ===== */
-    .pw-wrap{ margin-top:36px; }
-
-    .pw-row{
-      display:flex;
-      gap:12px;
-      filter: drop-shadow(0 14px 38px rgba(0,0,0,.48));
-    }
-
-    .pw-input,
-    .pw-btn{
-      -webkit-backdrop-filter: blur(18px) saturate(160%);
-      backdrop-filter: blur(18px) saturate(160%);
-      background: rgba(255,255,255,0.10);
-      border:1px solid rgba(255,255,255,0.26);
-      border-radius:999px;
-      height:46px;
-      color:#fff;
-    }
-
-    .pw-input{
-      padding:0 18px;
-      width:min(320px,72vw);
-      outline:none;
-      caret-color:#fff;
-    }
-    .pw-input::placeholder{ color:#fff; opacity:.85; }
-
-    .pw-btn{
-      font-family:"Montserrat", sans-serif;
-      font-weight:300;
-      font-size:10px;
-      letter-spacing:0.42em;
-      text-transform:uppercase;
-      padding:0 20px;
-      cursor:pointer;
-      opacity:.95;
-    }
-
-    .pw-error{
-      margin-top:10px;
-      min-height:14px;
-      font-size:12px;
       text-align:center;
     }
 
-    .is-hidden{ display:none !important; }
-
-    /* ===== MOBILE (LOCKED vs UNLOCKED) ===== */
-    @media (max-width:768px){
-
-      /* Fix iOS “black gap” / odd centering */
-      .scene{ min-height:100svh; }
-      .hero-wrap{
-        min-height:100svh;
-        padding:0;
-      }
-
-      .home-center{
-        width:100%;
-        padding:0 18px;
-      }
-
-      /* NAV: safe + consistent */
+    /* ===== MOBILE ===== */
+    @media (max-width: 768px){
       .topnav{
-        top: calc(16px + env(safe-area-inset-top));
+        top:45px;
         width:100%;
-        padding:0 18px;
+        padding:0 20px;
         flex-direction:column;
         align-items:center;
-        gap:12px;
+        gap:16px;
         font-size:10px;
-        letter-spacing:0.32em;
-        opacity:.78;
+        letter-spacing:0.28em;
       }
 
       .topnav .left{
-        gap:18px;
+        gap:24px;
         justify-content:center;
         flex-wrap:wrap;
       }
 
       .topnav .rsvp{
-        margin-top:4px;
-        height:32px;
-        padding:0 16px;
+        margin-top:6px;
+        padding:8px 16px;
       }
 
-      /* -----------------------------
-         LOCKED (monogram + password)
-         ----------------------------- */
-      body.is-locked .home-center{
-        transform: translateY(-10px);
+      .wrap{
+        padding:160px 20px 40px;
       }
-
-      body.is-locked .monogram{
-        width:min(34vw,170px);
-        margin-bottom:20px;
-      }
-
-      body.is-locked .pw-wrap{ margin-top:16px; }
-
-      body.is-locked .pw-row{
-        flex-direction:column;
-        align-items:center;
-        gap:12px;
-      }
-
-      body.is-locked .pw-input{
-        width:min(86vw,360px);
-        font-size:16px;
-        text-align:center;
-        height:48px;
-      }
-
-      body.is-locked .pw-btn{
-        width:170px;
-        height:44px;
-        letter-spacing:0.36em;
-      }
-
-      /* -----------------------------
-         UNLOCKED (wedding text)
-         THIS is what fixes “proportion”
-         ----------------------------- */
-      body.is-unlocked .home-center{
-        transform: translateY(22px); /* pushes content down = better balance */
-      }
-
-      body.is-unlocked .wedding-overline{
-        font-size:11px;
-        letter-spacing:0.42em;
-        margin-bottom:14px;
-        opacity:.86;
-      }
-
-      body.is-unlocked .wedding-names-img{
-        width:min(78vw,460px);       /* slightly smaller = more editorial */
-        margin:0 auto 14px;
-      }
-
-      body.is-unlocked .date{
-        font-size:11px;
-        letter-spacing:0.38em;
-        opacity:.70;                 /* softer like your inspo */
-      }
-
-      /* keep nav hidden until unlocked on mobile */
-      #siteContent{ display:none; }
-      #siteContent.is-visible{ display:block; }
     }
   </style>
 </head>
 
-<body class="is-locked">
+<body>
 
-<section class="scene scene-home">
-
-  <div class="hero-wrap">
-    <div class="home-center">
-
-      <!-- Monogram (locked) -->
-      <div class="monogram" id="monogram">
-        <img src="monogram1.png" alt="Monogram">
-      </div>
-
-      <!-- Wedding text (unlocked) -->
-      <div class="wedding-text" id="weddingText">
-        <div class="wedding-overline">THE WEDDING OF</div>
-        <div class="wedding-names-img">
-          <img src="names.png" alt="Shannen & Samarth">
-        </div>
-        <div class="date is-hidden" id="weddingDate">27 · 02 · 27</div>
-      </div>
-
-      <div class="pw-wrap" id="pwWrap">
-        <div class="pw-row">
-          <input id="pwInput" class="pw-input" type="password" placeholder="Enter password" autocomplete="off">
-          <button id="pwBtn" class="pw-btn">Enter</button>
-        </div>
-        <div class="pw-error" id="pwError"></div>
-      </div>
-
+  <!-- NAV -->
+  <nav class="topnav" id="nav">
+    <div class="left">
+      <a href="index.html" class="active">Home</a>
+      <a href="welcome.html">Welcome</a>
+      <a href="schedule.html">Schedule</a>
+      <a href="faqs.html">FAQs</a>
     </div>
-  </div>
+    <a class="rsvp" href="rsvp.html">RSVP</a>
+  </nav>
 
-  <div id="siteContent">
-    <nav class="topnav">
-      <div class="left">
-        <a href="index.html">Home</a>
-        <a data-protected href="welcome.html">Welcome</a>
-        <a data-protected href="schedule.html">Schedule</a>
-        <a data-protected href="faqs.html">FAQs</a>
-      </div>
-      <a data-protected class="rsvp" href="rsvp.html">RSVP</a>
-    </nav>
-  </div>
+  <!-- PAGE CONTENT -->
+  <main class="wrap">
+    <!-- Your envelope / password / hero content stays here -->
+  </main>
 
-</section>
-
-<script>
-  const UNLOCK_KEY = "siteUnlocked";
-  const SITE_PASSWORD = "ss2027";
-
-  const pwInput = document.getElementById("pwInput");
-  const pwBtn = document.getElementById("pwBtn");
-  const pwWrap = document.getElementById("pwWrap");
-  const weddingDate = document.getElementById("weddingDate");
-  const weddingText = document.getElementById("weddingText");
-  const monogram = document.getElementById("monogram");
-  const protectedLinks = document.querySelectorAll("[data-protected]");
-  const pwError = document.getElementById("pwError");
-  const siteContent = document.getElementById("siteContent");
-
-  function isMobile(){
-    return window.matchMedia("(max-width: 768px)").matches;
-  }
-
-  function setBodyState(state){
-    document.body.classList.remove("is-locked","is-unlocked");
-    document.body.classList.add(state);
-  }
-
-  function lockUI(){
-    setBodyState("is-locked");
-    protectedLinks.forEach(l => l.classList.add("locked-link"));
-    pwWrap.classList.remove("is-hidden");
-    weddingDate.classList.add("is-hidden");
-    weddingText.style.display = "none";
-    monogram.style.display = "block";
-    if (isMobile()) siteContent.classList.remove("is-visible");
-  }
-
-  function unlockUI(){
-    setBodyState("is-unlocked");
-    protectedLinks.forEach(l => l.classList.remove("locked-link"));
-    pwWrap.classList.add("is-hidden");
-    weddingDate.classList.remove("is-hidden");
-    weddingText.style.display = "block";
-    monogram.style.display = "none";
-    if (isMobile()) siteContent.classList.add("is-visible");
-  }
-
-  if (sessionStorage.getItem(UNLOCK_KEY) === "1") unlockUI();
-  else lockUI();
-
-  function tryUnlock(){
-    if (pwInput.value.trim() === SITE_PASSWORD) {
-      sessionStorage.setItem(UNLOCK_KEY, "1");
-      pwError.textContent = "";
-      unlockUI();
-    } else {
-      pwError.textContent = "Incorrect password.";
-      pwInput.value = "";
-      pwInput.focus();
+  <script>
+    // show nav only once unlocked
+    if (sessionStorage.getItem("siteUnlocked") === "1") {
+      document.getElementById("nav").classList.add("show");
     }
-  }
-
-  pwBtn.addEventListener("click", tryUnlock);
-  pwInput.addEventListener("keydown", e => {
-    if (e.key === "Enter") tryUnlock();
-  });
-
-  window.addEventListener("resize", () => {
-    const unlocked = sessionStorage.getItem(UNLOCK_KEY) === "1";
-    unlocked ? unlockUI() : lockUI();
-  });
-</script>
+  </script>
 
 </body>
 </html>
