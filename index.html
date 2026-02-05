@@ -23,7 +23,7 @@
       overflow:hidden;
     }
 
-    /* ===== SINGLE STAGE (HOME/HERO) ===== */
+    /* ===== SINGLE STAGE (HOME / HERO) ===== */
     .scene{
       position:fixed;
       inset:0;
@@ -34,15 +34,13 @@
     }
 
     .scene-home{
-      z-index:1;
-      opacity:1;
       color:#fff;
       background:
         linear-gradient(rgba(0,0,0,.25),rgba(0,0,0,.25)),
         url("hero.jpg") center/cover no-repeat;
     }
 
-    /* ===== NAV (DESKTOP UNCHANGED) ===== */
+    /* ===== NAV ===== */
     .topnav{
       position:absolute;
       top:28px;
@@ -94,16 +92,15 @@
       align-items:center;
     }
 
+    /* 🔥 Bigger monogram */
     .monogram{
-      width: clamp(80px, 12vw, 140px);
-      margin-bottom: 24px;
+      width: clamp(120px, 18vw, 220px);
+      margin-bottom: 28px;
     }
 
-    .monogram img{ width:100%; }
-
-    .names{
-      width: clamp(300px, 60vw, 520px);
-      margin-bottom: 14px;
+    .monogram img{
+      width:100%;
+      height:auto;
       display:block;
     }
 
@@ -164,10 +161,9 @@
 
     .is-hidden{ display:none !important; }
 
-    /* ===== MOBILE (NAV + PASSWORD) ===== */
+    /* ===== MOBILE ===== */
     @media (max-width:768px){
 
-      /* Nav (matches your welcome.html mobile style) */
       .topnav{
         top: calc(45px + env(safe-area-inset-top));
         width:100%;
@@ -212,16 +208,13 @@
 
 <body>
 
-<!-- HOME / HERO ONLY -->
-<section class="scene scene-home" id="sceneHome">
+<section class="scene scene-home">
 
   <div class="hero-wrap">
     <div class="home-center">
       <div class="monogram">
-        <img src="monogram.png" alt="Monogram">
+        <img src="monogram1.png" alt="Monogram">
       </div>
-
-      <img class="names" src="signature1.png" alt="Shannen & Samarth">
 
       <div class="date is-hidden" id="weddingDate">27 · 02 · 27</div>
 
@@ -279,7 +272,6 @@
     if (isMobile()) siteContent.classList.add("is-visible");
   }
 
-  // Initial state
   if (sessionStorage.getItem(UNLOCK_KEY) === "1") unlockUI();
   else lockUI();
 
@@ -300,11 +292,9 @@
     if (e.key === "Enter") tryUnlock();
   });
 
-  // If user rotates / resizes across the breakpoint, keep mobile nav logic correct
   window.addEventListener("resize", () => {
     const unlocked = sessionStorage.getItem(UNLOCK_KEY) === "1";
-    if (unlocked) unlockUI();
-    else lockUI();
+    unlocked ? unlockUI() : lockUI();
   });
 </script>
 
