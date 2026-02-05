@@ -1,1 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Private Access | Shannen & Samarth</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <main class="gate">
+    <div class="gate-inner">
+      <div class="monogram">SS</div>
+
+      <div class="pw-row">
+        <input class="pw-input" id="pw" type="password" placeholder="Enter password" autocomplete="off" />
+        <button class="pw-btn" id="enterBtn">ENTER</button>
+      </div>
+
+      <div class="err" id="err">Incorrect password</div>
+    </div>
+  </main>
+
+  <script src="site.js"></script>
+  <script>
+    if (localStorage.getItem("ss_unlocked") === "1") {
+      location.replace("title.html");
+    }
+
+    const pw = document.getElementById("pw");
+    const btn = document.getElementById("enterBtn");
+    const err = document.getElementById("err");
+
+    function attempt(){
+      err.style.display = "none";
+      if ((pw.value || "").trim() === PASSWORD){
+        localStorage.setItem("ss_unlocked","1");
+        location.replace("title.html");
+      } else {
+        err.style.display = "block";
+      }
+    }
+
+    btn.addEventListener("click", attempt);
+    pw.addEventListener("keydown", (e) => { if (e.key === "Enter") attempt(); });
+  </script>
+</body>
+</html>
 
