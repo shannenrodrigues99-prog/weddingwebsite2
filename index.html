@@ -106,7 +106,7 @@
       opacity:0.85;
     }
 
-    /* ===== PASSWORD (MATCH INSPO) ===== */
+    /* ===== PASSWORD ===== */
     .password-wrap{
       margin-top:26px;
       display:flex;
@@ -169,6 +169,36 @@
 
     .pw-hint.show{ opacity:1; }
 
+    /* ===== LAPTOP PROPORTIONS ===== */
+    @media (min-width: 900px) and (max-width: 1280px){
+      .monogram{
+        width:190px;
+        opacity:0.88;
+      }
+
+      .password-wrap{
+        margin-top:30px;
+        gap:16px;
+      }
+
+      .pw-input{
+        width:420px;
+        height:50px;
+        font-size:14px;
+      }
+
+      .pw-btn{
+        width:108px;
+        height:50px;
+        font-size:10.5px;
+        letter-spacing:0.36em;
+      }
+
+      .hero-inner{
+        transform:translateY(-10px);
+      }
+    }
+
     /* ===== MOBILE ===== */
     @media (max-width: 768px){
       .monogram{ width:160px; }
@@ -208,7 +238,6 @@
     <div class="hero-inner">
       <img src="monogram1.png" alt="Shannen & Samarth monogram" class="monogram">
 
-      <!-- PASSWORD -->
       <div class="password-wrap" id="passwordWrap">
         <input
           class="pw-input"
