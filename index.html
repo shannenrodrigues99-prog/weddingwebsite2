@@ -15,19 +15,34 @@
 
     body{
       font-family:"Playfair Display", serif;
-      background:#ffffff;
-      color:#111;
+      background:#000;
+      color:#fff;
       min-height:100vh;
     }
 
-    /* ===== NAV (DESKTOP — UNCHANGED) ===== */
+    /* ===== HERO ===== */
+    .hero{
+      min-height:100vh;
+      background:url("assets/hero.jpg") center center / cover no-repeat;
+      position:relative;
+    }
+
+    /* subtle editorial darken */
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:rgba(0,0,0,0.25);
+    }
+
+    /* ===== NAV (EDITORIAL) ===== */
     .topnav{
       position:fixed;
       top:30px;
       left:50%;
       transform:translateX(-50%);
       width:calc(100% - 120px);
-      display:none;
+      display:flex;
       justify-content:space-between;
       align-items:center;
       font-family:"Montserrat", sans-serif;
@@ -36,9 +51,8 @@
       letter-spacing:0.42em;
       font-size:10px;
       z-index:10;
+      color:#fff;
     }
-
-    .topnav.show{ display:flex; }
 
     .topnav::after{
       content:"";
@@ -47,7 +61,7 @@
       left:0;
       width:100%;
       height:1px;
-      background:rgba(0,0,0,0.08);
+      background:rgba(255,255,255,0.12);
     }
 
     .topnav .left{
@@ -56,52 +70,40 @@
     }
 
     .topnav a{
-      color:#111;
+      color:inherit;
       text-decoration:none;
-      opacity:0.55;
+      opacity:0.60;
       transition:opacity .35s ease;
     }
 
-    .topnav a:hover{ opacity:0.85; }
+    .topnav a:hover{ opacity:0.88; }
     .topnav .active{ opacity:1; }
 
+    /* RSVP — editorial underline */
     .topnav .rsvp{
       padding:6px 0;
-      border-bottom:1px solid rgba(0,0,0,0.35);
-      opacity:0.75;
+      border-bottom:1px solid rgba(255,255,255,0.35);
+      opacity:0.78;
       letter-spacing:0.32em;
     }
-
     .topnav .rsvp:hover{ opacity:1; }
 
-    /* ===== PAGE LAYOUT ===== */
-    .wrap{
-      min-height:100vh;
-      padding:160px 80px 40px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-    }
-
-    /* ===== MOBILE (EDITORIAL ONLY — DESKTOP SAFE) ===== */
+    /* ===== MOBILE (EDITORIAL) ===== */
     @media (max-width: 768px){
-
       .topnav{
         top:44px;
         width:100%;
         padding:0 18px;
         flex-direction:column;
-        align-items:center;
         gap:12px;
         font-size:9px;
         letter-spacing:0.34em;
       }
 
-      /* Single clean row for main links */
+      .topnav::after{ bottom:-12px; }
+
       .topnav .left{
         width:100%;
-        display:flex;
         justify-content:center;
         flex-wrap:nowrap;
         gap:0;
@@ -109,14 +111,13 @@
 
       .topnav .left a{
         padding:0 10px;
-        opacity:0.6;
+        opacity:0.62;
       }
 
-      /* editorial dot separators */
+      /* dot separators */
       .topnav .left a + a{
         position:relative;
       }
-
       .topnav .left a + a::before{
         content:"·";
         position:absolute;
@@ -125,24 +126,15 @@
         opacity:0.35;
       }
 
-      /* RSVP as a quiet second line */
       .topnav .rsvp{
         margin-top:2px;
-        border-bottom:1px solid rgba(0,0,0,0.28);
-        opacity:0.72;
+        border-bottom:1px solid rgba(255,255,255,0.30);
+        opacity:0.76;
         letter-spacing:0.30em;
-      }
-
-      .topnav::after{
-        bottom:-12px;
-      }
-
-      .wrap{
-        padding:170px 20px 40px;
       }
     }
 
-    /* Very small phones — graceful wrap */
+    /* small phones */
     @media (max-width: 380px){
       .topnav .left{
         flex-wrap:wrap;
@@ -157,7 +149,8 @@
 
 <body>
 
-  <nav class="topnav" id="nav">
+  <!-- NAV -->
+  <nav class="topnav">
     <div class="left">
       <a href="index.html" class="active">Home</a>
       <a href="welcome.html">Welcome</a>
@@ -167,15 +160,8 @@
     <a class="rsvp" href="rsvp.html">RSVP</a>
   </nav>
 
-  <main class="wrap">
-    <!-- envelope / password / hero content -->
-  </main>
-
-  <script>
-    if (sessionStorage.getItem("siteUnlocked") === "1") {
-      document.getElementById("nav").classList.add("show");
-    }
-  </script>
+  <!-- HERO -->
+  <section class="hero"></section>
 
 </body>
 </html>
