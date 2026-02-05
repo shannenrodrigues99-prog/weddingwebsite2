@@ -207,7 +207,7 @@
       caret-color:#fff;
     }
 
-    .pw-input::placeholder{ color:#fff; }
+    .pw-input::placeholder{ color:#fff; opacity:.85; }
 
     .pw-btn{
       font-family:"Montserrat", sans-serif;
@@ -217,6 +217,7 @@
       text-transform:uppercase;
       padding:0 20px;
       cursor:pointer;
+      opacity:.95;
     }
 
     .pw-error{
@@ -231,8 +232,21 @@
     /* ===== MOBILE ===== */
     @media (max-width:768px){
 
-      .home-center{ transform: translateY(-12px); }
+      /* use safe viewport height on iOS (prevents odd vertical centering) */
+      .hero-wrap{
+        min-height: 100svh;
+        padding-top: calc(16px + env(safe-area-inset-top));
+        padding-bottom: calc(18px + env(safe-area-inset-bottom));
+      }
 
+      /* lift the whole stack slightly (more like your inspo) */
+      .home-center{
+        transform: translateY(-28px);
+        width: 100%;
+        padding: 0 18px;
+      }
+
+      /* NAV should match the welcome mobile treatment */
       .topnav{
         top: calc(44px + env(safe-area-inset-top));
         width:100%;
@@ -257,29 +271,53 @@
         padding:0 16px;
       }
 
-      .wedding-names-img{
-        width: min(86vw, 520px);
-        margin-bottom:30px;
+      /* Locked state: monogram + password look cleaner */
+      .monogram{
+        width: min(34vw, 170px);
+        margin-bottom: 22px;
       }
 
-      .date{
-        font-size:12px;
-        letter-spacing:0.42em;
-      }
+      .pw-wrap{ margin-top: 18px; }
 
       .pw-row{
         flex-direction:column;
         align-items:center;
+        gap:12px;
       }
 
       .pw-input{
-        width:min(82vw,340px);
+        width: min(86vw, 360px);
         font-size:16px;
         text-align:center;
+        height:48px;
       }
 
-      .pw-btn{ width:160px; }
+      /* make ENTER a bit smaller + more refined */
+      .pw-btn{
+        width: 170px;
+        height: 44px;
+        letter-spacing: 0.36em;
+      }
 
+      /* Unlocked state sizing */
+      .wedding-overline{
+        font-size:11px;
+        letter-spacing:0.44em;
+        margin-bottom:18px;
+      }
+
+      .wedding-names-img{
+        width: min(84vw, 520px);
+        margin-bottom:20px;
+      }
+
+      .date{
+        font-size:11px;
+        letter-spacing:0.40em;
+        opacity:.82;
+      }
+
+      /* keep nav hidden until unlocked on mobile */
       #siteContent{ display:none; }
       #siteContent.is-visible{ display:block; }
     }
