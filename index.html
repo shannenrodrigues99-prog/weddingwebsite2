@@ -40,6 +40,7 @@
         url("hero.jpg") center/cover no-repeat;
     }
 
+    /* editorial contrast “spot” behind type */
     .scene-home::before{
       content:"";
       position:absolute;
@@ -52,7 +53,20 @@
           rgba(0,0,0,.38) 100%);
     }
 
-    /* ===== NAV (INLINE, RSVP ALIGNED) ===== */
+    /* subtle film grain overlay */
+    .scene-home::after{
+      content:"";
+      position:absolute;
+      inset:-20%;
+      pointer-events:none;
+      opacity:.10;
+      mix-blend-mode: overlay;
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+      background-size:180px 180px;
+    }
+
+    /* ===== NAV (more editorial) ===== */
     .topnav{
       position:absolute;
       top:26px;
@@ -60,7 +74,6 @@
       transform:translateX(-50%);
       width:calc(100% - 90px);
       display:flex;
-      align-items:center;
       justify-content:space-between;
       font-family:"Montserrat", sans-serif;
       font-weight:300;
@@ -69,12 +82,10 @@
       font-size:10px;
       z-index:5;
       opacity:.72;
-      white-space:nowrap;
     }
 
     .topnav .left{
       display:flex;
-      align-items:center;
       gap:40px;
     }
 
@@ -82,22 +93,22 @@
       color:#fff;
       text-decoration:none;
       opacity:.82;
-      display:inline-flex;
-      align-items:center;
-      line-height:1;
+      transition:opacity .25s ease, transform .25s ease;
+    }
+
+    .topnav a:hover{
+      opacity:1;
+      transform: translateY(-1px);
     }
 
     .topnav .rsvp{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      height:34px;
-      padding:0 16px;
+      padding:9px 16px;
       border:1px solid rgba(255,255,255,.45);
       border-radius:999px;
       opacity:.9;
     }
 
+    /* hairline rule under nav */
     .nav-rule{
       position:absolute;
       top:58px;
@@ -125,7 +136,7 @@
       align-items:center;
       justify-content:center;
       position:relative;
-      z-index:2;
+      z-index:2; /* above overlays */
     }
 
     .home-center{
@@ -136,13 +147,16 @@
       transform: translateY(-20px);
     }
 
+    /* Monogram (locked) */
     .monogram{
       width: clamp(120px, 18vw, 220px);
       margin-bottom: 28px;
       filter: drop-shadow(0 12px 34px rgba(0,0,0,.45));
     }
-
     .monogram img{ width:100%; display:block; }
+
+    /* Wedding text (unlocked) */
+    .wedding-text{ display:none; }
 
     .wedding-overline{
       font-family:"Montserrat", sans-serif;
@@ -162,6 +176,7 @@
 
     .wedding-names-img img{
       width:100%;
+      height:auto;
       display:block;
       filter: drop-shadow(0 14px 38px rgba(0,0,0,.48));
     }
@@ -203,7 +218,10 @@
       caret-color:#fff;
     }
 
-    .pw-input::placeholder{ color:#fff; }
+    .pw-input::placeholder{
+      color:#fff;
+      opacity:1;
+    }
 
     .pw-btn{
       font-family:"Montserrat", sans-serif;
@@ -238,6 +256,7 @@
         gap:14px;
         font-size:10px;
         letter-spacing:0.34em;
+        opacity:.78;
       }
 
       .topnav .left{
@@ -248,13 +267,18 @@
 
       .topnav .rsvp{
         margin-top:6px;
-        height:32px;
-        padding:0 16px;
+        padding:8px 16px;
       }
 
       .nav-rule{
         top: calc(106px + env(safe-area-inset-top));
         width: calc(100% - 40px);
+      }
+
+      .wedding-overline{
+        font-size:12px;
+        letter-spacing:0.42em;
+        margin-bottom:28px;
       }
 
       .wedding-names-img{
@@ -299,17 +323,17 @@
       </div>
 
       <!-- Wedding text (unlocked) -->
-      <div id="weddingText" class="is-hidden">
+      <div class="wedding-text" id="weddingText">
         <div class="wedding-overline">THE WEDDING OF</div>
         <div class="wedding-names-img">
           <img src="names.png" alt="Shannen & Samarth">
         </div>
-        <div class="date">27 · 02 · 27</div>
+        <div class="date is-hidden" id="weddingDate">27 · 02 · 27</div>
       </div>
 
       <div class="pw-wrap" id="pwWrap">
         <div class="pw-row">
-          <input id="pwInput" class="pw-input" type="password" placeholder="Enter password">
+          <input id="pwInput" class="pw-input" type="password" placeholder="Enter password" autocomplete="off">
           <button id="pwBtn" class="pw-btn">Enter</button>
         </div>
         <div class="pw-error" id="pwError"></div>
@@ -328,7 +352,7 @@
       </div>
       <a data-protected class="rsvp" href="rsvp.html">RSVP</a>
     </nav>
-    <div class="nav-rule"></div>
+    <div class="nav-rule" aria-hidden="true"></div>
   </div>
 
 </section>
@@ -340,6 +364,7 @@
   const pwInput = document.getElementById("pwInput");
   const pwBtn = document.getElementById("pwBtn");
   const pwWrap = document.getElementById("pwWrap");
+  const weddingDate = document.getElementById("weddingDate");
   const weddingText = document.getElementById("weddingText");
   const monogram = document.getElementById("monogram");
   const protectedLinks = document.querySelectorAll("[data-protected]");
@@ -353,16 +378,18 @@
   function lockUI(){
     protectedLinks.forEach(l => l.classList.add("locked-link"));
     pwWrap.classList.remove("is-hidden");
-    weddingText.classList.add("is-hidden");
-    monogram.classList.remove("is-hidden");
+    weddingDate.classList.add("is-hidden");
+    weddingText.style.display = "none";
+    monogram.style.display = "block";
     if (isMobile()) siteContent.classList.remove("is-visible");
   }
 
   function unlockUI(){
     protectedLinks.forEach(l => l.classList.remove("locked-link"));
     pwWrap.classList.add("is-hidden");
-    weddingText.classList.remove("is-hidden");
-    monogram.classList.add("is-hidden");
+    weddingDate.classList.remove("is-hidden");
+    weddingText.style.display = "block";
+    monogram.style.display = "none";
     if (isMobile()) siteContent.classList.add("is-visible");
   }
 
