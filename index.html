@@ -20,21 +20,6 @@
       min-height:100vh;
     }
 
-    /* ===== HERO ===== */
-    .hero{
-      min-height:100vh;
-      background:url("hero.jpg") center center / cover no-repeat;
-      position:relative;
-    }
-
-    /* subtle editorial darken */
-    .hero::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:rgba(0,0,0,0.25);
-    }
-
     /* ===== NAV (EDITORIAL) ===== */
     .topnav{
       position:fixed;
@@ -50,7 +35,7 @@
       text-transform:uppercase;
       letter-spacing:0.42em;
       font-size:10px;
-      z-index:10;
+      z-index:20;
       color:#fff;
     }
 
@@ -79,16 +64,43 @@
     .topnav a:hover{ opacity:0.88; }
     .topnav .active{ opacity:1; }
 
-    /* RSVP — editorial underline */
     .topnav .rsvp{
       padding:6px 0;
       border-bottom:1px solid rgba(255,255,255,0.35);
       opacity:0.78;
       letter-spacing:0.32em;
     }
+
     .topnav .rsvp:hover{ opacity:1; }
 
-    /* ===== MOBILE (EDITORIAL) ===== */
+    /* ===== HERO ===== */
+    .hero{
+      min-height:100vh;
+      background:url("hero.jpg") center center / cover no-repeat;
+      position:relative;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:rgba(0,0,0,0.25);
+      z-index:1;
+    }
+
+    /* ===== MONOGRAM ===== */
+    .monogram{
+      position:relative;
+      z-index:2;
+      width:220px;
+      max-width:60vw;
+      opacity:0.85;
+    }
+
+    /* ===== MOBILE ===== */
     @media (max-width: 768px){
       .topnav{
         top:44px;
@@ -103,7 +115,6 @@
       .topnav::after{ bottom:-12px; }
 
       .topnav .left{
-        width:100%;
         justify-content:center;
         flex-wrap:nowrap;
         gap:0;
@@ -114,10 +125,10 @@
         opacity:0.62;
       }
 
-      /* dot separators */
       .topnav .left a + a{
         position:relative;
       }
+
       .topnav .left a + a::before{
         content:"·";
         position:absolute;
@@ -132,16 +143,16 @@
         opacity:0.76;
         letter-spacing:0.30em;
       }
+
+      .monogram{
+        width:160px;
+        opacity:0.9;
+      }
     }
 
-    /* small phones */
     @media (max-width: 380px){
-      .topnav .left{
-        flex-wrap:wrap;
-        row-gap:10px;
-      }
-      .topnav .left a + a::before{
-        content:"";
+      .monogram{
+        width:140px;
       }
     }
   </style>
@@ -161,7 +172,9 @@
   </nav>
 
   <!-- HERO -->
-  <section class="hero"></section>
+  <section class="hero">
+    <img src="monogram1.png" alt="Shannen & Samarth monogram" class="monogram">
+  </section>
 
 </body>
 </html>
