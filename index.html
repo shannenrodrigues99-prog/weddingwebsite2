@@ -40,7 +40,6 @@
         url("hero.jpg") center/cover no-repeat;
     }
 
-    /* editorial contrast “spot” behind type */
     .scene-home::before{
       content:"";
       position:absolute;
@@ -53,7 +52,6 @@
           rgba(0,0,0,.38) 100%);
     }
 
-    /* subtle film grain overlay */
     .scene-home::after{
       content:"";
       position:absolute;
@@ -137,45 +135,29 @@
       width:100%;
     }
 
-    /* ===== LAYERED REVEAL (no “show” flash) ===== */
-    .stack{
-      position:relative;
-      width:100%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-
-    /* Under layer is always there */
-    #unlockedLayer{
-      position:relative;
-      z-index:1;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-    }
-
-    /* Top layer fades away */
-    #lockLayer{
-      position:absolute;
-      inset:0;
-      z-index:2;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-    }
-
+    /* ===== SLOW FADE OUT (lock layer only) ===== */
     .fade-slow{
-      transition: opacity 1.4s ease;
+      transition: opacity 1.8s ease; /* slower + luxe */
       will-change: opacity;
     }
 
     .fade-out{
       opacity:0;
       pointer-events:none;
+    }
+
+    /* ===== WEDDING TEXT (HIDDEN UNTIL UNLOCK) ===== */
+    #unlockedLayer{
+      opacity:0;               /* hidden */
+      visibility:hidden;       /* prevents any “seeing it” */
+      pointer-events:none;
+    }
+
+    /* When unlocked, show instantly (NO transition) */
+    #unlockedLayer.is-visible{
+      opacity:1;
+      visibility:visible;
+      pointer-events:auto;
     }
 
     /* Monogram */
@@ -337,32 +319,28 @@
   <div class="hero-wrap">
     <div class="home-center">
 
-      <div class="stack">
+      <!-- Wedding text (hidden until unlock; appears instantly) -->
+      <div id="unlockedLayer" aria-hidden="true">
+        <div class="wedding-overline">THE WEDDING OF</div>
+        <div class="wedding-names-img">
+          <img src="names.png" alt="Shannen & Samarth">
+        </div>
+        <div class="date">27 · 02 · 27</div>
+      </div>
 
-        <!-- UNDER LAYER (always present; revealed when lock layer fades away) -->
-        <div id="unlockedLayer" aria-hidden="false">
-          <div class="wedding-overline">THE WEDDING OF</div>
-          <div class="wedding-names-img">
-            <img src="names.png" alt="Shannen & Samarth">
-          </div>
-          <div class="date">27 · 02 · 27</div>
+      <!-- Lock UI (fades out slowly) -->
+      <div id="lockLayer" class="fade-slow" aria-hidden="false">
+        <div class="monogram">
+          <img src="monogram1.png" alt="Monogram">
         </div>
 
-        <!-- TOP LAYER (monogram + password) -->
-        <div id="lockLayer" class="fade-slow" aria-hidden="false">
-          <div class="monogram">
-            <img src="monogram1.png" alt="Monogram">
+        <div class="pw-wrap" id="pwWrap">
+          <div class="pw-row">
+            <input id="pwInput" class="pw-input" type="password" placeholder="Enter password" autocomplete="off">
+            <button id="pwBtn" class="pw-btn">Enter</button>
           </div>
-
-          <div class="pw-wrap" id="pwWrap">
-            <div class="pw-row">
-              <input id="pwInput" class="pw-input" type="password" placeholder="Enter password" autocomplete="off">
-              <button id="pwBtn" class="pw-btn">Enter</button>
-            </div>
-            <div class="pw-error" id="pwError"></div>
-          </div>
+          <div class="pw-error" id="pwError"></div>
         </div>
-
       </div>
 
     </div>
@@ -385,12 +363,13 @@
 <script>
   const SITE_PASSWORD = "ss2027";
   const UNLOCK_KEY = "siteUnlocked";
-  const FADE_MS = 1400;
+  const FADE_MS = 1800;
 
   const pwInput = document.getElementById("pwInput");
   const pwBtn = document.getElementById("pwBtn");
   const pwError = document.getElementById("pwError");
   const lockLayer = document.getElementById("lockLayer");
+  const unlockedLayer = document.getElementById("unlockedLayer");
   const protectedLinks = document.querySelectorAll("[data-protected]");
   const siteContent = document.getElementById("siteContent");
 
@@ -400,8 +379,12 @@
 
   function lockUI(){
     protectedLinks.forEach(l => l.classList.add("locked-link"));
-    lockLayer.style.display = "flex";
+    lockLayer.style.display = "block";
     lockLayer.classList.remove("fade-out");
+
+    unlockedLayer.classList.remove("is-visible");
+    unlockedLayer.setAttribute("aria-hidden","true");
+
     if (isMobile()) siteContent.classList.remove("is-visible");
   }
 
@@ -411,6 +394,8 @@
 
     if (!animate){
       lockLayer.style.display = "none";
+      unlockedLayer.classList.add("is-visible");       // instant
+      unlockedLayer.setAttribute("aria-hidden","false");
       return;
     }
 
@@ -418,6 +403,8 @@
 
     setTimeout(() => {
       lockLayer.style.display = "none";
+      unlockedLayer.classList.add("is-visible");       // instant (no fade-in)
+      unlockedLayer.setAttribute("aria-hidden","false");
       pwInput.blur();
     }, FADE_MS);
   }
