@@ -89,12 +89,16 @@
     .topnav .left{
       display:flex;
       gap:40px;
+      align-items:center;
     }
 
     .topnav a{
       color:#fff;
       text-decoration:none;
       opacity:.82;
+      display:inline-flex;
+      align-items:center;
+      line-height:1;
     }
 
     .topnav .rsvp{
@@ -130,13 +134,45 @@
       text-align:center;
       transform: translateY(-20px);
       position:relative;
+      width:100%;
     }
 
-    /* ===== SLOW FADE-OUT ONLY ===== */
+    /* ===== LAYERED REVEAL (no “show” flash) ===== */
+    .stack{
+      position:relative;
+      width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    /* Under layer is always there */
+    #unlockedLayer{
+      position:relative;
+      z-index:1;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+    }
+
+    /* Top layer fades away */
+    #lockLayer{
+      position:absolute;
+      inset:0;
+      z-index:2;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+    }
+
     .fade-slow{
-      transition: opacity 1.4s ease; /* slower, luxe */
+      transition: opacity 1.4s ease;
       will-change: opacity;
     }
+
     .fade-out{
       opacity:0;
       pointer-events:none;
@@ -150,12 +186,11 @@
     }
     .monogram img{ width:100%; display:block; }
 
-    /* Wedding text (instant show after fade finishes) */
-    .wedding-text{ display:none; }
-
+    /* Wedding text */
     .wedding-overline{
       font-family:"Montserrat", sans-serif;
       font-size:13px;
+      font-weight:300;
       letter-spacing:0.48em;
       text-transform:uppercase;
       margin-bottom:34px;
@@ -178,6 +213,7 @@
     .date{
       font-family:"Montserrat", sans-serif;
       font-size:13px;
+      font-weight:300;
       letter-spacing:0.48em;
       text-transform:uppercase;
       opacity:.88;
@@ -259,6 +295,22 @@
         padding:0 16px;
       }
 
+      .wedding-overline{
+        font-size:12px;
+        letter-spacing:0.42em;
+        margin-bottom:28px;
+      }
+
+      .wedding-names-img{
+        width:min(86vw,520px);
+        margin-bottom:30px;
+      }
+
+      .date{
+        font-size:12px;
+        letter-spacing:0.42em;
+      }
+
       .pw-row{
         flex-direction:column;
         align-items:center;
@@ -285,27 +337,32 @@
   <div class="hero-wrap">
     <div class="home-center">
 
-      <!-- Monogram (locked) -->
-      <div class="monogram fade-slow" id="monogram">
-        <img src="monogram1.png" alt="Monogram">
-      </div>
+      <div class="stack">
 
-      <!-- Wedding text (unlocked) -->
-      <div class="wedding-text" id="weddingText" aria-hidden="true">
-        <div class="wedding-overline">THE WEDDING OF</div>
-        <div class="wedding-names-img">
-          <img src="names.png" alt="Shannen & Samarth">
+        <!-- UNDER LAYER (always present; revealed when lock layer fades away) -->
+        <div id="unlockedLayer" aria-hidden="false">
+          <div class="wedding-overline">THE WEDDING OF</div>
+          <div class="wedding-names-img">
+            <img src="names.png" alt="Shannen & Samarth">
+          </div>
+          <div class="date">27 · 02 · 27</div>
         </div>
-        <div class="date">27 · 02 · 27</div>
-      </div>
 
-      <!-- Password (locked) -->
-      <div class="pw-wrap fade-slow" id="pwWrap">
-        <div class="pw-row">
-          <input id="pwInput" class="pw-input" type="password" placeholder="Enter password" autocomplete="off">
-          <button id="pwBtn" class="pw-btn">Enter</button>
+        <!-- TOP LAYER (monogram + password) -->
+        <div id="lockLayer" class="fade-slow" aria-hidden="false">
+          <div class="monogram">
+            <img src="monogram1.png" alt="Monogram">
+          </div>
+
+          <div class="pw-wrap" id="pwWrap">
+            <div class="pw-row">
+              <input id="pwInput" class="pw-input" type="password" placeholder="Enter password" autocomplete="off">
+              <button id="pwBtn" class="pw-btn">Enter</button>
+            </div>
+            <div class="pw-error" id="pwError"></div>
+          </div>
         </div>
-        <div class="pw-error" id="pwError"></div>
+
       </div>
 
     </div>
@@ -328,16 +385,14 @@
 <script>
   const SITE_PASSWORD = "ss2027";
   const UNLOCK_KEY = "siteUnlocked";
-  const FADE_MS = 1400; // slower fade-out
+  const FADE_MS = 1400;
 
   const pwInput = document.getElementById("pwInput");
   const pwBtn = document.getElementById("pwBtn");
-  const pwWrap = document.getElementById("pwWrap");
-  const monogram = document.getElementById("monogram");
-  const weddingText = document.getElementById("weddingText");
+  const pwError = document.getElementById("pwError");
+  const lockLayer = document.getElementById("lockLayer");
   const protectedLinks = document.querySelectorAll("[data-protected]");
   const siteContent = document.getElementById("siteContent");
-  const pwError = document.getElementById("pwError");
 
   function isMobile(){
     return window.matchMedia("(max-width: 768px)").matches;
@@ -345,12 +400,8 @@
 
   function lockUI(){
     protectedLinks.forEach(l => l.classList.add("locked-link"));
-    pwWrap.classList.remove("fade-out");
-    monogram.classList.remove("fade-out");
-    pwWrap.style.display = "";
-    monogram.style.display = "";
-    weddingText.style.display = "none";
-    weddingText.setAttribute("aria-hidden","true");
+    lockLayer.style.display = "flex";
+    lockLayer.classList.remove("fade-out");
     if (isMobile()) siteContent.classList.remove("is-visible");
   }
 
@@ -359,24 +410,14 @@
     if (isMobile()) siteContent.classList.add("is-visible");
 
     if (!animate){
-      // instant final state (on refresh if already unlocked)
-      monogram.style.display = "none";
-      pwWrap.style.display = "none";
-      weddingText.style.display = "block";
-      weddingText.setAttribute("aria-hidden","false");
+      lockLayer.style.display = "none";
       return;
     }
 
-    // Fade OUT only
-    monogram.classList.add("fade-out");
-    pwWrap.classList.add("fade-out");
+    lockLayer.classList.add("fade-out");
 
-    // After fade finishes: hide them + show wedding text instantly
     setTimeout(() => {
-      monogram.style.display = "none";
-      pwWrap.style.display = "none";
-      weddingText.style.display = "block";     // instant (no fade-in)
-      weddingText.setAttribute("aria-hidden","false");
+      lockLayer.style.display = "none";
       pwInput.blur();
     }, FADE_MS);
   }
