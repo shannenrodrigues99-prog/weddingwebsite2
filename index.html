@@ -31,7 +31,6 @@
       justify-content:space-between;
       align-items:center;
       font-family:"Montserrat", sans-serif;
-      font-weight:400;
       text-transform:uppercase;
       letter-spacing:0.42em;
       font-size:10px;
@@ -107,7 +106,7 @@
       opacity:0.85;
     }
 
-    /* ===== PASSWORD (UNDER MONOGRAM) ===== */
+    /* ===== PASSWORD (MATCH INSPO) ===== */
     .password-wrap{
       margin-top:26px;
       display:flex;
@@ -115,25 +114,20 @@
       align-items:center;
     }
 
-    .pw-input,
-    .pw-btn{
+    .pw-input{
+      width:360px;
+      max-width:72vw;
+      height:52px;
+      padding:0 22px;
+      border-radius:999px;
+      font-family:"Montserrat", sans-serif;
+      font-size:15px;
+
       -webkit-backdrop-filter: blur(18px) saturate(160%);
       backdrop-filter: blur(18px) saturate(160%);
       background: rgba(255,255,255,0.10);
       border: 1px solid rgba(255,255,255,0.28);
-      box-shadow:
-        0 10px 30px rgba(0,0,0,0.28),
-        inset 0 1px 0 rgba(255,255,255,0.22);
       color:#fff;
-      border-radius:999px;
-      height:48px;
-    }
-
-    .pw-input{
-      width:220px;
-      padding:0 18px;
-      font-family:"Montserrat", sans-serif;
-      font-size:15px;
       outline:none;
     }
 
@@ -142,15 +136,25 @@
     }
 
     .pw-btn{
-      padding:0 20px;
+      width:112px;
+      height:52px;
+      border-radius:999px;
       font-family:"Montserrat", sans-serif;
       text-transform:uppercase;
-      letter-spacing:0.32em;
+      letter-spacing:0.34em;
       font-size:11px;
+
+      -webkit-backdrop-filter: blur(18px) saturate(160%);
+      backdrop-filter: blur(18px) saturate(160%);
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.28);
+      color:#fff;
       cursor:pointer;
     }
 
-    .pw-btn:hover{ background:rgba(255,255,255,0.14); }
+    .pw-btn:hover{
+      background:rgba(255,255,255,0.14);
+    }
 
     .pw-hint{
       margin-top:12px;
@@ -162,6 +166,7 @@
       opacity:0;
       transition:opacity .25s ease;
     }
+
     .pw-hint.show{ opacity:1; }
 
     /* ===== MOBILE ===== */
@@ -170,11 +175,12 @@
 
       .password-wrap{
         flex-direction:column;
-        gap:12px;
+        gap:14px;
       }
 
       .pw-input{
-        width:240px;
+        width:82vw;
+        max-width:420px;
       }
 
       .pw-btn{
@@ -208,7 +214,7 @@
           class="pw-input"
           type="password"
           id="passwordInput"
-          placeholder="Type password to see details"
+          placeholder="Enter password"
           autocomplete="off"
         />
         <button class="pw-btn" onclick="unlockSite()">ENTER</button>
@@ -219,7 +225,7 @@
   </section>
 
   <script>
-    const PASSWORD = "ss2027"; // ✅ UPDATED
+    const PASSWORD = "ss2027";
 
     function unlockSite(){
       const input = document.getElementById("passwordInput").value;
@@ -235,14 +241,12 @@
       }
     }
 
-    // Enter key submits
     document.addEventListener("keydown", (e) => {
       if(e.key === "Enter"){
         unlockSite();
       }
     });
 
-    // Auto-unlock if already entered
     if(sessionStorage.getItem("siteUnlocked") === "1"){
       document.getElementById("nav").classList.add("show");
       document.getElementById("passwordWrap").style.display = "none";
