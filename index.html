@@ -13,15 +13,13 @@
   <style>
     *{ margin:0; padding:0; box-sizing:border-box; }
 
-    /* ===== GLOBAL: NO SCROLL EVER ===== */
+    /* ===== HARD LOCK: NO SCROLL / NO PAN ===== */
     html, body{
       width:100%;
       height:100%;
       overflow:hidden;
-      overflow-x:hidden;
       overscroll-behavior:none;
-      -webkit-overflow-scrolling:auto;
-      touch-action:none;               /* 👈 stops iOS drag completely */
+      touch-action:none;
     }
 
     body{
@@ -30,215 +28,169 @@
       color:#fff;
     }
 
-    img, nav, section, div, input, button, a{
-      max-width:100%;
+    img{ max-width:100%; height:auto; }
+
+    /* ===== VIEWPORT CONTAINER ===== */
+    .viewport{
+      height:100vh;
+      height:100dvh;
+      width:100%;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      align-items:center;
+      position:relative;
+      background:url("hero.jpg") center / cover no-repeat;
     }
 
-    /* ===== NAV (HIDDEN UNTIL UNLOCKED) ===== */
+    .viewport::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:rgba(0,0,0,0.25);
+      z-index:0;
+    }
+
+    /* ===== NAV ===== */
     .topnav{
-      position:fixed;
-      top:30px;
-      left:50%;
-      transform:translateX(-50%);
+      position:relative;
+      z-index:2;
+      margin-top:30px;
       width:calc(100% - 80px);
       display:none;
       justify-content:space-between;
       align-items:center;
       font-family:"Montserrat", sans-serif;
-      font-weight:400;
       text-transform:uppercase;
       letter-spacing:0.36em;
       font-size:11px;
-      z-index:20;
       color:#fff;
     }
     .topnav.show{ display:flex; }
 
-    .topnav::after{
-      content:"";
-      position:absolute;
-      bottom:-18px;
-      left:0;
-      width:100%;
-      height:1px;
-      background:rgba(255,255,255,0.12);
-    }
-
     .topnav .left{
       display:flex;
       gap:44px;
-      align-items:center;
-      max-width:78%;
       flex-wrap:wrap;
       justify-content:center;
     }
 
     .topnav a{
-      color:inherit;
+      color:#fff;
       text-decoration:none;
-      opacity:0.60;
+      opacity:0.65;
       white-space:nowrap;
     }
-    .topnav a:hover{ opacity:0.88; }
-    .topnav .active{ opacity:1; }
+    .topnav a.active{ opacity:1; }
 
     .topnav .rsvp{
       padding:10px 18px;
       border:1px solid rgba(255,255,255,0.35);
-      opacity:0.78;
       letter-spacing:0.32em;
-      white-space:nowrap;
     }
 
-    /* ===== HERO (ALWAYS FITS VIEWPORT) ===== */
-    .hero{
-      height:100vh;
-      height:100dvh;
-      width:100%;
-      overflow:hidden;
-      background:url("hero.jpg") center center / cover no-repeat;
-      position:relative;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-    }
-
-    .hero::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:rgba(0,0,0,0.25);
-      z-index:1;
-    }
-
-    .hero-inner{
-      position:relative;
+    /* ===== CENTER CONTENT ===== */
+    .center{
       z-index:2;
       display:flex;
       flex-direction:column;
       align-items:center;
+      justify-content:center;
+      flex:1;
+      text-align:center;
       padding:0 16px;
     }
 
     .monogram{
-      width:220px;
+      width:200px;
       max-width:60vw;
-      opacity:0.85;
+      opacity:0.88;
     }
 
-    /* ===== PASSWORD ===== */
     .password-wrap{
-      margin-top:36px;
+      margin-top:32px;
       display:flex;
-      gap:18px;
+      gap:16px;
       align-items:center;
       justify-content:center;
     }
 
     .pw-input{
-      width:360px;
+      width:320px;
       max-width:72vw;
-      height:48px;
+      height:46px;
       padding:0 22px;
       border-radius:999px;
       font-family:"Montserrat", sans-serif;
-      font-size:14.5px;
-
-      -webkit-backdrop-filter: blur(18px) saturate(160%);
-      backdrop-filter: blur(18px) saturate(160%);
+      font-size:14px;
       background:rgba(255,255,255,0.08);
       border:1px solid rgba(255,255,255,0.22);
-      box-shadow:
-        0 8px 22px rgba(0,0,0,0.22),
-        inset 0 1px 0 rgba(255,255,255,0.18);
       color:#fff;
       outline:none;
-    }
-
-    .pw-input::placeholder{
-      color:rgba(255,255,255,0.65);
+      backdrop-filter:blur(18px) saturate(160%);
     }
 
     .pw-btn{
-      width:104px;
-      height:48px;
+      width:100px;
+      height:46px;
       border-radius:999px;
       font-family:"Montserrat", sans-serif;
-      text-transform:uppercase;
+      font-size:10px;
       letter-spacing:0.36em;
-      font-size:10.5px;
-
-      -webkit-backdrop-filter: blur(18px) saturate(160%);
-      backdrop-filter: blur(18px) saturate(160%);
       background:rgba(255,255,255,0.08);
       border:1px solid rgba(255,255,255,0.22);
-      box-shadow:
-        0 8px 22px rgba(0,0,0,0.22),
-        inset 0 1px 0 rgba(255,255,255,0.18);
       color:#fff;
       cursor:pointer;
+      backdrop-filter:blur(18px) saturate(160%);
     }
 
     .pw-hint{
-      margin-top:12px;
+      margin-top:10px;
       font-family:"Montserrat", sans-serif;
       font-size:11px;
       letter-spacing:0.18em;
-      text-transform:uppercase;
-      color:rgba(255,255,255,0.75);
       opacity:0;
-      transition:opacity .25s ease;
     }
     .pw-hint.show{ opacity:1; }
 
-    /* ===== MOBILE: MATCH FAQs PROPORTIONS ===== */
+    /* ===== MOBILE MATCH (FAQs proportions) ===== */
     @media (max-width:768px){
       .topnav{
-        top:45px;
+        margin-top:45px;
         width:100%;
         padding:0 20px;
         flex-direction:column;
-        align-items:center;
         gap:16px;
         font-size:10px;
         letter-spacing:0.28em;
       }
 
-      .topnav::after{ bottom:-10px; }
-
       .topnav .left{
         gap:24px;
-        justify-content:center;
-        flex-wrap:wrap;
-        max-width:100%;
       }
 
       .topnav .rsvp{
-        margin-top:6px;
         padding:8px 16px;
-        letter-spacing:0.28em;
       }
 
-      .monogram{ width:132px; }
+      .monogram{
+        width:132px;
+      }
 
       .password-wrap{
-        margin-top:14px;
         flex-direction:column;
         gap:10px;
+        margin-top:14px;
       }
 
       .pw-input{
-        width:min(84vw,420px);
+        width:84vw;
         height:44px;
-        font-size:13.5px;
       }
 
       .pw-btn{
         width:150px;
         height:44px;
-        font-size:10px;
-        letter-spacing:0.32em;
       }
     }
   </style>
@@ -246,20 +198,21 @@
 
 <body>
 
-  <!-- NAV -->
-  <nav class="topnav" id="nav">
-    <div class="left">
-      <a href="index.html" class="active">Home</a>
-      <a href="welcome.html">Welcome</a>
-      <a href="schedule.html">Schedule</a>
-      <a href="faqs.html">FAQs</a>
-    </div>
-    <a class="rsvp" href="rsvp.html">RSVP</a>
-  </nav>
+  <div class="viewport">
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-inner">
+    <!-- NAV -->
+    <nav class="topnav" id="nav">
+      <div class="left">
+        <a href="index.html" class="active">Home</a>
+        <a href="welcome.html">Welcome</a>
+        <a href="schedule.html">Schedule</a>
+        <a href="faqs.html">FAQs</a>
+      </div>
+      <a class="rsvp" href="rsvp.html">RSVP</a>
+    </nav>
+
+    <!-- CENTER -->
+    <div class="center">
       <img src="monogram1.png" alt="Shannen & Samarth monogram" class="monogram">
 
       <div class="password-wrap" id="passwordWrap">
@@ -268,14 +221,14 @@
           type="password"
           id="passwordInput"
           placeholder="Enter password"
-          autocomplete="off"
         />
         <button class="pw-btn" onclick="unlockSite()">ENTER</button>
       </div>
 
       <div class="pw-hint" id="pwHint">Incorrect password</div>
     </div>
-  </section>
+
+  </div>
 
   <script>
     const PASSWORD = "ss2027";
@@ -289,21 +242,18 @@
         document.getElementById("nav").classList.add("show");
         document.getElementById("passwordWrap").style.display = "none";
         hint.classList.remove("show");
-        window.scrollTo(0,0);   // always reset to top
       } else {
         hint.classList.add("show");
       }
     }
 
-    document.addEventListener("keydown", (e) => {
+    document.addEventListener("keydown", e => {
       if(e.key === "Enter") unlockSite();
     });
 
-    // Persist unlock
     if(sessionStorage.getItem("siteUnlocked") === "1"){
       document.getElementById("nav").classList.add("show");
       document.getElementById("passwordWrap").style.display = "none";
-      window.scrollTo(0,0);
     }
   </script>
 
