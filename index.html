@@ -20,7 +20,7 @@
       min-height:100vh;
     }
 
-    /* ===== NAV (EDITORIAL REFINED) ===== */
+    /* ===== NAV (DESKTOP — UNCHANGED) ===== */
     .topnav{
       position:fixed;
       top:30px;
@@ -59,18 +59,12 @@
       color:#111;
       text-decoration:none;
       opacity:0.55;
-      transition:opacity 0.35s ease;
+      transition:opacity .35s ease;
     }
 
-    .topnav a:hover{
-      opacity:0.85;
-    }
+    .topnav a:hover{ opacity:0.85; }
+    .topnav .active{ opacity:1; }
 
-    .topnav .active{
-      opacity:1;
-    }
-
-    /* RSVP — editorial ghost style */
     .topnav .rsvp{
       padding:6px 0;
       border-bottom:1px solid rgba(0,0,0,0.35);
@@ -78,9 +72,7 @@
       letter-spacing:0.32em;
     }
 
-    .topnav .rsvp:hover{
-      opacity:1;
-    }
+    .topnav .rsvp:hover{ opacity:1; }
 
     /* ===== PAGE LAYOUT ===== */
     .wrap{
@@ -92,34 +84,72 @@
       text-align:center;
     }
 
-    /* ===== MOBILE ===== */
+    /* ===== MOBILE (EDITORIAL ONLY — DESKTOP SAFE) ===== */
     @media (max-width: 768px){
+
       .topnav{
-        top:46px;
+        top:44px;
         width:100%;
-        padding:0 24px;
+        padding:0 18px;
         flex-direction:column;
-        gap:18px;
+        align-items:center;
+        gap:12px;
         font-size:9px;
-        letter-spacing:0.32em;
+        letter-spacing:0.34em;
+      }
+
+      /* Single clean row for main links */
+      .topnav .left{
+        width:100%;
+        display:flex;
+        justify-content:center;
+        flex-wrap:nowrap;
+        gap:0;
+      }
+
+      .topnav .left a{
+        padding:0 10px;
+        opacity:0.6;
+      }
+
+      /* editorial dot separators */
+      .topnav .left a + a{
+        position:relative;
+      }
+
+      .topnav .left a + a::before{
+        content:"·";
+        position:absolute;
+        left:-2px;
+        top:-1px;
+        opacity:0.35;
+      }
+
+      /* RSVP as a quiet second line */
+      .topnav .rsvp{
+        margin-top:2px;
+        border-bottom:1px solid rgba(0,0,0,0.28);
+        opacity:0.72;
+        letter-spacing:0.30em;
       }
 
       .topnav::after{
-        bottom:-14px;
-      }
-
-      .topnav .left{
-        gap:26px;
-        justify-content:center;
-        flex-wrap:wrap;
-      }
-
-      .topnav .rsvp{
-        margin-top:4px;
+        bottom:-12px;
       }
 
       .wrap{
-        padding:180px 20px 40px;
+        padding:170px 20px 40px;
+      }
+    }
+
+    /* Very small phones — graceful wrap */
+    @media (max-width: 380px){
+      .topnav .left{
+        flex-wrap:wrap;
+        row-gap:10px;
+      }
+      .topnav .left a + a::before{
+        content:"";
       }
     }
   </style>
@@ -127,7 +157,6 @@
 
 <body>
 
-  <!-- NAV -->
   <nav class="topnav" id="nav">
     <div class="left">
       <a href="index.html" class="active">Home</a>
@@ -138,9 +167,8 @@
     <a class="rsvp" href="rsvp.html">RSVP</a>
   </nav>
 
-  <!-- PAGE CONTENT -->
   <main class="wrap">
-    <!-- envelope / password / hero lives here -->
+    <!-- envelope / password / hero content -->
   </main>
 
   <script>
