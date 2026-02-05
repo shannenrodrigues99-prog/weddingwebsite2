@@ -8,7 +8,7 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Alex+Brush&family=Montserrat:wght@500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
 
   <style>
     *{ margin:0; padding:0; box-sizing:border-box; }
@@ -23,14 +23,13 @@
       overflow:hidden;
     }
 
-    /* ===== SINGLE STAGE (HOME / HERO) ===== */
+    /* ===== HERO ===== */
     .scene{
       position:fixed;
       inset:0;
       display:flex;
       align-items:center;
       justify-content:center;
-      min-height:100vh;
     }
 
     .scene-home{
@@ -50,7 +49,6 @@
       display:flex;
       justify-content:space-between;
       font-family:"Montserrat", sans-serif;
-      font-weight:500;
       text-transform:uppercase;
       letter-spacing:0.32em;
       font-size:12px;
@@ -78,7 +76,7 @@
       opacity:.35 !important;
     }
 
-    /* ===== HERO CENTER ===== */
+    /* ===== CENTER CONTENT ===== */
     .hero-wrap{
       min-height:100vh;
       display:flex;
@@ -90,9 +88,10 @@
       display:flex;
       flex-direction:column;
       align-items:center;
+      text-align:center;
     }
 
-    /* 🔥 Bigger monogram */
+    /* Monogram (before unlock) */
     .monogram{
       width: clamp(120px, 18vw, 220px);
       margin-bottom: 28px;
@@ -100,8 +99,28 @@
 
     .monogram img{
       width:100%;
-      height:auto;
       display:block;
+    }
+
+    /* Wedding text (after unlock) */
+    .wedding-text{
+      display:none;
+      margin-bottom: 22px;
+    }
+
+    .wedding-overline{
+      font-family:"Montserrat", sans-serif;
+      font-size:11px;
+      letter-spacing:0.36em;
+      text-transform:uppercase;
+      opacity:.8;
+      margin-bottom:10px;
+    }
+
+    .wedding-names{
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight:400;
+      letter-spacing:0.02em;
     }
 
     .date{
@@ -144,7 +163,6 @@
 
     .pw-btn{
       font-family:"Montserrat", sans-serif;
-      font-weight:500;
       font-size:11px;
       letter-spacing:0.32em;
       text-transform:uppercase;
@@ -199,7 +217,6 @@
 
       .pw-btn{ width:160px; }
 
-      /* Hide nav until unlock (mobile only) */
       #siteContent{ display:none; }
       #siteContent.is-visible{ display:block; }
     }
@@ -212,8 +229,16 @@
 
   <div class="hero-wrap">
     <div class="home-center">
-      <div class="monogram">
-        <img src="monogram.png" alt="Monogram">
+
+      <!-- Monogram (locked state) -->
+      <div class="monogram" id="monogram">
+        <img src="monogram1.png" alt="Monogram">
+      </div>
+
+      <!-- Wedding text (unlocked state) -->
+      <div class="wedding-text" id="weddingText">
+        <div class="wedding-overline">THE WEDDING OF</div>
+        <div class="wedding-names">Shannen &amp; Samarth</div>
       </div>
 
       <div class="date is-hidden" id="weddingDate">27 · 02 · 27</div>
@@ -225,6 +250,7 @@
         </div>
         <div class="pw-error" id="pwError"></div>
       </div>
+
     </div>
   </div>
 
@@ -250,6 +276,8 @@
   const pwBtn = document.getElementById("pwBtn");
   const pwWrap = document.getElementById("pwWrap");
   const weddingDate = document.getElementById("weddingDate");
+  const weddingText = document.getElementById("weddingText");
+  const monogram = document.getElementById("monogram");
   const protectedLinks = document.querySelectorAll("[data-protected]");
   const pwError = document.getElementById("pwError");
   const siteContent = document.getElementById("siteContent");
@@ -262,6 +290,8 @@
     protectedLinks.forEach(l => l.classList.add("locked-link"));
     pwWrap.classList.remove("is-hidden");
     weddingDate.classList.add("is-hidden");
+    weddingText.style.display = "none";
+    monogram.style.display = "block";
     if (isMobile()) siteContent.classList.remove("is-visible");
   }
 
@@ -269,6 +299,8 @@
     protectedLinks.forEach(l => l.classList.remove("locked-link"));
     pwWrap.classList.add("is-hidden");
     weddingDate.classList.remove("is-hidden");
+    weddingText.style.display = "block";
+    monogram.style.display = "none";
     if (isMobile()) siteContent.classList.add("is-visible");
   }
 
