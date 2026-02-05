@@ -20,18 +20,14 @@
       min-height:100vh;
     }
 
-    /* Hide site until unlocked */
-    .site-content{ display:none; }
-    .site-content.show{ display:block; }
-
-    /* ===== NAV (EDITORIAL) ===== */
+    /* ===== NAV (HIDDEN UNTIL UNLOCKED) ===== */
     .topnav{
       position:fixed;
       top:30px;
       left:50%;
       transform:translateX(-50%);
       width:calc(100% - 120px);
-      display:flex;
+      display:none;
       justify-content:space-between;
       align-items:center;
       font-family:"Montserrat", sans-serif;
@@ -42,6 +38,8 @@
       z-index:20;
       color:#fff;
     }
+
+    .topnav.show{ display:flex; }
 
     .topnav::after{
       content:"";
@@ -75,8 +73,6 @@
       letter-spacing:0.32em;
     }
 
-    .topnav .rsvp:hover{ opacity:1; }
-
     /* ===== HERO ===== */
     .hero{
       min-height:100vh;
@@ -85,6 +81,7 @@
       display:flex;
       align-items:center;
       justify-content:center;
+      text-align:center;
     }
 
     .hero::after{
@@ -95,33 +92,27 @@
       z-index:1;
     }
 
-    /* ===== MONOGRAM ===== */
-    .monogram{
+    .hero-inner{
       position:relative;
       z-index:2;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+    }
+
+    /* ===== MONOGRAM ===== */
+    .monogram{
       width:220px;
       max-width:60vw;
       opacity:0.85;
     }
 
-    /* ===== PASSWORD OVERLAY (ALWAYS ON TOP) ===== */
-    .password-overlay{
-      position:fixed;
-      inset:0;
-      z-index:99999;              /* higher than nav + monogram */
+    /* ===== PASSWORD (UNDER MONOGRAM) ===== */
+    .password-wrap{
+      margin-top:26px;
       display:flex;
+      gap:14px;
       align-items:center;
-      justify-content:center;
-      background:rgba(0,0,0,0.35);
-      -webkit-backdrop-filter: blur(18px) saturate(160%);
-      backdrop-filter: blur(18px) saturate(160%);
-      padding:20px;
-    }
-
-    .pw-row{
-      display:flex;
-      align-items:center;
-      gap:16px;
     }
 
     .pw-input,
@@ -135,14 +126,14 @@
         inset 0 1px 0 rgba(255,255,255,0.22);
       color:#fff;
       border-radius:999px;
-      height:54px;
+      height:48px;
     }
 
     .pw-input{
-      width:min(620px, 72vw);
-      padding:0 22px;
+      width:220px;
+      padding:0 18px;
       font-family:"Montserrat", sans-serif;
-      font-size:16px;
+      font-size:15px;
       outline:none;
     }
 
@@ -151,19 +142,18 @@
     }
 
     .pw-btn{
-      padding:0 22px;
+      padding:0 20px;
       font-family:"Montserrat", sans-serif;
       text-transform:uppercase;
-      letter-spacing:0.34em;
-      font-size:12px;
+      letter-spacing:0.32em;
+      font-size:11px;
       cursor:pointer;
     }
 
     .pw-btn:hover{ background:rgba(255,255,255,0.14); }
 
     .pw-hint{
-      margin-top:14px;
-      text-align:center;
+      margin-top:12px;
       font-family:"Montserrat", sans-serif;
       font-size:11px;
       letter-spacing:0.18em;
@@ -176,78 +166,44 @@
 
     /* ===== MOBILE ===== */
     @media (max-width: 768px){
-      .topnav{
-        top:44px;
-        width:100%;
-        padding:0 18px;
+      .monogram{ width:160px; }
+
+      .password-wrap{
         flex-direction:column;
         gap:12px;
-        font-size:9px;
-        letter-spacing:0.34em;
       }
 
-      .topnav::after{ bottom:-12px; }
-
-      .topnav .left{
-        justify-content:center;
-        flex-wrap:nowrap;
-        gap:0;
-      }
-
-      .topnav .left a{
-        padding:0 10px;
-        opacity:0.62;
-      }
-
-      .topnav .left a + a{
-        position:relative;
-      }
-
-      .topnav .left a + a::before{
-        content:"·";
-        position:absolute;
-        left:-2px;
-        top:-1px;
-        opacity:0.35;
-      }
-
-      .topnav .rsvp{
-        margin-top:2px;
-        border-bottom:1px solid rgba(255,255,255,0.30);
-        opacity:0.76;
-        letter-spacing:0.30em;
-      }
-
-      .monogram{
-        width:160px;
-        opacity:0.9;
-      }
-
-      /* password stacks nicely on phone */
-      .pw-row{
-        flex-direction:column;
-        gap:14px;
-      }
       .pw-input{
-        width:min(520px, 86vw);
+        width:240px;
       }
-      .pw-btn{
-        width:min(520px, 56vw);
-      }
-    }
 
-    @media (max-width: 380px){
-      .monogram{ width:140px; }
+      .pw-btn{
+        width:160px;
+      }
     }
   </style>
 </head>
 
 <body>
 
-  <!-- PASSWORD OVERLAY -->
-  <div class="password-overlay" id="passwordOverlay">
-    <div>
-      <div class="pw-row">
+  <!-- NAV -->
+  <nav class="topnav" id="nav">
+    <div class="left">
+      <a href="index.html" class="active">Home</a>
+      <a href="welcome.html">Welcome</a>
+      <a href="schedule.html">Schedule</a>
+      <a href="faqs.html">FAQs</a>
+    </div>
+    <a class="rsvp" href="rsvp.html">RSVP</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+      <img src="monogram1.png" alt="Shannen & Samarth monogram" class="monogram">
+
+      <!-- PASSWORD -->
+      <div class="password-wrap" id="passwordWrap">
         <input
           class="pw-input"
           type="password"
@@ -255,40 +211,15 @@
           placeholder="Enter password"
           autocomplete="off"
         />
-        <button class="pw-btn" type="button" onclick="unlockSite()">ENTER</button>
+        <button class="pw-btn" onclick="unlockSite()">ENTER</button>
       </div>
-      <p class="pw-hint" id="pwHint">Incorrect password</p>
+
+      <div class="pw-hint" id="pwHint">Incorrect password</div>
     </div>
-  </div>
-
-  <!-- SITE CONTENT (HIDDEN UNTIL UNLOCKED) -->
-  <div id="siteContent" class="site-content">
-
-    <!-- NAV -->
-    <nav class="topnav">
-      <div class="left">
-        <a href="index.html" class="active">Home</a>
-        <a href="welcome.html">Welcome</a>
-        <a href="schedule.html">Schedule</a>
-        <a href="faqs.html">FAQs</a>
-      </div>
-      <a class="rsvp" href="rsvp.html">RSVP</a>
-    </nav>
-
-    <!-- HERO -->
-    <section class="hero">
-      <img src="monogram1.png" alt="Shannen & Samarth monogram" class="monogram">
-    </section>
-
-  </div>
+  </section>
 
   <script>
-    const PASSWORD = "forever"; // ✅ change this
-
-    function showSite(){
-      document.getElementById("passwordOverlay").style.display = "none";
-      document.getElementById("siteContent").classList.add("show");
-    }
+    const PASSWORD = "ss2027"; // ✅ UPDATED
 
     function unlockSite(){
       const input = document.getElementById("passwordInput").value;
@@ -296,7 +227,9 @@
 
       if(input === PASSWORD){
         sessionStorage.setItem("siteUnlocked","1");
-        showSite();
+        document.getElementById("nav").classList.add("show");
+        document.getElementById("passwordWrap").style.display = "none";
+        hint.classList.remove("show");
       } else {
         hint.classList.add("show");
       }
@@ -304,17 +237,15 @@
 
     // Enter key submits
     document.addEventListener("keydown", (e) => {
-      if(e.key === "Enter" && document.getElementById("passwordOverlay").style.display !== "none"){
+      if(e.key === "Enter"){
         unlockSite();
       }
     });
 
-    // Auto-unlock
+    // Auto-unlock if already entered
     if(sessionStorage.getItem("siteUnlocked") === "1"){
-      showSite();
-    } else {
-      // show overlay and keep site hidden
-      document.getElementById("siteContent").classList.remove("show");
+      document.getElementById("nav").classList.add("show");
+      document.getElementById("passwordWrap").style.display = "none";
     }
   </script>
 
