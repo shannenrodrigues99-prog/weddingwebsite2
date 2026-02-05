@@ -33,10 +33,24 @@
     }
 
     .scene-home{
+      position:relative;
       color:#fff;
       background:
-        linear-gradient(rgba(0,0,0,.25),rgba(0,0,0,.25)),
+        linear-gradient(rgba(0,0,0,.18),rgba(0,0,0,.28)),
         url("hero.jpg") center/cover no-repeat;
+    }
+
+    /* editorial contrast “spot” behind the type */
+    .scene-home::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      background:
+        radial-gradient(ellipse at 50% 52%,
+          rgba(0,0,0,.45) 0%,
+          rgba(0,0,0,.20) 42%,
+          rgba(0,0,0,.35) 100%);
     }
 
     /* ===== NAV ===== */
@@ -53,6 +67,7 @@
       letter-spacing:0.32em;
       font-size:12px;
       z-index:5;
+      opacity:.78; /* quieter */
     }
 
     .topnav .left{
@@ -64,11 +79,15 @@
       color:#fff;
       text-decoration:none;
       opacity:.85;
+      transition:opacity .25s ease;
     }
+
+    .topnav a:hover{ opacity:1; }
 
     .topnav .rsvp{
       padding:10px 18px;
-      border:1px solid rgba(255,255,255,.65);
+      border:1px solid rgba(255,255,255,.55);
+      opacity:.9;
     }
 
     .locked-link{
@@ -82,6 +101,8 @@
       display:flex;
       align-items:center;
       justify-content:center;
+      position:relative;
+      z-index:2; /* above overlay */
     }
 
     .home-center{
@@ -89,61 +110,63 @@
       flex-direction:column;
       align-items:center;
       text-align:center;
+      transform: translateY(-18px); /* lift slightly */
     }
 
     /* Monogram (locked) */
     .monogram{
       width: clamp(120px, 18vw, 220px);
       margin-bottom: 28px;
+      filter: drop-shadow(0 10px 28px rgba(0,0,0,.35));
     }
 
-    .monogram img{
-      width:100%;
-      display:block;
-    }
+    .monogram img{ width:100%; display:block; }
 
     /* Wedding text (unlocked) */
     .wedding-text{
       display:none;
-      margin-bottom:30px;
     }
 
     .wedding-overline{
       font-family:"Montserrat", sans-serif;
-      font-size:14px;               /* ⬆ bigger */
-      letter-spacing:0.38em;
+      font-size:13px;            /* a touch bigger */
+      letter-spacing:0.44em;     /* more luxe */
       text-transform:uppercase;
-      opacity:.85;
-      margin-bottom:26px;           /* ⬆ more space */
+      opacity:.86;
+      margin-bottom:32px;        /* more space */
+      text-shadow: 0 10px 30px rgba(0,0,0,.35);
     }
 
     .wedding-names-img{
-      width: clamp(260px, 52vw, 540px);
-      margin-bottom:30px;           /* ⬆ more space */
+      width: clamp(320px, 50vw, 640px); /* refined scale */
+      margin: 0 auto 34px;              /* more space below */
     }
 
     .wedding-names-img img{
       width:100%;
       height:auto;
       display:block;
+      filter:
+        drop-shadow(0 12px 34px rgba(0,0,0,.45));
     }
 
-    /* Date — SAME style as overline */
+    /* Date — same “overline” system */
     .date{
       font-family:"Montserrat", sans-serif;
-      font-size:14px;               /* ⬆ bigger */
-      letter-spacing:0.38em;
+      font-size:13px;
+      letter-spacing:0.44em;
       text-transform:uppercase;
-      opacity:.85;
-      margin-bottom:0;
+      opacity:.86;
+      text-shadow: 0 10px 30px rgba(0,0,0,.35);
     }
 
     /* ===== PASSWORD ===== */
-    .pw-wrap{ margin-top:32px; }
+    .pw-wrap{ margin-top:34px; }
 
     .pw-row{
       display:flex;
       gap:12px;
+      filter: drop-shadow(0 12px 30px rgba(0,0,0,.35));
     }
 
     .pw-input,
@@ -159,9 +182,10 @@
 
     .pw-input{
       padding:0 18px;
-      width:min(300px,72vw);
+      width:min(320px,72vw);
       outline:none;
       caret-color:#fff;
+      text-align:left;
     }
 
     .pw-input::placeholder{
@@ -190,6 +214,8 @@
     /* ===== MOBILE ===== */
     @media (max-width:768px){
 
+      .home-center{ transform: translateY(-10px); }
+
       .topnav{
         top: calc(45px + env(safe-area-inset-top));
         width:100%;
@@ -212,13 +238,29 @@
         padding:8px 16px;
       }
 
+      .wedding-overline{
+        font-size:12px;
+        letter-spacing:0.40em;
+        margin-bottom:26px;
+      }
+
+      .wedding-names-img{
+        width: min(86vw, 520px);
+        margin-bottom:28px;
+      }
+
+      .date{
+        font-size:12px;
+        letter-spacing:0.40em;
+      }
+
       .pw-row{
         flex-direction:column;
         align-items:center;
       }
 
       .pw-input{
-        width:min(78vw,340px);
+        width:min(82vw,340px);
         font-size:16px;
         text-align:center;
       }
