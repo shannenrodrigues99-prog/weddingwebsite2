@@ -13,19 +13,26 @@
   <style>
     *{ margin:0; padding:0; box-sizing:border-box; }
 
-    /* ===== GLOBAL: NO SCROLL EVER ===== */
+    /* ===== FIX: prevent any sideways panning from overflow ===== */
     html, body{
       width:100%;
       height:100%;
       overflow:hidden;
+      overflow-x:hidden;                 /* FIX */
       overscroll-behavior:none;
       -webkit-overflow-scrolling: auto;
+      touch-action: pan-y;               /* FIX: stops sideways “grab & drag” on iOS */
     }
 
     body{
       font-family:"Playfair Display", serif;
       background:#000;
       color:#fff;
+    }
+
+    /* ===== FIX: guardrail so nothing can be wider than viewport ===== */
+    img, nav, section, div, input, button, a{
+      max-width:100%;
     }
 
     /* ===== NAV (HIDDEN UNTIL UNLOCKED) ===== */
@@ -44,6 +51,8 @@
       font-size:10px;
       z-index:20;
       color:#fff;
+
+      overflow:hidden;                  /* FIX */
     }
     .topnav.show{ display:flex; }
 
@@ -57,13 +66,21 @@
       background:rgba(255,255,255,0.12);
     }
 
-    .topnav .left{ display:flex; gap:52px; }
+    .topnav .left{
+      display:flex;
+      gap:52px;
+
+      flex-wrap:wrap;                   /* FIX: allows wrapping instead of forcing overflow */
+      justify-content:center;           /* FIX: nicer if it wraps */
+      max-width:78%;                    /* FIX: keeps room for RSVP */
+    }
 
     .topnav a{
       color:inherit;
       text-decoration:none;
       opacity:0.60;
       transition:opacity .35s ease;
+      white-space:nowrap;               /* FIX: keeps each item intact when wrapping */
     }
     .topnav a:hover{ opacity:0.88; }
     .topnav .active{ opacity:1; }
@@ -73,6 +90,8 @@
       border-bottom:1px solid rgba(255,255,255,0.35);
       opacity:0.78;
       letter-spacing:0.32em;
+      white-space:nowrap;
+      flex:0 0 auto;
     }
 
     /* ===== HERO (FULL VIEWPORT, NO INTERNAL SCROLL) ===== */
@@ -104,6 +123,7 @@
       flex-direction:column;
       align-items:center;
       transform:translateY(-8px);  /* optical centering desktop */
+      padding:0 16px;              /* FIX: prevents edge overflow on tiny widths */
     }
 
     /* ===== MONOGRAM ===== */
@@ -111,6 +131,7 @@
       width:220px;
       max-width:60vw;
       opacity:0.85;
+      display:block;
     }
 
     /* ===== PASSWORD ===== */
@@ -119,6 +140,7 @@
       display:flex;
       gap:18px;
       align-items:center;
+      justify-content:center;      /* FIX */
     }
 
     .pw-input{
@@ -180,6 +202,7 @@
     @media (max-width:1280px){
       .monogram{ width:190px; }
       .pw-input{ width:420px; }
+      .topnav .left{ gap:36px; }        /* FIX: helps prevent overflow earlier */
     }
 
     /* ===== MOBILE (SAFE AREA + SHOW EVERYTHING AFTER UNLOCK) ===== */
@@ -197,10 +220,13 @@
       }
       .topnav::after{ bottom:-10px; }
 
-      /* Keep content fully visible on small screens */
+      .topnav .left{
+        max-width:100%;
+        gap:18px;                        /* FIX: keeps it neat on phone */
+      }
+
       .hero-inner{
-        padding:0 16px;
-        transform:translateY(18px); /* down so monogram+password sit nicely under nav */
+        transform:translateY(18px);
       }
 
       .monogram{
@@ -231,7 +257,7 @@
 
     /* ===== iPhone 16 Pro / Tall Phones fine-tune ===== */
     @media (max-width:430px) and (min-height:800px){
-      .hero-inner{ transform:translateY(26px); } /* ensure everything is visible without scroll */
+      .hero-inner{ transform:translateY(26px); }
       .monogram{ width:128px; }
     }
   </style>
@@ -274,9 +300,10 @@
     const PASSWORD = "ss2027";
 
     function lockScroll(){
-      // keep scroll locked even after DOM changes (iOS/Safari)
       document.documentElement.style.overflow = "hidden";
       document.body.style.overflow = "hidden";
+      document.documentElement.style.overflowX = "hidden"; // FIX
+      document.body.style.overflowX = "hidden";            // FIX
       document.documentElement.style.height = "100%";
       document.body.style.height = "100%";
       window.scrollTo(0,0);
@@ -307,7 +334,6 @@
       document.getElementById("passwordWrap").style.display = "none";
     }
 
-    // Always keep scroll locked
     lockScroll();
     window.addEventListener("resize", lockScroll);
     window.addEventListener("orientationchange", lockScroll);
