@@ -40,6 +40,7 @@
         url("hero.jpg") center/cover no-repeat;
     }
 
+    /* editorial contrast “spot” behind type */
     .scene-home::before{
       content:"";
       position:absolute;
@@ -52,6 +53,7 @@
           rgba(0,0,0,.38) 100%);
     }
 
+    /* subtle film grain overlay */
     .scene-home::after{
       content:"";
       position:absolute;
@@ -103,6 +105,7 @@
       display:flex;
       align-items:center;
       justify-content:center;
+      opacity:.9;
     }
 
     .locked-link{
@@ -126,14 +129,23 @@
       align-items:center;
       text-align:center;
       transform: translateY(-20px);
+      position:relative;
     }
 
-    /* fade utility */
+    /* ===== FADE SYSTEM (no flashes) ===== */
     .fade{
-      transition: opacity .15s ease;
+      transition: opacity .65s ease;
+      will-change: opacity;
     }
+    .fade-out{ opacity:0; pointer-events:none; }
+    .fade-in{ opacity:1; pointer-events:auto; }
 
-    .fade-out{
+    /* Locked elements visible by default */
+    #monogram{ opacity:1; }
+    #pwWrap{ opacity:1; }
+
+    /* Wedding text is ALWAYS in the DOM — just hidden via opacity */
+    #weddingText{
       opacity:0;
       pointer-events:none;
     }
@@ -144,12 +156,9 @@
       margin-bottom:28px;
       filter: drop-shadow(0 12px 34px rgba(0,0,0,.45));
     }
-
     .monogram img{ width:100%; display:block; }
 
     /* Wedding text */
-    .wedding-text{ display:none; }
-
     .wedding-overline{
       font-family:"Montserrat", sans-serif;
       font-size:13px;
@@ -157,6 +166,7 @@
       text-transform:uppercase;
       margin-bottom:34px;
       opacity:.88;
+      text-shadow: 0 12px 34px rgba(0,0,0,.45);
     }
 
     .wedding-names-img{
@@ -166,6 +176,8 @@
 
     .wedding-names-img img{
       width:100%;
+      height:auto;
+      display:block;
       filter: drop-shadow(0 14px 38px rgba(0,0,0,.48));
     }
 
@@ -173,15 +185,18 @@
       font-family:"Montserrat", sans-serif;
       font-size:13px;
       letter-spacing:0.48em;
+      text-transform:uppercase;
       opacity:.88;
+      text-shadow: 0 12px 34px rgba(0,0,0,.45);
     }
 
-    /* ===== PASSWORD ===== */
+    /* Password */
     .pw-wrap{ margin-top:36px; }
 
     .pw-row{
       display:flex;
       gap:12px;
+      filter: drop-shadow(0 14px 38px rgba(0,0,0,.48));
     }
 
     .pw-input,
@@ -197,12 +212,16 @@
 
     .pw-input{
       padding:0 18px;
-      width:320px;
+      width:min(320px,72vw);
       outline:none;
+      caret-color:#fff;
     }
+
+    .pw-input::placeholder{ color:#fff; opacity:1; }
 
     .pw-btn{
       font-family:"Montserrat", sans-serif;
+      font-weight:300;
       font-size:10px;
       letter-spacing:0.42em;
       text-transform:uppercase;
@@ -212,23 +231,52 @@
 
     .pw-error{
       margin-top:10px;
+      min-height:14px;
       font-size:12px;
       text-align:center;
     }
 
-    .is-hidden{ display:none !important; }
-
     /* ===== MOBILE ===== */
     @media (max-width:768px){
+      .home-center{ transform: translateY(-12px); }
+
+      .topnav{
+        top: calc(44px + env(safe-area-inset-top));
+        width:100%;
+        padding:0 20px;
+        flex-direction:column;
+        align-items:center;
+        gap:14px;
+        font-size:10px;
+        letter-spacing:0.34em;
+        opacity:.78;
+        white-space:normal;
+      }
+
+      .topnav .left{
+        gap:22px;
+        justify-content:center;
+        flex-wrap:wrap;
+      }
+
+      .topnav .rsvp{
+        margin-top:6px;
+        height:32px;
+        padding:0 16px;
+      }
+
       .pw-row{
         flex-direction:column;
         align-items:center;
       }
 
       .pw-input{
-        width:82vw;
+        width:min(82vw,340px);
+        font-size:16px;
         text-align:center;
       }
+
+      .pw-btn{ width:160px; }
 
       #siteContent{ display:none; }
       #siteContent.is-visible{ display:block; }
@@ -243,24 +291,24 @@
   <div class="hero-wrap">
     <div class="home-center">
 
-      <!-- Monogram -->
+      <!-- Monogram (locked) -->
       <div class="monogram fade" id="monogram">
-        <img src="monogram1.png">
+        <img src="monogram1.png" alt="Monogram">
       </div>
 
-      <!-- Wedding text -->
-      <div class="wedding-text" id="weddingText">
+      <!-- Wedding text (unlocked) — ALWAYS present, just opacity 0 until unlocked -->
+      <div class="fade" id="weddingText" aria-hidden="true">
         <div class="wedding-overline">THE WEDDING OF</div>
         <div class="wedding-names-img">
-          <img src="names.png">
+          <img src="names.png" alt="Shannen & Samarth">
         </div>
         <div class="date">27 · 02 · 27</div>
       </div>
 
-      <!-- Password -->
+      <!-- Password (locked) -->
       <div class="pw-wrap fade" id="pwWrap">
         <div class="pw-row">
-          <input id="pwInput" class="pw-input" type="password" placeholder="Enter password">
+          <input id="pwInput" class="pw-input" type="password" placeholder="Enter password" autocomplete="off">
           <button id="pwBtn" class="pw-btn">Enter</button>
         </div>
         <div class="pw-error" id="pwError"></div>
@@ -286,6 +334,7 @@
 <script>
   const SITE_PASSWORD = "ss2027";
   const UNLOCK_KEY = "siteUnlocked";
+  const FADE_MS = 650;
 
   const pwInput = document.getElementById("pwInput");
   const pwBtn = document.getElementById("pwBtn");
@@ -296,42 +345,86 @@
   const siteContent = document.getElementById("siteContent");
   const pwError = document.getElementById("pwError");
 
-  function unlockUI(){
-    monogram.classList.add("fade-out");
-    pwWrap.classList.add("fade-out");
-
-    setTimeout(() => {
-      monogram.style.display = "none";
-      pwWrap.style.display = "none";
-      weddingText.style.display = "block";
-      protectedLinks.forEach(l => l.classList.remove("locked-link"));
-      siteContent.classList.add("is-visible");
-    }, 600);
+  function isMobile(){
+    return window.matchMedia("(max-width: 768px)").matches;
   }
 
   function lockUI(){
     protectedLinks.forEach(l => l.classList.add("locked-link"));
+    pwWrap.classList.remove("fade-out");
+    monogram.classList.remove("fade-out");
+
+    weddingText.classList.remove("fade-in");
+    weddingText.setAttribute("aria-hidden","true");
+
+    if (isMobile()) siteContent.classList.remove("is-visible");
   }
 
-  if (sessionStorage.getItem(UNLOCK_KEY) === "1") unlockUI();
-  else lockUI();
+  function unlockUI(animate = true){
+    protectedLinks.forEach(l => l.classList.remove("locked-link"));
+    if (isMobile()) siteContent.classList.add("is-visible");
 
-  pwBtn.addEventListener("click", tryUnlock);
-  pwInput.addEventListener("keydown", e => {
-    if (e.key === "Enter") tryUnlock();
-  });
+    weddingText.setAttribute("aria-hidden","false");
+
+    if (!animate){
+      // instant end state (prevents any flicker on reload)
+      monogram.style.transition = "none";
+      pwWrap.style.transition = "none";
+      weddingText.style.transition = "none";
+
+      monogram.classList.add("fade-out");
+      pwWrap.classList.add("fade-out");
+      weddingText.classList.add("fade-in");
+
+      // force reflow then restore transitions for future unlocks
+      void document.body.offsetHeight;
+      monogram.style.transition = "";
+      pwWrap.style.transition = "";
+      weddingText.style.transition = "";
+      return;
+    }
+
+    // fade out locked UI
+    monogram.classList.add("fade-out");
+    pwWrap.classList.add("fade-out");
+
+    // fade in unlocked UI (already present, so no flash)
+    weddingText.classList.add("fade-in");
+
+    // optional: after fade completes, prevent tab focus on hidden inputs
+    setTimeout(() => {
+      pwInput.blur();
+    }, FADE_MS);
+  }
+
+  // initial state
+  if (sessionStorage.getItem(UNLOCK_KEY) === "1") {
+    unlockUI(false); // instant on reload, no flash
+  } else {
+    lockUI();
+  }
 
   function tryUnlock(){
     if (pwInput.value.trim() === SITE_PASSWORD){
       sessionStorage.setItem(UNLOCK_KEY, "1");
       pwError.textContent = "";
-      unlockUI();
+      unlockUI(true);
     } else {
       pwError.textContent = "Incorrect password.";
       pwInput.value = "";
       pwInput.focus();
     }
   }
+
+  pwBtn.addEventListener("click", tryUnlock);
+  pwInput.addEventListener("keydown", e => {
+    if (e.key === "Enter") tryUnlock();
+  });
+
+  window.addEventListener("resize", () => {
+    const unlocked = sessionStorage.getItem(UNLOCK_KEY) === "1";
+    unlocked ? unlockUI(false) : lockUI();
+  });
 </script>
 
 </body>
