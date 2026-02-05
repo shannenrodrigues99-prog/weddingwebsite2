@@ -40,6 +40,7 @@
         url("hero.jpg") center/cover no-repeat;
     }
 
+    /* editorial contrast “spot” behind type */
     .scene-home::before{
       content:"";
       position:absolute;
@@ -52,6 +53,7 @@
           rgba(0,0,0,.38) 100%);
     }
 
+    /* subtle film grain overlay */
     .scene-home::after{
       content:"";
       position:absolute;
@@ -64,7 +66,7 @@
       background-size:180px 180px;
     }
 
-    /* ===== NAV ===== */
+    /* ===== NAV (INLINE, CLEAN) ===== */
     .topnav{
       position:absolute;
       top:26px;
@@ -86,8 +88,8 @@
 
     .topnav .left{
       display:flex;
-      gap:40px;
       align-items:center;
+      gap:40px;
     }
 
     .topnav a{
@@ -100,13 +102,13 @@
     }
 
     .topnav .rsvp{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
       height:34px;
       padding:0 16px;
       border:1px solid rgba(255,255,255,.45);
       border-radius:999px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
       opacity:.9;
     }
 
@@ -115,7 +117,7 @@
       opacity:.35 !important;
     }
 
-    /* ===== CENTER ===== */
+    /* ===== CENTER CONTENT ===== */
     .hero-wrap{
       min-height:100vh;
       display:flex;
@@ -131,58 +133,34 @@
       align-items:center;
       text-align:center;
       transform: translateY(-20px);
-      position:relative;
-      width:100%;
     }
 
-    /* ===== SLOW FADE OUT (lock layer only) ===== */
-    .fade-slow{
-      transition: opacity 1.8s ease; /* slower + luxe */
-      will-change: opacity;
-    }
-
-    .fade-out{
-      opacity:0;
-      pointer-events:none;
-    }
-
-    /* ===== WEDDING TEXT (HIDDEN UNTIL UNLOCK) ===== */
-    #unlockedLayer{
-      opacity:0;               /* hidden */
-      visibility:hidden;       /* prevents any “seeing it” */
-      pointer-events:none;
-    }
-
-    /* When unlocked, show instantly (NO transition) */
-    #unlockedLayer.is-visible{
-      opacity:1;
-      visibility:visible;
-      pointer-events:auto;
-    }
-
-    /* Monogram */
+    /* Monogram (locked) */
     .monogram{
       width: clamp(120px, 18vw, 220px);
-      margin-bottom:28px;
+      margin-bottom: 28px;
       filter: drop-shadow(0 12px 34px rgba(0,0,0,.45));
     }
+
     .monogram img{ width:100%; display:block; }
 
-    /* Wedding text */
+    /* Wedding text (unlocked) */
+    .wedding-text{ display:none; }
+
     .wedding-overline{
       font-family:"Montserrat", sans-serif;
       font-size:13px;
       font-weight:300;
       letter-spacing:0.48em;
       text-transform:uppercase;
-      margin-bottom:34px;
       opacity:.88;
+      margin-bottom:34px;
       text-shadow: 0 12px 34px rgba(0,0,0,.45);
     }
 
     .wedding-names-img{
       width: clamp(320px, 50vw, 660px);
-      margin-bottom:36px;
+      margin: 0 auto 36px;
     }
 
     .wedding-names-img img{
@@ -202,7 +180,7 @@
       text-shadow: 0 12px 34px rgba(0,0,0,.45);
     }
 
-    /* Password */
+    /* ===== PASSWORD ===== */
     .pw-wrap{ margin-top:36px; }
 
     .pw-row{
@@ -229,7 +207,7 @@
       caret-color:#fff;
     }
 
-    .pw-input::placeholder{ color:#fff; opacity:1; }
+    .pw-input::placeholder{ color:#fff; }
 
     .pw-btn{
       font-family:"Montserrat", sans-serif;
@@ -248,8 +226,11 @@
       text-align:center;
     }
 
+    .is-hidden{ display:none !important; }
+
     /* ===== MOBILE ===== */
     @media (max-width:768px){
+
       .home-center{ transform: translateY(-12px); }
 
       .topnav{
@@ -262,7 +243,6 @@
         font-size:10px;
         letter-spacing:0.34em;
         opacity:.78;
-        white-space:normal;
       }
 
       .topnav .left{
@@ -277,14 +257,8 @@
         padding:0 16px;
       }
 
-      .wedding-overline{
-        font-size:12px;
-        letter-spacing:0.42em;
-        margin-bottom:28px;
-      }
-
       .wedding-names-img{
-        width:min(86vw,520px);
+        width: min(86vw, 520px);
         margin-bottom:30px;
       }
 
@@ -319,28 +293,26 @@
   <div class="hero-wrap">
     <div class="home-center">
 
-      <!-- Wedding text (hidden until unlock; appears instantly) -->
-      <div id="unlockedLayer" aria-hidden="true">
+      <!-- Monogram (locked) -->
+      <div class="monogram" id="monogram">
+        <img src="monogram1.png" alt="Monogram">
+      </div>
+
+      <!-- Wedding text (unlocked) -->
+      <div class="wedding-text" id="weddingText">
         <div class="wedding-overline">THE WEDDING OF</div>
         <div class="wedding-names-img">
           <img src="names.png" alt="Shannen & Samarth">
         </div>
-        <div class="date">27 · 02 · 27</div>
+        <div class="date is-hidden" id="weddingDate">27 · 02 · 27</div>
       </div>
 
-      <!-- Lock UI (fades out slowly) -->
-      <div id="lockLayer" class="fade-slow" aria-hidden="false">
-        <div class="monogram">
-          <img src="monogram1.png" alt="Monogram">
+      <div class="pw-wrap" id="pwWrap">
+        <div class="pw-row">
+          <input id="pwInput" class="pw-input" type="password" placeholder="Enter password" autocomplete="off">
+          <button id="pwBtn" class="pw-btn">Enter</button>
         </div>
-
-        <div class="pw-wrap" id="pwWrap">
-          <div class="pw-row">
-            <input id="pwInput" class="pw-input" type="password" placeholder="Enter password" autocomplete="off">
-            <button id="pwBtn" class="pw-btn">Enter</button>
-          </div>
-          <div class="pw-error" id="pwError"></div>
-        </div>
+        <div class="pw-error" id="pwError"></div>
       </div>
 
     </div>
@@ -361,16 +333,17 @@
 </section>
 
 <script>
-  const SITE_PASSWORD = "ss2027";
   const UNLOCK_KEY = "siteUnlocked";
-  const FADE_MS = 1800;
+  const SITE_PASSWORD = "ss2027";
 
   const pwInput = document.getElementById("pwInput");
   const pwBtn = document.getElementById("pwBtn");
-  const pwError = document.getElementById("pwError");
-  const lockLayer = document.getElementById("lockLayer");
-  const unlockedLayer = document.getElementById("unlockedLayer");
+  const pwWrap = document.getElementById("pwWrap");
+  const weddingDate = document.getElementById("weddingDate");
+  const weddingText = document.getElementById("weddingText");
+  const monogram = document.getElementById("monogram");
   const protectedLinks = document.querySelectorAll("[data-protected]");
+  const pwError = document.getElementById("pwError");
   const siteContent = document.getElementById("siteContent");
 
   function isMobile(){
@@ -379,44 +352,30 @@
 
   function lockUI(){
     protectedLinks.forEach(l => l.classList.add("locked-link"));
-    lockLayer.style.display = "block";
-    lockLayer.classList.remove("fade-out");
-
-    unlockedLayer.classList.remove("is-visible");
-    unlockedLayer.setAttribute("aria-hidden","true");
-
+    pwWrap.classList.remove("is-hidden");
+    weddingDate.classList.add("is-hidden");
+    weddingText.style.display = "none";
+    monogram.style.display = "block";
     if (isMobile()) siteContent.classList.remove("is-visible");
   }
 
-  function unlockUI(animate=true){
+  function unlockUI(){
     protectedLinks.forEach(l => l.classList.remove("locked-link"));
+    pwWrap.classList.add("is-hidden");
+    weddingDate.classList.remove("is-hidden");
+    weddingText.style.display = "block";
+    monogram.style.display = "none";
     if (isMobile()) siteContent.classList.add("is-visible");
-
-    if (!animate){
-      lockLayer.style.display = "none";
-      unlockedLayer.classList.add("is-visible");       // instant
-      unlockedLayer.setAttribute("aria-hidden","false");
-      return;
-    }
-
-    lockLayer.classList.add("fade-out");
-
-    setTimeout(() => {
-      lockLayer.style.display = "none";
-      unlockedLayer.classList.add("is-visible");       // instant (no fade-in)
-      unlockedLayer.setAttribute("aria-hidden","false");
-      pwInput.blur();
-    }, FADE_MS);
   }
 
-  if (sessionStorage.getItem(UNLOCK_KEY) === "1") unlockUI(false);
+  if (sessionStorage.getItem(UNLOCK_KEY) === "1") unlockUI();
   else lockUI();
 
   function tryUnlock(){
-    if (pwInput.value.trim() === SITE_PASSWORD){
+    if (pwInput.value.trim() === SITE_PASSWORD) {
       sessionStorage.setItem(UNLOCK_KEY, "1");
       pwError.textContent = "";
-      unlockUI(true);
+      unlockUI();
     } else {
       pwError.textContent = "Incorrect password.";
       pwInput.value = "";
@@ -431,7 +390,7 @@
 
   window.addEventListener("resize", () => {
     const unlocked = sessionStorage.getItem(UNLOCK_KEY) === "1";
-    unlocked ? unlockUI(false) : lockUI();
+    unlocked ? unlockUI() : lockUI();
   });
 </script>
 
