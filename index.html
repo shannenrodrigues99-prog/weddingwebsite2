@@ -132,20 +132,12 @@
       position:relative;
     }
 
-    /* ===== FADE SYSTEM (no flashes) ===== */
-    .fade{
-      transition: opacity .65s ease;
+    /* ===== SLOW FADE-OUT ONLY ===== */
+    .fade-slow{
+      transition: opacity 1.4s ease; /* slower, luxe */
       will-change: opacity;
     }
-    .fade-out{ opacity:0; pointer-events:none; }
-    .fade-in{ opacity:1; pointer-events:auto; }
-
-    /* Locked elements visible by default */
-    #monogram{ opacity:1; }
-    #pwWrap{ opacity:1; }
-
-    /* Wedding text is ALWAYS in the DOM — just hidden via opacity */
-    #weddingText{
+    .fade-out{
       opacity:0;
       pointer-events:none;
     }
@@ -158,7 +150,9 @@
     }
     .monogram img{ width:100%; display:block; }
 
-    /* Wedding text */
+    /* Wedding text (instant show after fade finishes) */
+    .wedding-text{ display:none; }
+
     .wedding-overline{
       font-family:"Montserrat", sans-serif;
       font-size:13px;
@@ -292,12 +286,12 @@
     <div class="home-center">
 
       <!-- Monogram (locked) -->
-      <div class="monogram fade" id="monogram">
+      <div class="monogram fade-slow" id="monogram">
         <img src="monogram1.png" alt="Monogram">
       </div>
 
-      <!-- Wedding text (unlocked) — ALWAYS present, just opacity 0 until unlocked -->
-      <div class="fade" id="weddingText" aria-hidden="true">
+      <!-- Wedding text (unlocked) -->
+      <div class="wedding-text" id="weddingText" aria-hidden="true">
         <div class="wedding-overline">THE WEDDING OF</div>
         <div class="wedding-names-img">
           <img src="names.png" alt="Shannen & Samarth">
@@ -306,7 +300,7 @@
       </div>
 
       <!-- Password (locked) -->
-      <div class="pw-wrap fade" id="pwWrap">
+      <div class="pw-wrap fade-slow" id="pwWrap">
         <div class="pw-row">
           <input id="pwInput" class="pw-input" type="password" placeholder="Enter password" autocomplete="off">
           <button id="pwBtn" class="pw-btn">Enter</button>
@@ -334,7 +328,7 @@
 <script>
   const SITE_PASSWORD = "ss2027";
   const UNLOCK_KEY = "siteUnlocked";
-  const FADE_MS = 650;
+  const FADE_MS = 1400; // slower fade-out
 
   const pwInput = document.getElementById("pwInput");
   const pwBtn = document.getElementById("pwBtn");
@@ -353,56 +347,42 @@
     protectedLinks.forEach(l => l.classList.add("locked-link"));
     pwWrap.classList.remove("fade-out");
     monogram.classList.remove("fade-out");
-
-    weddingText.classList.remove("fade-in");
+    pwWrap.style.display = "";
+    monogram.style.display = "";
+    weddingText.style.display = "none";
     weddingText.setAttribute("aria-hidden","true");
-
     if (isMobile()) siteContent.classList.remove("is-visible");
   }
 
-  function unlockUI(animate = true){
+  function unlockUI(animate=true){
     protectedLinks.forEach(l => l.classList.remove("locked-link"));
     if (isMobile()) siteContent.classList.add("is-visible");
 
-    weddingText.setAttribute("aria-hidden","false");
-
     if (!animate){
-      // instant end state (prevents any flicker on reload)
-      monogram.style.transition = "none";
-      pwWrap.style.transition = "none";
-      weddingText.style.transition = "none";
-
-      monogram.classList.add("fade-out");
-      pwWrap.classList.add("fade-out");
-      weddingText.classList.add("fade-in");
-
-      // force reflow then restore transitions for future unlocks
-      void document.body.offsetHeight;
-      monogram.style.transition = "";
-      pwWrap.style.transition = "";
-      weddingText.style.transition = "";
+      // instant final state (on refresh if already unlocked)
+      monogram.style.display = "none";
+      pwWrap.style.display = "none";
+      weddingText.style.display = "block";
+      weddingText.setAttribute("aria-hidden","false");
       return;
     }
 
-    // fade out locked UI
+    // Fade OUT only
     monogram.classList.add("fade-out");
     pwWrap.classList.add("fade-out");
 
-    // fade in unlocked UI (already present, so no flash)
-    weddingText.classList.add("fade-in");
-
-    // optional: after fade completes, prevent tab focus on hidden inputs
+    // After fade finishes: hide them + show wedding text instantly
     setTimeout(() => {
+      monogram.style.display = "none";
+      pwWrap.style.display = "none";
+      weddingText.style.display = "block";     // instant (no fade-in)
+      weddingText.setAttribute("aria-hidden","false");
       pwInput.blur();
     }, FADE_MS);
   }
 
-  // initial state
-  if (sessionStorage.getItem(UNLOCK_KEY) === "1") {
-    unlockUI(false); // instant on reload, no flash
-  } else {
-    lockUI();
-  }
+  if (sessionStorage.getItem(UNLOCK_KEY) === "1") unlockUI(false);
+  else lockUI();
 
   function tryUnlock(){
     if (pwInput.value.trim() === SITE_PASSWORD){
