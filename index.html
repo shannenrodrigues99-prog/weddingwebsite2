@@ -66,7 +66,7 @@
       background-size:180px 180px;
     }
 
-    /* ===== NAV (more editorial) ===== */
+    /* ===== NAV (inline, RSVP aligned) ===== */
     .topnav{
       position:absolute;
       top:26px;
@@ -74,6 +74,7 @@
       transform:translateX(-50%);
       width:calc(100% - 90px);
       display:flex;
+      align-items:center;                 /* keeps RSVP aligned */
       justify-content:space-between;
       font-family:"Montserrat", sans-serif;
       font-weight:300;
@@ -82,10 +83,12 @@
       font-size:10px;
       z-index:5;
       opacity:.72;
+      white-space:nowrap;
     }
 
     .topnav .left{
       display:flex;
+      align-items:center;
       gap:40px;
     }
 
@@ -94,6 +97,9 @@
       text-decoration:none;
       opacity:.82;
       transition:opacity .25s ease, transform .25s ease;
+      display:inline-flex;
+      align-items:center;
+      line-height:1;
     }
 
     .topnav a:hover{
@@ -102,7 +108,11 @@
     }
 
     .topnav .rsvp{
-      padding:9px 16px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      height:34px;                        /* same baseline feel */
+      padding:0 16px;
       border:1px solid rgba(255,255,255,.45);
       border-radius:999px;
       opacity:.9;
@@ -136,7 +146,7 @@
       align-items:center;
       justify-content:center;
       position:relative;
-      z-index:2; /* above overlays */
+      z-index:2;
     }
 
     .home-center{
@@ -145,6 +155,22 @@
       align-items:center;
       text-align:center;
       transform: translateY(-20px);
+      position:relative;
+    }
+
+    /* smooth crossfade between states */
+    .swap{
+      transition: opacity .65s ease, transform .65s ease;
+      will-change: opacity, transform;
+    }
+    .swap.is-off{
+      opacity:0;
+      transform: translateY(10px);
+      pointer-events:none;
+    }
+    .swap.is-on{
+      opacity:1;
+      transform: translateY(0);
     }
 
     /* Monogram (locked) */
@@ -156,8 +182,6 @@
     .monogram img{ width:100%; display:block; }
 
     /* Wedding text (unlocked) */
-    .wedding-text{ display:none; }
-
     .wedding-overline{
       font-family:"Montserrat", sans-serif;
       font-size:13px;
@@ -198,6 +222,13 @@
       display:flex;
       gap:12px;
       filter: drop-shadow(0 14px 38px rgba(0,0,0,.48));
+      transition: opacity .55s ease, transform .55s ease;
+    }
+
+    .pw-wrap.is-hidden .pw-row{
+      opacity:0;
+      transform: translateY(8px);
+      pointer-events:none;
     }
 
     .pw-input,
@@ -238,6 +269,7 @@
       min-height:14px;
       font-size:12px;
       text-align:center;
+      transition: opacity .35s ease;
     }
 
     .is-hidden{ display:none !important; }
@@ -251,12 +283,13 @@
         top: calc(44px + env(safe-area-inset-top));
         width:100%;
         padding:0 20px;
-        flex-direction:column;
+        flex-direction:column;     /* keep your welcome.html style */
         align-items:center;
         gap:14px;
         font-size:10px;
         letter-spacing:0.34em;
         opacity:.78;
+        white-space:normal;
       }
 
       .topnav .left{
@@ -267,7 +300,8 @@
 
       .topnav .rsvp{
         margin-top:6px;
-        padding:8px 16px;
+        height:32px;
+        padding:0 16px;
       }
 
       .nav-rule{
@@ -318,17 +352,17 @@
     <div class="home-center">
 
       <!-- Monogram (locked) -->
-      <div class="monogram" id="monogram">
+      <div class="monogram swap is-on" id="monogram">
         <img src="monogram1.png" alt="Monogram">
       </div>
 
       <!-- Wedding text (unlocked) -->
-      <div class="wedding-text" id="weddingText">
+      <div class="swap is-off" id="weddingText" aria-hidden="true">
         <div class="wedding-overline">THE WEDDING OF</div>
         <div class="wedding-names-img">
           <img src="names.png" alt="Shannen & Samarth">
         </div>
-        <div class="date is-hidden" id="weddingDate">27 · 02 · 27</div>
+        <div class="date" id="weddingDate">27 · 02 · 27</div>
       </div>
 
       <div class="pw-wrap" id="pwWrap">
@@ -364,7 +398,6 @@
   const pwInput = document.getElementById("pwInput");
   const pwBtn = document.getElementById("pwBtn");
   const pwWrap = document.getElementById("pwWrap");
-  const weddingDate = document.getElementById("weddingDate");
   const weddingText = document.getElementById("weddingText");
   const monogram = document.getElementById("monogram");
   const protectedLinks = document.querySelectorAll("[data-protected]");
@@ -377,19 +410,35 @@
 
   function lockUI(){
     protectedLinks.forEach(l => l.classList.add("locked-link"));
+
+    // show password (no abrupt snap)
     pwWrap.classList.remove("is-hidden");
-    weddingDate.classList.add("is-hidden");
-    weddingText.style.display = "none";
-    monogram.style.display = "block";
+
+    // crossfade content
+    monogram.classList.remove("is-off");
+    monogram.classList.add("is-on");
+    weddingText.classList.remove("is-on");
+    weddingText.classList.add("is-off");
+    weddingText.setAttribute("aria-hidden","true");
+
     if (isMobile()) siteContent.classList.remove("is-visible");
   }
 
   function unlockUI(){
     protectedLinks.forEach(l => l.classList.remove("locked-link"));
+
+    // fade password out smoothly
     pwWrap.classList.add("is-hidden");
-    weddingDate.classList.remove("is-hidden");
-    weddingText.style.display = "block";
-    monogram.style.display = "none";
+
+    // crossfade swap (slight delay so it feels luxe)
+    setTimeout(() => {
+      monogram.classList.remove("is-on");
+      monogram.classList.add("is-off");
+      weddingText.classList.remove("is-off");
+      weddingText.classList.add("is-on");
+      weddingText.setAttribute("aria-hidden","false");
+    }, 120);
+
     if (isMobile()) siteContent.classList.add("is-visible");
   }
 
