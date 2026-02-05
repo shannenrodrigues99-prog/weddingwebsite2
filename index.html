@@ -105,7 +105,7 @@
     /* Wedding text (after unlock) */
     .wedding-text{
       display:none;
-      margin-bottom: 22px;
+      margin-bottom:22px;
     }
 
     .wedding-overline{
@@ -114,13 +114,18 @@
       letter-spacing:0.36em;
       text-transform:uppercase;
       opacity:.8;
-      margin-bottom:10px;
+      margin-bottom:14px;
     }
 
-    .wedding-names{
-      font-size: clamp(28px, 4vw, 44px);
-      font-weight:400;
-      letter-spacing:0.02em;
+    .wedding-names-img{
+      width: clamp(260px, 50vw, 520px);
+      margin: 0 auto;
+    }
+
+    .wedding-names-img img{
+      width:100%;
+      height:auto;
+      display:block;
     }
 
     .date{
@@ -230,22 +235,24 @@
   <div class="hero-wrap">
     <div class="home-center">
 
-      <!-- Monogram (locked state) -->
+      <!-- Monogram (locked) -->
       <div class="monogram" id="monogram">
         <img src="monogram1.png" alt="Monogram">
       </div>
 
-      <!-- Wedding text (unlocked state) -->
+      <!-- Wedding text (unlocked) -->
       <div class="wedding-text" id="weddingText">
         <div class="wedding-overline">THE WEDDING OF</div>
-        <div class="wedding-names">Shannen &amp; Samarth</div>
+        <div class="wedding-names-img">
+          <img src="names.png" alt="Shannen & Samarth">
+        </div>
       </div>
 
       <div class="date is-hidden" id="weddingDate">27 · 02 · 27</div>
 
       <div class="pw-wrap" id="pwWrap">
         <div class="pw-row">
-          <input id="pwInput" class="pw-input" type="password" placeholder="Enter password to view details" autocomplete="off">
+          <input id="pwInput" class="pw-input" type="password" placeholder="Enter password" autocomplete="off">
           <button id="pwBtn" class="pw-btn">Enter</button>
         </div>
         <div class="pw-error" id="pwError"></div>
