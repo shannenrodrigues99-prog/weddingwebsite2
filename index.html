@@ -13,15 +13,14 @@
   <style>
     *{ margin:0; padding:0; box-sizing:border-box; }
 
-    /* 🔒 GLOBAL NO SCROLL */
-html, body{
-  width:100%;
-  height:100%;
-  overflow:hidden;
-  overscroll-behavior:none;
-  position:fixed;   /* 🔒 critical — prevents post-unlock scroll */
-  inset:0;
-}
+    /* ===== GLOBAL: NO SCROLL EVER ===== */
+    html, body{
+      width:100%;
+      height:100%;
+      overflow:hidden;
+      overscroll-behavior:none;
+      -webkit-overflow-scrolling: auto;
+    }
 
     body{
       font-family:"Playfair Display", serif;
@@ -29,7 +28,7 @@ html, body{
       color:#fff;
     }
 
-    /* ===== NAV ===== */
+    /* ===== NAV (HIDDEN UNTIL UNLOCKED) ===== */
     .topnav{
       position:fixed;
       top:30px;
@@ -44,6 +43,7 @@ html, body{
       letter-spacing:0.42em;
       font-size:10px;
       z-index:20;
+      color:#fff;
     }
     .topnav.show{ display:flex; }
 
@@ -60,9 +60,9 @@ html, body{
     .topnav .left{ display:flex; gap:52px; }
 
     .topnav a{
-      color:#fff;
+      color:inherit;
       text-decoration:none;
-      opacity:0.6;
+      opacity:0.60;
       transition:opacity .35s ease;
     }
     .topnav a:hover{ opacity:0.88; }
@@ -75,19 +75,19 @@ html, body{
       letter-spacing:0.32em;
     }
 
-    /* ===== HERO ===== */
-.hero{
-  height:100vh;     /* desktop */
-  height:100dvh;    /* iOS */
-  width:100%;
-  overflow:hidden;  /* 🔒 prevents internal scroll */
-  background:url("hero.jpg") center center / cover no-repeat;
-  position:relative;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-}
+    /* ===== HERO (FULL VIEWPORT, NO INTERNAL SCROLL) ===== */
+    .hero{
+      height:100vh;
+      height:100dvh;               /* iOS-safe viewport */
+      width:100%;
+      overflow:hidden;             /* no internal scroll */
+      background:url("hero.jpg") center center / cover no-repeat;
+      position:relative;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+    }
 
     .hero::after{
       content:"";
@@ -103,7 +103,7 @@ html, body{
       display:flex;
       flex-direction:column;
       align-items:center;
-      transform:translateY(-8px);
+      transform:translateY(-8px);  /* optical centering desktop */
     }
 
     /* ===== MONOGRAM ===== */
@@ -123,6 +123,7 @@ html, body{
 
     .pw-input{
       width:360px;
+      max-width:72vw;
       height:48px;
       padding:0 22px;
       border-radius:999px;
@@ -140,9 +141,7 @@ html, body{
       outline:none;
     }
 
-    .pw-input::placeholder{
-      color:rgba(255,255,255,0.65);
-    }
+    .pw-input::placeholder{ color:rgba(255,255,255,0.65); }
 
     .pw-btn{
       width:104px;
@@ -163,7 +162,6 @@ html, body{
       color:#fff;
       cursor:pointer;
     }
-
     .pw-btn:hover{ background:rgba(255,255,255,0.12); }
 
     .pw-hint{
@@ -184,27 +182,29 @@ html, body{
       .pw-input{ width:420px; }
     }
 
-    /* ===== MOBILE (SAFE AREA + NO SCROLL) ===== */
+    /* ===== MOBILE (SAFE AREA + SHOW EVERYTHING AFTER UNLOCK) ===== */
     @media (max-width:768px){
+      /* NAV respects safe area */
       .topnav{
-        top:calc(18px + env(safe-area-inset-top));
+        top:calc(14px + env(safe-area-inset-top));
         width:100%;
-        padding:0 18px;
+        padding:0 16px;
         flex-direction:column;
+        align-items:center;
         gap:10px;
         font-size:9px;
         letter-spacing:0.32em;
       }
-
       .topnav::after{ bottom:-10px; }
 
+      /* Keep content fully visible on small screens */
       .hero-inner{
         padding:0 16px;
-        transform:translateY(6px); /* move stack DOWN */
+        transform:translateY(18px); /* down so monogram+password sit nicely under nav */
       }
 
       .monogram{
-        width:140px;
+        width:132px;
         opacity:0.92;
       }
 
@@ -215,7 +215,7 @@ html, body{
       }
 
       .pw-input{
-        width:84vw;
+        width:min(84vw, 420px);
         height:44px;
         font-size:13.5px;
         padding:0 18px;
@@ -229,15 +229,10 @@ html, body{
       }
     }
 
-    /* ===== iPhone 16 Pro / Tall Phones ===== */
+    /* ===== iPhone 16 Pro / Tall Phones fine-tune ===== */
     @media (max-width:430px) and (min-height:800px){
-      .hero-inner{
-        transform:translateY(18px);
-      }
-
-      .monogram{
-        width:136px;
-      }
+      .hero-inner{ transform:translateY(26px); } /* ensure everything is visible without scroll */
+      .monogram{ width:128px; }
     }
   </style>
 </head>
@@ -265,7 +260,8 @@ html, body{
           class="pw-input"
           type="password"
           id="passwordInput"
-          placeholder="Type password"
+          placeholder="Enter password"
+          autocomplete="off"
         />
         <button class="pw-btn" onclick="unlockSite()">ENTER</button>
       </div>
@@ -277,28 +273,44 @@ html, body{
   <script>
     const PASSWORD = "ss2027";
 
+    function lockScroll(){
+      // keep scroll locked even after DOM changes (iOS/Safari)
+      document.documentElement.style.overflow = "hidden";
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.height = "100%";
+      document.body.style.height = "100%";
+      window.scrollTo(0,0);
+    }
+
     function unlockSite(){
       const input = document.getElementById("passwordInput").value;
-      const hint = document.getElementById("pwHint");
+      const hint  = document.getElementById("pwHint");
 
       if(input === PASSWORD){
         sessionStorage.setItem("siteUnlocked","1");
         document.getElementById("nav").classList.add("show");
         document.getElementById("passwordWrap").style.display = "none";
         hint.classList.remove("show");
+        lockScroll();
       } else {
         hint.classList.add("show");
       }
     }
 
-    document.addEventListener("keydown", e => {
+    document.addEventListener("keydown", (e) => {
       if(e.key === "Enter") unlockSite();
     });
 
+    // On load: if already unlocked
     if(sessionStorage.getItem("siteUnlocked") === "1"){
       document.getElementById("nav").classList.add("show");
       document.getElementById("passwordWrap").style.display = "none";
     }
+
+    // Always keep scroll locked
+    lockScroll();
+    window.addEventListener("resize", lockScroll);
+    window.addEventListener("orientationchange", lockScroll);
   </script>
 
 </body>
