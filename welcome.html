@@ -28,7 +28,7 @@
       position:fixed;
       inset:0;
       background:#F4F2EE;
-      z-index:0; /* ADDED: keep background behind content */
+      z-index:0;
     }
 
     .topnav{
@@ -108,14 +108,19 @@
       }
     }
 
-    /* ADDED: body content styles so text appears (no other changes) */
+    /* ONLY CHANGE: perfectly centre body text */
     .welcome-wrap{
       position:relative;
       z-index:2;
-      max-width:720px;
-      margin:160px auto 0;
-      padding:0 24px;
+      height:100vh;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
       text-align:center;
+      max-width:720px;
+      margin:0 auto;
+      padding:0 24px;
     }
   </style>
 </head>
@@ -127,7 +132,6 @@
 <nav class="topnav">
   <div class="left">
     <a href="index.html">Home</a>
-    <!-- ONLY CHANGE: Welcome is bold -->
     <a href="welcome.html" style="font-weight:600; opacity:1;">Welcome</a>
     <a href="schedule.html">Schedule</a>
     <a href="faqs.html">FAQs</a>
