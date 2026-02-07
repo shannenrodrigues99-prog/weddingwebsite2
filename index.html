@@ -8,7 +8,7 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Alex+Brush&family=Montserrat:wght@500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Alex+Brush&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
 
   <style>
     *{ margin:0; padding:0; box-sizing:border-box; }
@@ -44,7 +44,7 @@
       justify-content:space-between;
       align-items:center;
       font-family:"Montserrat", sans-serif;
-      font-weight:500;
+      font-weight:400; /* base = NOT bold */
       text-transform:uppercase;
       letter-spacing:0.34em;
       font-size:11px;
@@ -64,21 +64,27 @@
       text-decoration:none;
       opacity:.78;
       transition:opacity .2s ease;
-      position:relative;
+      font-weight:400; /* force regular */
     }
 
     .topnav a:hover{ opacity:1; }
+
+    /* ACTIVE TAB */
+    .topnav a.active{
+      font-weight:600; /* bold */
+      opacity:1;
+    }
 
     /* RSVP */
     .topnav .rsvp{
       padding:10px 18px;
       border:1px solid rgba(255,255,255,.55);
       border-radius:999px;
-      opacity:1;
       letter-spacing:0.34em;
       background:rgba(255,255,255,0.06);
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
+      font-weight:400;
     }
 
     .locked-link{
@@ -117,42 +123,14 @@
 
     #logoAfter{
       width:200%;
-      display:block;
-      margin-left:auto;
-      margin-right:auto;
-    }
-
-    /* ===== BASE SPACING (ALL DEVICES) ===== */
-    .wedding-label{
-      display:block;
-      font-family:"Montserrat", sans-serif;
-      font-size:14px;
-      letter-spacing:0.34em;
-      text-transform:uppercase;
-      margin-bottom:70px;
-      opacity:.85;
-    }
-
-    .wedding-date{
-      display:block;
-      margin-top:50px;
-      font-family:"Montserrat", sans-serif;
-      font-size:16px;
-      letter-spacing:0.12em;
-      opacity:.9;
-    }
-
-    #logoAfter{
-      width:200%;
       position:relative;
       left:50%;
       transform:translateX(-50%);
+      display:block;
     }
 
     /* ===== PASSWORD ===== */
-    .pw-wrap{
-      margin-top:6px;
-    }
+    .pw-wrap{ margin-top:6px; }
 
     .pw-row{
       display:flex;
@@ -162,13 +140,10 @@
     }
 
     .pw-input{
-      -webkit-backdrop-filter: blur(18px) saturate(160%);
       backdrop-filter: blur(18px) saturate(160%);
+      -webkit-backdrop-filter: blur(18px) saturate(160%);
       background: rgba(255,255,255,0.16);
       border:1px solid rgba(255,255,255,0.26);
-      box-shadow:
-        0 14px 34px rgba(0,0,0,0.32),
-        inset 0 1px 0 rgba(255,255,255,0.18);
       color:#fff;
       border-radius:999px;
       height:48px;
@@ -177,33 +152,22 @@
       outline:none;
       caret-color:#fff;
       font-size:14px;
-      line-height:1;
-    }
-
-    .pw-input::placeholder{
-      color:#fff;
-      opacity:.9;
     }
 
     .pw-btn{
-      -webkit-backdrop-filter: blur(18px) saturate(160%);
       backdrop-filter: blur(18px) saturate(160%);
+      -webkit-backdrop-filter: blur(18px) saturate(160%);
       background: rgba(255,255,255,0.14);
       border:1px solid rgba(255,255,255,0.28);
-      box-shadow:
-        0 12px 30px rgba(0,0,0,0.28),
-        inset 0 1px 0 rgba(255,255,255,0.20);
       color:#fff;
       border-radius:999px;
       height:48px;
       padding:0 22px;
       font-family:"Montserrat", sans-serif;
-      font-weight:500;
       font-size:11px;
       letter-spacing:0.34em;
       text-transform:uppercase;
       cursor:pointer;
-      opacity:.95;
     }
 
     .pw-error{
@@ -211,104 +175,9 @@
       min-height:14px;
       font-size:12px;
       text-align:center;
-      opacity:.9;
     }
 
     .is-hidden{ display:none !important; }
-
-    /* ===== MOBILE ===== */
-    @media (max-width:768px){
-      .topnav{
-        top: calc(25px + env(safe-area-inset-top));
-        width:100%;
-        padding:0 20px 16px;
-        flex-direction:column;
-        align-items:center;
-        gap:16px;
-        font-size:10px;
-        letter-spacing:0.28em;
-        border-bottom:1px solid rgba(255,255,255,.20);
-      }
-
-      .topnav .left{
-        gap:24px;
-        justify-content:center;
-        flex-wrap:wrap;
-      }
-
-      .home-center{
-        gap:14px;
-        padding:0 16px;
-      }
-
-      .monogram{
-        width: min(150px, 40vw);
-      }
-
-      /* MOBILE-ONLY HERO SPACING */
-      .scene-home .wedding-label{
-        margin-bottom:10px;
-      }
-
-      .scene-home .wedding-date{
-        margin-top:10px;
-      }
-
-      .pw-row{
-        flex-direction:column;
-        gap:10px;
-      }
-
-      .pw-input,
-      .pw-btn{
-        height:44px;
-      }
-
-      .pw-input{
-        width: min(82vw, 360px);
-        text-align:center;
-        font-family:"Montserrat", sans-serif;
-        font-weight:500;
-        font-size:16px;
-        letter-spacing:0.12em;
-        padding:0 18px;
-      }
-
-      .pw-btn{
-        width: min(82vw, 360px);
-        font-size:11px;
-        letter-spacing:0.34em;
-      }
-    }
-
-    /* ===== DESKTOP ===== */
-    @media (min-width:769px){
-      .monogram{
-        margin-bottom:28px;
-      }
-
-      .pw-input{
-        width: clamp(260px, 26vw, 360px);
-      }
-
-      .topnav{
-        justify-content:flex-start;
-      }
-
-      .topnav .rsvp{
-        margin-left:56px;
-        padding:4px 14px;
-      }
-
-      /* DESKTOP-ONLY HERO SPACING */
-      .scene-home .wedding-label{
-        margin-bottom:5px;
-      }
-
-      .scene-home .wedding-date{
-        margin-top:5px;
-      }
-    }
   </style>
 </head>
 
@@ -319,7 +188,7 @@
   <div id="siteNav" class="is-hidden">
     <nav class="topnav">
       <div class="left">
-        <a href="index.html">Home</a>
+        <a href="index.html" class="active">Home</a>
         <a data-protected href="welcome.html">Welcome</a>
         <a data-protected href="schedule.html">Schedule</a>
         <a data-protected href="faqs.html">FAQs</a>
@@ -332,17 +201,11 @@
     <div class="home-center">
       <div class="monogram">
         <img id="logoBefore" src="monogram1.png" alt="Monogram">
-
-        <div id="logoAfterWrap" class="is-hidden">
-          <span class="wedding-label">THE WEDDING OF</span>
-          <img id="logoAfter" src="names.png" alt="Names">
-          <span class="wedding-date">27.02.27</span>
-        </div>
       </div>
 
       <div class="pw-wrap" id="pwWrap">
         <div class="pw-row">
-          <input id="pwInput" class="pw-input" type="password" placeholder="Type password here" autocomplete="off">
+          <input id="pwInput" class="pw-input" type="password" placeholder="Type password here">
           <button id="pwBtn" class="pw-btn">Enter</button>
         </div>
         <div class="pw-error" id="pwError"></div>
@@ -363,23 +226,16 @@
   const protectedLinks = document.querySelectorAll("[data-protected]");
   const siteNav = document.getElementById("siteNav");
 
-  const logoBefore = document.getElementById("logoBefore");
-  const logoAfterWrap = document.getElementById("logoAfterWrap");
-
   function lockUI(){
     protectedLinks.forEach(l => l.classList.add("locked-link"));
     pwWrap.classList.remove("is-hidden");
     siteNav.classList.add("is-hidden");
-    logoBefore.classList.remove("is-hidden");
-    logoAfterWrap.classList.add("is-hidden");
   }
 
   function unlockUI(){
     protectedLinks.forEach(l => l.classList.remove("locked-link"));
     pwWrap.classList.add("is-hidden");
     siteNav.classList.remove("is-hidden");
-    logoBefore.classList.add("is-hidden");
-    logoAfterWrap.classList.remove("is-hidden");
   }
 
   if (sessionStorage.getItem(UNLOCK_KEY) === "1") unlockUI();
