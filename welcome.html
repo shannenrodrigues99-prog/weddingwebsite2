@@ -15,7 +15,7 @@
 
     html, body{
       height:100%;
-      background:#F4F2EE; /* off-white editorial */
+      background:#F4F2EE;
     }
 
     body{
@@ -24,14 +24,12 @@
       color:#2B2B2B;
     }
 
-    /* ===== BACKGROUND ===== */
     .scene-home{
       position:fixed;
       inset:0;
-      background:#F4F2EE; /* off-white editorial */
+      background:#F4F2EE;
     }
 
-    /* ===== NAV ===== */
     .topnav{
       position:fixed;
       top:28px;
@@ -78,7 +76,6 @@
       color:#2B2B2B;
     }
 
-    /* ===== MOBILE ===== */
     @media (max-width:768px){
       .topnav{
         top: calc(25px + env(safe-area-inset-top));
@@ -99,7 +96,6 @@
       }
     }
 
-    /* ===== DESKTOP ===== */
     @media (min-width:769px){
       .topnav{
         justify-content:flex-start;
@@ -120,7 +116,8 @@
 <nav class="topnav">
   <div class="left">
     <a href="index.html">Home</a>
-    <a href="welcome.html" class="active">Welcome</a>
+    <!-- ONLY CHANGE: Welcome is bold -->
+    <a href="welcome.html" style="font-weight:600; opacity:1;">Welcome</a>
     <a href="schedule.html">Schedule</a>
     <a href="faqs.html">FAQs</a>
   </div>
