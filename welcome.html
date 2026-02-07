@@ -5,37 +5,146 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Welcome | Shannen & Samarth</title>
 
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="styles.css" />
+  <style>
+    *{ margin:0; padding:0; box-sizing:border-box; }
+
+    html, body{
+      height:100%;
+      background:#ffffff;
+      color:#000;
+    }
+
+    body{
+      font-family:"Playfair Display", serif;
+    }
+
+    /* ===== NAV ===== */
+    .topnav{
+      position:fixed;
+      top:28px;
+      left:50%;
+      transform:translateX(-50%);
+      width:calc(100% - 80px);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-family:"Montserrat", sans-serif;
+      text-transform:uppercase;
+      letter-spacing:0.34em;
+      font-size:11px;
+      padding-bottom:18px;
+      border-bottom:1px solid rgba(0,0,0,.18);
+      z-index:10;
+    }
+
+    .topnav .left{
+      display:flex;
+      gap:56px;
+    }
+
+    .topnav a{
+      text-decoration:none;
+      color:#000;
+      opacity:.75;
+      transition:opacity .2s ease;
+    }
+
+    .topnav a:hover{ opacity:1; }
+
+    .topnav .rsvp{
+      padding:8px 18px;
+      border:1px solid rgba(0,0,0,.35);
+      border-radius:999px;
+      letter-spacing:0.34em;
+      opacity:.85;
+    }
+
+    /* ===== PAGE CONTENT ===== */
+    .page{
+      min-height:100vh;
+      padding:160px 20px 100px;
+      display:flex;
+      justify-content:center;
+    }
+
+    .content{
+      max-width:760px;
+      text-align:center;
+    }
+
+    .content h1{
+      font-size:42px;
+      font-weight:400;
+      margin-bottom:28px;
+    }
+
+    .content p{
+      font-size:18px;
+      line-height:1.6;
+      opacity:.9;
+    }
+
+    /* ===== MOBILE ===== */
+    @media (max-width:768px){
+      .topnav{
+        top: calc(24px + env(safe-area-inset-top));
+        width:100%;
+        padding:0 20px 16px;
+        flex-direction:column;
+        gap:14px;
+        font-size:10px;
+        letter-spacing:0.28em;
+      }
+
+      .topnav .left{
+        gap:24px;
+        flex-wrap:wrap;
+        justify-content:center;
+      }
+
+      .page{
+        padding:140px 16px 80px;
+      }
+
+      .content h1{
+        font-size:32px;
+      }
+
+      .content p{
+        font-size:16px;
+      }
+    }
+  </style>
 </head>
+
 <body>
-  <nav class="topnav" aria-label="Primary navigation">
-    <a href="home.html">Home</a>
+
+<nav class="topnav">
+  <div class="left">
+    <a href="index.html">Home</a>
     <a href="welcome.html">Welcome</a>
     <a href="schedule.html">Schedule</a>
     <a href="faqs.html">FAQs</a>
-    <a class="rsvp" href="rsvp.html">RSVP</a>
-  </nav>
+  </div>
+  <a class="rsvp" href="rsvp.html">RSVP</a>
+</nav>
 
-  <main class="page container">
-    <h1 class="editorial-title h1">Welcome</h1>
-
-    <p class="body-copy">
-      As we count down to our wedding, this website will share the important details,
-      plans, and moments leading up to the celebration. We can’t wait to share this
-      special chapter and create unforgettable memories together.
+<section class="page">
+  <div class="content">
+    <h1>Welcome</h1>
+    <p>
+      As we count down to our wedding, this website will share the important
+      details, plans, and moments leading up to the celebration.  
+      We can’t wait to share this special chapter and create unforgettable
+      memories together.
     </p>
+  </div>
+</section>
 
-    <div class="rule"></div>
-
-    <p class="body-copy" style="opacity:.62;">With love,</p>
-    <p class="editorial-title h2" style="margin-top:18px; letter-spacing:.02em;">Shannen &amp; Samarth</p>
-  </main>
-
-  <script src="site.js"></script>
 </body>
 </html>
-
