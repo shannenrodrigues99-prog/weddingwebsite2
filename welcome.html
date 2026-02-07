@@ -27,8 +27,8 @@
     .scene-home{
       position:fixed;
       inset:0;
-      background:#F4F2EE;
-      z-index:0;
+      background:#FFFFFF;
+      pointer-events:none; /* ONLY CHANGE: allow nav clicks */
     }
 
     .topnav{
@@ -108,7 +108,7 @@
       }
     }
 
-    /* ONLY CHANGE: perfectly centre body text */
+    /* ONLY CHANGE FROM BEFORE: spacing between Welcome and paragraph */
     .welcome-wrap{
       position:relative;
       z-index:2;
@@ -121,6 +121,10 @@
       max-width:720px;
       margin:0 auto;
       padding:0 24px;
+    }
+
+    .welcome-title{
+      margin-bottom:52px; /* spacing only */
     }
   </style>
 </head>
