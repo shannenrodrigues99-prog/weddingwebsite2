@@ -1,1 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shannen & Samarth</title>
 
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Montserrat:wght@500;600&display=swap" rel="stylesheet">
+
+  <style>
+    *{ margin:0; padding:0; box-sizing:border-box; }
+
+    html, body{
+      height:100%;
+      background:#FFFFFF;
+    }
+
+    body{
+      font-family:"Playfair Display", serif;
+      overflow:hidden;
+      color:#2B2B2B;
+    }
+
+    .scene-home{
+      position:fixed;
+      inset:0;
+      background:#FFFFFF; /* ✅ now white */
+    }
+
+    .topnav{
+      position:fixed;
+      top:28px;
+      left:50%;
+      transform:translateX(-50%);
+      width:calc(100% - 80px);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-family:"Montserrat", sans-serif;
+      font-weight:500;
+      text-transform:uppercase;
+      letter-spacing:0.34em;
+      font-size:11px;
+      z-index:10;
+      padding-bottom:18px;
+      color:#2B2B2B;
+      border-bottom:1px solid rgba(43,43,43,.22);
+    }
+
+    .topnav .left{
+      display:flex;
+      gap:56px;
+      align-items:center;
+    }
+
+    .topnav a{
+      color:#2B2B2B;
+      text-decoration:none;
+      opacity:.78;
+      transition:opacity .2s ease;
+    }
+
+    .topnav a:hover{ opacity:1; }
+
+    .topnav .rsvp{
+      padding:10px 18px;
+      border:1px solid rgba(43,43,43,.55);
+      border-radius:999px;
+      letter-spacing:0.34em;
+      background:rgba(255,255,255,0.6);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      color:#2B2B2B;
+    }
+
+    @media (max-width:768px){
+      .topnav{
+        top: calc(25px + env(safe-area-inset-top));
+        width:100%;
+        padding:0 20px 16px;
+        flex-direction:column;
+        align-items:center;
+        gap:16px;
+        font-size:10px;
+        letter-spacing:0.28em;
+        border-bottom:1px solid rgba(43,43,43,.20);
+      }
+
+      .topnav .left{
+        gap:24px;
+        justify-content:center;
+        flex-wrap:wrap;
+      }
+    }
+
+    @media (min-width:769px){
+      .topnav{
+        justify-content:flex-start;
+      }
+
+      .topnav .rsvp{
+        margin-left:56px;
+        padding:4px 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<section class="scene-home">
+
+  <nav class="topnav">
+    <div class="left">
+      <a href="index.html">Home</a>
+      <a href="welcome.html">Welcome</a>
+      <a href="schedule.html">Schedule</a>
+      <a href="faqs.html">FAQs</a>
+    </div>
+    <a class="rsvp" href="rsvp.html" style="font-weight:600; opacity:1;">RSVP</a>
+  </nav>
+
+</section>
+
+</body>
+</html>
