@@ -27,10 +27,11 @@
     .scene-home{
       position:fixed;
       inset:0;
-      background:#FFFFFF; /* ✅ now white */
-      z-index:0;         /* ✅ ONLY FIX: keep background behind */
+      background:#FFFFFF;
+      z-index:0;
     }
 
+    /* ===== NAV ===== */
     .topnav{
       position:fixed;
       top:28px;
@@ -83,11 +84,9 @@
         width:100%;
         padding:0 20px 16px;
         flex-direction:column;
-        align-items:center;
         gap:16px;
         font-size:10px;
         letter-spacing:0.28em;
-        border-bottom:1px solid rgba(43,43,43,.20);
       }
 
       .topnav .left{
@@ -108,7 +107,7 @@
       }
     }
 
-    /* ONLY CHANGE: perfectly centre body text */
+    /* ===== WELCOME ===== */
     .welcome-wrap{
       position:relative;
       z-index:2;
@@ -121,10 +120,16 @@
       max-width:720px;
       margin:0 auto;
       padding:0 24px;
+      pointer-events:none; /* ✅ FIX: stop blocking nav */
+    }
+
+    /* re-enable interaction for actual content */
+    .welcome-wrap *{
+      pointer-events:auto;
     }
 
     .welcome-title{
-      margin-bottom:52px; /* spacing only */
+      margin-bottom:52px;
     }
   </style>
 </head>
@@ -132,17 +137,15 @@
 <body>
 
 <section class="scene-home">
-
-<nav class="topnav">
-  <div class="left">
-    <a href="index.html">Home</a>
-    <a href="welcome.html" style="font-weight:600; opacity:1;">Welcome</a>
-    <a href="schedule.html">Schedule</a>
-    <a href="faqs.html">FAQs</a>
-  </div>
-  <a class="rsvp" href="rsvp.html">RSVP</a>
-</nav>
-
+  <nav class="topnav">
+    <div class="left">
+      <a href="index.html">Home</a>
+      <a href="welcome.html" style="font-weight:600; opacity:1;">Welcome</a>
+      <a href="schedule.html">Schedule</a>
+      <a href="faqs.html">FAQs</a>
+    </div>
+    <a class="rsvp" href="rsvp.html">RSVP</a>
+  </nav>
 </section>
 
 <main class="welcome-wrap">
