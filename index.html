@@ -8,189 +8,305 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Alex+Brush&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Alex+Brush&family=Montserrat:wght@500;600&display=swap" rel="stylesheet">
 
   <style>
     *{ margin:0; padding:0; box-sizing:border-box; }
 
-    /* ===== HARD LOCK: NO SCROLL / NO PAN ===== */
     html, body{
-      width:100%;
       height:100%;
-      overflow:hidden;
-      overscroll-behavior:none;
-      touch-action:none;
+      background:#000;
     }
 
     body{
       font-family:"Playfair Display", serif;
-      background:#000;
+      overflow:hidden;
       color:#fff;
     }
 
-    img{ max-width:100%; height:auto; }
-
-    /* ===== VIEWPORT CONTAINER ===== */
-    .viewport{
-      height:100vh;
-      height:100dvh;
-      width:100%;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-      align-items:center;
-      position:relative;
-      background:url("hero.jpg") center / cover no-repeat;
-    }
-
-    .viewport::after{
-      content:"";
-      position:absolute;
+    /* ===== BACKGROUND ===== */
+    .scene-home{
+      position:fixed;
       inset:0;
-      background:rgba(0,0,0,0.25);
-      z-index:0;
+      background:
+        linear-gradient(rgba(0,0,0,.14), rgba(0,0,0,.14)),
+        url("hero.jpg") center/cover no-repeat;
     }
 
     /* ===== NAV ===== */
     .topnav{
-      position:relative;
-      z-index:2;
-      margin-top:30px;
+      position:fixed;
+      top:28px;
+      left:50%;
+      transform:translateX(-50%);
       width:calc(100% - 80px);
-      display:none;
+      display:flex;
       justify-content:space-between;
       align-items:center;
       font-family:"Montserrat", sans-serif;
+      font-weight:500;
       text-transform:uppercase;
-      letter-spacing:0.36em;
+      letter-spacing:0.34em;
       font-size:11px;
-      color:#fff;
+      z-index:10;
+      padding-bottom:18px;
+      border-bottom:1px solid rgba(255,255,255,.22);
     }
-    .topnav.show{ display:flex; }
 
     .topnav .left{
       display:flex;
-      gap:44px;
-      flex-wrap:wrap;
-      justify-content:center;
+      gap:56px;
+      align-items:center;
     }
 
     .topnav a{
       color:#fff;
       text-decoration:none;
-      opacity:0.65;
-      white-space:nowrap;
+      opacity:.78;
+      transition:opacity .2s ease;
+      position:relative;
     }
-    .topnav a.active{ opacity:1; }
 
+    .topnav a:hover{ opacity:1; }
+
+    /* RSVP */
     .topnav .rsvp{
       padding:10px 18px;
-      border:1px solid rgba(255,255,255,0.35);
-      letter-spacing:0.32em;
+      border:1px solid rgba(255,255,255,.55);
+      border-radius:999px;
+      opacity:1;
+      letter-spacing:0.34em;
+      background:rgba(255,255,255,0.06);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+
+    .locked-link{
+      pointer-events:none;
+      opacity:.30 !important;
     }
 
     /* ===== CENTER CONTENT ===== */
-    .center{
-      z-index:2;
+    .hero-wrap{
+      position:relative;
+      height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .home-center{
       display:flex;
       flex-direction:column;
       align-items:center;
       justify-content:center;
-      flex:1;
       text-align:center;
-      padding:0 16px;
+      gap:22px;
     }
 
     .monogram{
-      width:200px;
-      max-width:60vw;
-      opacity:0.88;
+      width: clamp(150px, 17vw, 250px);
+      opacity:.96;
     }
 
-    .password-wrap{
-      margin-top:32px;
+    .monogram img{
+      width:100%;
+      height:auto;
+      display:block;
+    }
+
+    #logoAfter{
+      width:200%;
+      display:block;
+      margin-left:auto;
+      margin-right:auto;
+    }
+
+    /* ===== BASE SPACING (ALL DEVICES) ===== */
+    .wedding-label{
+      display:block;
+      font-family:"Montserrat", sans-serif;
+      font-size:14px;
+      letter-spacing:0.34em;
+      text-transform:uppercase;
+      margin-bottom:70px;
+      opacity:.85;
+    }
+
+    .wedding-date{
+      display:block;
+      margin-top:50px;
+      font-family:"Montserrat", sans-serif;
+      font-size:16px;
+      letter-spacing:0.12em;
+      opacity:.9;
+    }
+
+    #logoAfter{
+      width:200%;
+      position:relative;
+      left:50%;
+      transform:translateX(-50%);
+    }
+
+    /* ===== PASSWORD ===== */
+    .pw-wrap{
+      margin-top:6px;
+    }
+
+    .pw-row{
       display:flex;
-      gap:16px;
       align-items:center;
       justify-content:center;
+      gap:16px;
     }
 
     .pw-input{
-      width:320px;
-      max-width:72vw;
-      height:46px;
-      padding:0 22px;
-      border-radius:999px;
-      font-family:"Montserrat", sans-serif;
-      font-size:14px;
-      background:rgba(255,255,255,0.08);
-      border:1px solid rgba(255,255,255,0.22);
+      -webkit-backdrop-filter: blur(18px) saturate(160%);
+      backdrop-filter: blur(18px) saturate(160%);
+      background: rgba(255,255,255,0.16);
+      border:1px solid rgba(255,255,255,0.26);
+      box-shadow:
+        0 14px 34px rgba(0,0,0,0.32),
+        inset 0 1px 0 rgba(255,255,255,0.18);
       color:#fff;
+      border-radius:999px;
+      height:48px;
+      width: clamp(320px, 34vw, 460px);
+      padding:0 20px;
       outline:none;
-      backdrop-filter:blur(18px) saturate(160%);
+      caret-color:#fff;
+      font-size:14px;
+      line-height:1;
+    }
+
+    .pw-input::placeholder{
+      color:#fff;
+      opacity:.9;
     }
 
     .pw-btn{
-      width:100px;
-      height:46px;
-      border-radius:999px;
-      font-family:"Montserrat", sans-serif;
-      font-size:10px;
-      letter-spacing:0.36em;
-      background:rgba(255,255,255,0.08);
-      border:1px solid rgba(255,255,255,0.22);
+      -webkit-backdrop-filter: blur(18px) saturate(160%);
+      backdrop-filter: blur(18px) saturate(160%);
+      background: rgba(255,255,255,0.14);
+      border:1px solid rgba(255,255,255,0.28);
+      box-shadow:
+        0 12px 30px rgba(0,0,0,0.28),
+        inset 0 1px 0 rgba(255,255,255,0.20);
       color:#fff;
-      cursor:pointer;
-      backdrop-filter:blur(18px) saturate(160%);
-    }
-
-    .pw-hint{
-      margin-top:10px;
+      border-radius:999px;
+      height:48px;
+      padding:0 22px;
       font-family:"Montserrat", sans-serif;
+      font-weight:500;
       font-size:11px;
-      letter-spacing:0.18em;
-      opacity:0;
+      letter-spacing:0.34em;
+      text-transform:uppercase;
+      cursor:pointer;
+      opacity:.95;
     }
-    .pw-hint.show{ opacity:1; }
 
-    /* ===== MOBILE MATCH (FAQs proportions) ===== */
+    .pw-error{
+      margin-top:10px;
+      min-height:14px;
+      font-size:12px;
+      text-align:center;
+      opacity:.9;
+    }
+
+    .is-hidden{ display:none !important; }
+
+    /* ===== MOBILE ===== */
     @media (max-width:768px){
       .topnav{
-        margin-top:45px;
+        top: calc(25px + env(safe-area-inset-top));
         width:100%;
-        padding:0 20px;
+        padding:0 20px 16px;
         flex-direction:column;
+        align-items:center;
         gap:16px;
         font-size:10px;
         letter-spacing:0.28em;
+        border-bottom:1px solid rgba(255,255,255,.20);
       }
 
       .topnav .left{
         gap:24px;
+        justify-content:center;
+        flex-wrap:wrap;
       }
 
-      .topnav .rsvp{
-        padding:8px 16px;
+      .home-center{
+        gap:14px;
+        padding:0 16px;
       }
 
       .monogram{
-        width:132px;
+        width: min(150px, 40vw);
       }
 
-      .password-wrap{
+      /* MOBILE-ONLY HERO SPACING */
+      .scene-home .wedding-label{
+        margin-bottom:10px;
+      }
+
+      .scene-home .wedding-date{
+        margin-top:10px;
+      }
+
+      .pw-row{
         flex-direction:column;
         gap:10px;
-        margin-top:14px;
+      }
+
+      .pw-input,
+      .pw-btn{
+        height:44px;
       }
 
       .pw-input{
-        width:84vw;
-        height:44px;
+        width: min(82vw, 360px);
+        text-align:center;
+        font-family:"Montserrat", sans-serif;
+        font-weight:500;
+        font-size:16px;
+        letter-spacing:0.12em;
+        padding:0 18px;
       }
 
       .pw-btn{
-        width:150px;
-        height:44px;
+        width: min(82vw, 360px);
+        font-size:11px;
+        letter-spacing:0.34em;
+      }
+    }
+
+    /* ===== DESKTOP ===== */
+    @media (min-width:769px){
+      .monogram{
+        margin-bottom:28px;
+      }
+
+      .pw-input{
+        width: clamp(260px, 26vw, 360px);
+      }
+
+      .topnav{
+        justify-content:flex-start;
+      }
+
+      .topnav .rsvp{
+        margin-left:56px;
+        padding:4px 14px;
+      }
+
+      /* DESKTOP-ONLY HERO SPACING */
+      .scene-home .wedding-label{
+        margin-bottom:5px;
+      }
+
+      .scene-home .wedding-date{
+        margin-top:5px;
       }
     }
   </style>
@@ -198,64 +314,94 @@
 
 <body>
 
-  <div class="viewport">
+<section class="scene-home" id="sceneHome">
 
-    <!-- NAV -->
-    <nav class="topnav" id="nav">
+  <div id="siteNav" class="is-hidden">
+    <nav class="topnav">
       <div class="left">
-        <a href="index.html" class="active">Home</a>
-        <a href="welcome.html">Welcome</a>
-        <a href="schedule.html">Schedule</a>
-        <a href="faqs.html">FAQs</a>
+        <a href="index.html">Home</a>
+        <a data-protected href="welcome.html">Welcome</a>
+        <a data-protected href="schedule.html">Schedule</a>
+        <a data-protected href="faqs.html">FAQs</a>
       </div>
-      <a class="rsvp" href="rsvp.html">RSVP</a>
+      <a data-protected class="rsvp" href="rsvp.html">RSVP</a>
     </nav>
-
-    <!-- CENTER -->
-    <div class="center">
-      <img src="monogram1.png" alt="Shannen & Samarth monogram" class="monogram">
-
-      <div class="password-wrap" id="passwordWrap">
-        <input
-          class="pw-input"
-          type="password"
-          id="passwordInput"
-          placeholder="Enter password"
-        />
-        <button class="pw-btn" onclick="unlockSite()">ENTER</button>
-      </div>
-
-      <div class="pw-hint" id="pwHint">Incorrect password</div>
-    </div>
-
   </div>
 
-  <script>
-    const PASSWORD = "ss2027";
+  <div class="hero-wrap">
+    <div class="home-center">
+      <div class="monogram">
+        <img id="logoBefore" src="monogram1.png" alt="Monogram">
 
-    function unlockSite(){
-      const input = document.getElementById("passwordInput").value;
-      const hint  = document.getElementById("pwHint");
+        <div id="logoAfterWrap" class="is-hidden">
+          <span class="wedding-label">THE WEDDING OF</span>
+          <img id="logoAfter" src="names.png" alt="Names">
+          <span class="wedding-date">27.02.27</span>
+        </div>
+      </div>
 
-      if(input === PASSWORD){
-        sessionStorage.setItem("siteUnlocked","1");
-        document.getElementById("nav").classList.add("show");
-        document.getElementById("passwordWrap").style.display = "none";
-        hint.classList.remove("show");
-      } else {
-        hint.classList.add("show");
-      }
+      <div class="pw-wrap" id="pwWrap">
+        <div class="pw-row">
+          <input id="pwInput" class="pw-input" type="password" placeholder="Type password here" autocomplete="off">
+          <button id="pwBtn" class="pw-btn">Enter</button>
+        </div>
+        <div class="pw-error" id="pwError"></div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<script>
+  const UNLOCK_KEY = "siteUnlocked";
+  const SITE_PASSWORD = "ss2027";
+
+  const pwInput = document.getElementById("pwInput");
+  const pwBtn = document.getElementById("pwBtn");
+  const pwWrap = document.getElementById("pwWrap");
+  const pwError = document.getElementById("pwError");
+  const protectedLinks = document.querySelectorAll("[data-protected]");
+  const siteNav = document.getElementById("siteNav");
+
+  const logoBefore = document.getElementById("logoBefore");
+  const logoAfterWrap = document.getElementById("logoAfterWrap");
+
+  function lockUI(){
+    protectedLinks.forEach(l => l.classList.add("locked-link"));
+    pwWrap.classList.remove("is-hidden");
+    siteNav.classList.add("is-hidden");
+    logoBefore.classList.remove("is-hidden");
+    logoAfterWrap.classList.add("is-hidden");
+  }
+
+  function unlockUI(){
+    protectedLinks.forEach(l => l.classList.remove("locked-link"));
+    pwWrap.classList.add("is-hidden");
+    siteNav.classList.remove("is-hidden");
+    logoBefore.classList.add("is-hidden");
+    logoAfterWrap.classList.remove("is-hidden");
+  }
+
+  if (sessionStorage.getItem(UNLOCK_KEY) === "1") unlockUI();
+  else lockUI();
+
+  function tryUnlock(){
+    if (pwInput.value.trim() === SITE_PASSWORD) {
+      sessionStorage.setItem(UNLOCK_KEY, "1");
+      pwError.textContent = "";
+      unlockUI();
+    } else {
+      pwError.textContent = "Incorrect password.";
+      pwInput.value = "";
+      pwInput.focus();
     }
+  }
 
-    document.addEventListener("keydown", e => {
-      if(e.key === "Enter") unlockSite();
-    });
-
-    if(sessionStorage.getItem("siteUnlocked") === "1"){
-      document.getElementById("nav").classList.add("show");
-      document.getElementById("passwordWrap").style.display = "none";
-    }
-  </script>
+  pwBtn.addEventListener("click", tryUnlock);
+  pwInput.addEventListener("keydown", e => {
+    if (e.key === "Enter") tryUnlock();
+  });
+</script>
 
 </body>
 </html>
