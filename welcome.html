@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shannen & Samarth</title>
+  <title>Welcome | Shannen & Samarth</title>
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,16 +20,10 @@
 
     body{
       font-family:"Playfair Display", serif;
-      overflow:hidden;
       color:#2B2B2B;
     }
 
-    .scene-home{
-      position:fixed;
-      inset:0;
-      background:#F4F2EE;
-    }
-
+    /* ===== NAV ===== */
     .topnav{
       position:fixed;
       top:28px;
@@ -46,8 +40,9 @@
       font-size:11px;
       z-index:10;
       padding-bottom:18px;
-      color:#2B2B2B;
       border-bottom:1px solid rgba(43,43,43,.22);
+      color:#2B2B2B;
+      background:#F4F2EE;
     }
 
     .topnav .left{
@@ -76,6 +71,39 @@
       color:#2B2B2B;
     }
 
+    /* ===== WELCOME CONTENT ===== */
+    .welcome-wrap{
+      max-width:820px;
+      margin:160px auto 120px;
+      padding:0 24px;
+    }
+
+    .welcome-title{
+      font-family:"Playfair Display", serif;
+      font-size:44px;
+      font-weight:500;
+      margin-bottom:36px;
+    }
+
+    .welcome-text{
+      font-family:"Montserrat", sans-serif;
+      font-size:18px;
+      line-height:1.9;
+      margin-bottom:72px;
+    }
+
+    .welcome-signoff{
+      font-family:"Montserrat", sans-serif;
+      font-size:16px;
+      margin-bottom:28px;
+    }
+
+    .welcome-signature{
+      width:320px;
+      max-width:80%;
+    }
+
+    /* ===== MOBILE ===== */
     @media (max-width:768px){
       .topnav{
         top: calc(25px + env(safe-area-inset-top));
@@ -86,7 +114,6 @@
         gap:16px;
         font-size:10px;
         letter-spacing:0.28em;
-        border-bottom:1px solid rgba(43,43,43,.20);
       }
 
       .topnav .left{
@@ -94,16 +121,21 @@
         justify-content:center;
         flex-wrap:wrap;
       }
-    }
 
-    @media (min-width:769px){
-      .topnav{
-        justify-content:flex-start;
+      .welcome-wrap{
+        margin-top:140px;
       }
 
-      .topnav .rsvp{
-        margin-left:56px;
-        padding:4px 14px;
+      .welcome-title{
+        font-size:36px;
+      }
+
+      .welcome-text{
+        font-size:16px;
+      }
+
+      .welcome-signature{
+        width:260px;
       }
     }
   </style>
@@ -111,12 +143,10 @@
 
 <body>
 
-<section class="scene-home">
-
 <nav class="topnav">
   <div class="left">
     <a href="index.html">Home</a>
-    <!-- ONLY CHANGE: Welcome is bold -->
+    <!-- ONLY CHANGE: Welcome bold -->
     <a href="welcome.html" style="font-weight:600; opacity:1;">Welcome</a>
     <a href="schedule.html">Schedule</a>
     <a href="faqs.html">FAQs</a>
@@ -124,7 +154,23 @@
   <a class="rsvp" href="rsvp.html">RSVP</a>
 </nav>
 
-</section>
+<main class="welcome-wrap">
+  <h1 class="welcome-title">Welcome</h1>
+
+  <p class="welcome-text">
+    As we count down to our wedding, this website will share the important details,
+    plans, and moments leading up to the celebration. We can’t wait to share this
+    special chapter and create unforgettable memories together.
+  </p>
+
+  <p class="welcome-signoff">With love,</p>
+
+  <img
+    src="signature1.png"
+    alt="Shannen & Samarth signature"
+    class="welcome-signature"
+  >
+</main>
 
 </body>
 </html>
