@@ -8,22 +8,23 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Montserrat:wght@500;600&display=swap" rel="stylesheet">
 
   <style>
     *{ margin:0; padding:0; box-sizing:border-box; }
 
     html, body{
       height:100%;
-      background:#ffffff;
-      color:#000;
+      background:#fff;
     }
 
     body{
       font-family:"Playfair Display", serif;
+      color:#000;
+      overflow:hidden;
     }
 
-    /* ===== NAV ===== */
+    /* ===== NAV (IDENTICAL TO INDEX) ===== */
     .topnav{
       position:fixed;
       top:28px;
@@ -34,89 +35,126 @@
       justify-content:space-between;
       align-items:center;
       font-family:"Montserrat", sans-serif;
+      font-weight:500;
       text-transform:uppercase;
       letter-spacing:0.34em;
       font-size:11px;
-      padding-bottom:18px;
-      border-bottom:1px solid rgba(0,0,0,.18);
       z-index:10;
+      padding-bottom:18px;
+      border-bottom:1px solid rgba(0,0,0,.22);
     }
 
     .topnav .left{
       display:flex;
       gap:56px;
+      align-items:center;
     }
 
     .topnav a{
-      text-decoration:none;
       color:#000;
-      opacity:.75;
+      text-decoration:none;
+      opacity:.78;
       transition:opacity .2s ease;
     }
 
     .topnav a:hover{ opacity:1; }
 
     .topnav .rsvp{
-      padding:8px 18px;
-      border:1px solid rgba(0,0,0,.35);
+      padding:10px 18px;
+      border:1px solid rgba(0,0,0,.55);
       border-radius:999px;
       letter-spacing:0.34em;
-      opacity:.85;
+      background:rgba(0,0,0,0.02);
     }
 
-    /* ===== PAGE CONTENT ===== */
-    .page{
-      min-height:100vh;
-      padding:160px 20px 100px;
+    /* ===== HERO WRAP (IDENTICAL TO INDEX) ===== */
+    .hero-wrap{
+      position:relative;
+      height:100vh;
       display:flex;
+      align-items:center;
       justify-content:center;
     }
 
-    .content{
-      max-width:760px;
+    .home-center{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
       text-align:center;
+      gap:22px;
+      padding:0 16px;
     }
 
-    .content h1{
-      font-size:42px;
+    /* ===== CONTENT ===== */
+    .welcome-title{
+      font-size:32px;
       font-weight:400;
-      margin-bottom:28px;
     }
 
-    .content p{
+    .welcome-text{
+      max-width:520px;
       font-size:18px;
       line-height:1.6;
       opacity:.9;
     }
 
-    /* ===== MOBILE ===== */
+    .with-love{
+      font-size:18px;
+      margin-top:10px;
+      opacity:.9;
+    }
+
+    .names{
+      width:320px;
+      max-width:80vw;
+      margin-top:6px;
+    }
+
+    .names img{
+      width:100%;
+      height:auto;
+      display:block;
+    }
+
+    /* ===== MOBILE (IDENTICAL TO INDEX) ===== */
     @media (max-width:768px){
       .topnav{
-        top: calc(24px + env(safe-area-inset-top));
+        top: calc(45px + env(safe-area-inset-top));
         width:100%;
         padding:0 20px 16px;
         flex-direction:column;
-        gap:14px;
+        align-items:center;
+        gap:16px;
         font-size:10px;
         letter-spacing:0.28em;
+        border-bottom:1px solid rgba(0,0,0,.20);
       }
 
       .topnav .left{
         gap:24px;
-        flex-wrap:wrap;
         justify-content:center;
+        flex-wrap:wrap;
       }
 
-      .page{
-        padding:140px 16px 80px;
+      .home-center{
+        gap:14px;
       }
 
-      .content h1{
-        font-size:32px;
+      .welcome-title{
+        font-size:26px;
       }
 
-      .content p{
+      .welcome-text{
         font-size:16px;
+      }
+
+      .with-love{
+        font-size:16px;
+      }
+
+      .names{
+        width:240px;
       }
     }
   </style>
@@ -134,17 +172,23 @@
   <a class="rsvp" href="rsvp.html">RSVP</a>
 </nav>
 
-<section class="page">
-  <div class="content">
-    <h1>Welcome</h1>
-    <p>
+<div class="hero-wrap">
+  <div class="home-center">
+    <div class="welcome-title">Welcome</div>
+
+    <div class="welcome-text">
       As we count down to our wedding, this website will share the important
-      details, plans, and moments leading up to the celebration.  
-      We can’t wait to share this special chapter and create unforgettable
-      memories together.
-    </p>
+      details, plans, and moments leading up to the celebration. We can’t wait
+      to share this special chapter and create unforgettable memories together.
+    </div>
+
+    <div class="with-love">With love,</div>
+
+    <div class="names">
+      <img src="names.png" alt="Shannen & Samarth">
+    </div>
   </div>
-</section>
+</div>
 
 </body>
 </html>
