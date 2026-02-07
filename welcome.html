@@ -8,7 +8,7 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Alex+Brush&family=Montserrat:wght@500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Montserrat:wght@500;600&display=swap" rel="stylesheet">
 
   <style>
     *{ margin:0; padding:0; box-sizing:border-box; }
@@ -78,65 +78,6 @@
       -webkit-backdrop-filter: blur(6px);
     }
 
-    /* ===== CENTER CONTENT ===== */
-    .hero-wrap{
-      position:relative;
-      height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-
-    .home-center{
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      gap:22px;
-    }
-
-    .monogram{
-      width: clamp(150px, 17vw, 250px);
-      opacity:.96;
-    }
-
-    .monogram img{
-      width:100%;
-      height:auto;
-      display:block;
-    }
-
-    #logoAfter{
-      width:200%;
-      display:block;
-      margin-left:auto;
-      margin-right:auto;
-      position:relative;
-      left:50%;
-      transform:translateX(-50%);
-    }
-
-    /* ===== TEXT ===== */
-    .wedding-label{
-      display:block;
-      font-family:"Montserrat", sans-serif;
-      font-size:14px;
-      letter-spacing:0.34em;
-      text-transform:uppercase;
-      margin-bottom:70px;
-      opacity:.85;
-    }
-
-    .wedding-date{
-      display:block;
-      margin-top:50px;
-      font-family:"Montserrat", sans-serif;
-      font-size:16px;
-      letter-spacing:0.12em;
-      opacity:.9;
-    }
-
     /* ===== MOBILE ===== */
     @media (max-width:768px){
       .topnav{
@@ -156,31 +97,10 @@
         justify-content:center;
         flex-wrap:wrap;
       }
-
-      .home-center{
-        gap:14px;
-        padding:0 16px;
-      }
-
-      .monogram{
-        width: min(150px, 40vw);
-      }
-
-      .scene-home .wedding-label{
-        margin-bottom:10px;
-      }
-
-      .scene-home .wedding-date{
-        margin-top:10px;
-      }
     }
 
     /* ===== DESKTOP ===== */
     @media (min-width:769px){
-      .monogram{
-        margin-bottom:28px;
-      }
-
       .topnav{
         justify-content:flex-start;
       }
@@ -188,14 +108,6 @@
       .topnav .rsvp{
         margin-left:56px;
         padding:4px 14px;
-      }
-
-      .scene-home .wedding-label{
-        margin-bottom:5px;
-      }
-
-      .scene-home .wedding-date{
-        margin-top:5px;
       }
     }
   </style>
@@ -214,18 +126,6 @@
     </div>
     <a class="rsvp" href="rsvp.html">RSVP</a>
   </nav>
-
-  <div class="hero-wrap">
-    <div class="home-center">
-      <div class="monogram">
-        <img src="monogram1.png" alt="Monogram">
-
-        <span class="wedding-label">THE WEDDING OF</span>
-        <img id="logoAfter" src="names.png" alt="Names">
-        <span class="wedding-date">27.02.27</span>
-      </div>
-    </div>
-  </div>
 
 </section>
 
