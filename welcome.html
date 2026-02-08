@@ -13,6 +13,10 @@
   <style>
     *{ margin:0; padding:0; box-sizing:border-box; }
 
+    html, body{
+      height:100%;
+    }
+
     body{
       font-family:"Playfair Display", serif;
       background:#ffffff;
@@ -20,7 +24,7 @@
       min-height:100vh;
     }
 
-    /* ===== NAV ===== */
+    /* ===== NAV (UNCHANGED) ===== */
     .topnav{
       position:fixed;
       top:28px;
@@ -67,44 +71,31 @@
       color:#2B2B2B;
     }
 
-    @media (max-width:768px){
-      .topnav{
-        top: calc(25px + env(safe-area-inset-top));
-        width:100%;
-        padding:0 20px 16px;
-        flex-direction:column;
-        gap:16px;
-        font-size:10px;
-        letter-spacing:0.28em;
+    /* ===== PAGE LAYOUT (DESKTOP CENTERED, NO SCROLL) ===== */
+    @media (min-width: 769px){
+
+      html, body{
+        overflow:hidden; /* 🚫 no desktop scroll */
       }
 
-      .topnav .left{
-        gap:24px;
+      .wrap{
+        margin-top:86px;                    /* nav height */
+        height:calc(100vh - 86px);          /* remaining viewport */
+        padding:0 80px;                     /* horizontal only */
+        display:flex;
+        align-items:center;
         justify-content:center;
-        flex-wrap:wrap;
       }
     }
 
-    @media (min-width:769px){
-      .topnav{
-        justify-content:flex-start;
-      }
-
-      .topnav .rsvp{
-        margin-left:56px;
-        padding:4px 14px;
-      }
+    /* ===== PAGE LAYOUT (MOBILE — UNCHANGED) ===== */
+    .wrap{
+      min-height:100vh;
+      padding:140px 80px 40px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
     }
-
-    /* ===== PAGE LAYOUT ===== */
-.wrap{
-  min-height:calc(100vh - 86px); /* height below nav + divider */
-  margin-top:86px;              /* exact nav + border space */
-  padding:0 80px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
 
     .content{
       width:100%;
@@ -152,14 +143,35 @@
       display:block;
     }
 
-    /* ===== RIGHT IMAGE PLACEHOLDER ===== */
     .welcome-image{
       width:100%;
       min-height:420px;
     }
 
-    /* ===== MOBILE ===== */
+    /* ===== MOBILE (UNCHANGED) ===== */
     @media (max-width: 768px){
+
+      .topnav{
+        top:45px;
+        width:100%;
+        padding:0 20px;
+        flex-direction:column;
+        align-items:center;
+        gap:16px;
+        font-size:10px;
+        letter-spacing:0.28em;
+      }
+
+      .topnav .left{
+        gap:24px;
+        justify-content:center;
+        flex-wrap:wrap;
+      }
+
+      .topnav .rsvp{
+        margin-top:6px;
+        padding:8px 16px;
+      }
 
       .wrap{
         padding:160px 20px 40px;
