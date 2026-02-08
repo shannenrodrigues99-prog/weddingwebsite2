@@ -105,17 +105,21 @@
       justify-content:center;
     }
 
-.content{
-  width:100%;
-  max-width:1100px;
-  display:grid;
-  grid-template-columns: 1fr 1fr;
-  align-items:center;
-  gap:90px;
-  margin-top:-80px; /* ⬆ more lift */
-}
+    .content{
+      width:100%;
+      max-width:1100px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      align-items:center;
+      gap:90px;
+    }
 
-
+    /* 🔼 DESKTOP-ONLY LIFT */
+    @media (min-width:769px){
+      .content{
+        margin-top:-80px;
+      }
+    }
 
     /* ===== LEFT TEXT ===== */
     .welcome-text-wrap{
@@ -162,7 +166,6 @@
 
     /* ===== MOBILE ===== */
     @media (max-width: 768px){
-
       .wrap{
         padding:160px 20px 40px;
         align-items:flex-start;
