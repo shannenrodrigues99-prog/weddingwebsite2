@@ -120,16 +120,22 @@
       max-width:720px;
       margin:0 auto;
       padding:0 24px;
-      pointer-events:none; /* ✅ FIX: stop blocking nav */
+      pointer-events:none;
     }
 
-    /* re-enable interaction for actual content */
     .welcome-wrap *{
       pointer-events:auto;
     }
 
     .welcome-title{
       margin-bottom:52px;
+    }
+
+    /* ✅ UPDATED: body text + signoff in Montserrat */
+    .welcome-text,
+    .welcome-signoff{
+      font-family:"Montserrat", sans-serif;
+      font-weight:500;
     }
   </style>
 </head>
