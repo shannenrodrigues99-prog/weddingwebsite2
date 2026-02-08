@@ -18,6 +18,7 @@
       background:#ffffff;
       color:#111;
       min-height:100vh;
+      overflow:hidden; /* DESKTOP: no scroll */
     }
 
     /* ===== NAV ===== */
@@ -114,7 +115,7 @@
       gap:90px;
     }
 
-    /* 🔼 DESKTOP-ONLY LIFT */
+    /* Desktop lift */
     @media (min-width:769px){
       .content{
         margin-top:-80px;
@@ -158,14 +159,24 @@
       display:block;
     }
 
-    /* ===== RIGHT IMAGE PLACEHOLDER ===== */
+    /* ===== IMAGE SECTION ===== */
     .welcome-image{
       width:100%;
-      min-height:420px;
+    }
+
+    .welcome-image img{
+      width:100%;
+      height:auto;
+      display:block;
+      border-radius:2px;
     }
 
     /* ===== MOBILE ===== */
     @media (max-width: 768px){
+      body{
+        overflow-y:auto; /* MOBILE: allow scroll */
+      }
+
       .wrap{
         padding:160px 20px 40px;
         align-items:flex-start;
@@ -193,11 +204,11 @@
 
       .signature{
         max-width:320px;
-        margin:0 auto;
+        margin:0 auto 56px;
       }
 
       .welcome-image{
-        display:none;
+        margin-top:40px;
       }
     }
   </style>
@@ -236,7 +247,9 @@
         />
       </div>
 
-      <div class="welcome-image"></div>
+      <div class="welcome-image">
+        <img src="welcome-photo.jpg" alt="Shannen & Samarth">
+      </div>
 
     </div>
   </main>
