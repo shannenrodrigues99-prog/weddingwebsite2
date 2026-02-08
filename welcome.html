@@ -97,13 +97,14 @@
     }
 
     /* ===== PAGE LAYOUT ===== */
-    .wrap{
-      min-height:100vh;
-      padding:140px 80px 40px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
+.wrap{
+  min-height:calc(100vh - 86px); /* height below nav + divider */
+  margin-top:86px;              /* exact nav + border space */
+  padding:0 80px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
 
     .content{
       width:100%;
